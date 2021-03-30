@@ -25,7 +25,7 @@ public class database {
 	}
 	
 	
-	private boolean checkValidDateTime(final String dateTime) {
+	private boolean checkValidDateTime(final String dateTime) { //returns true if given date time is valid
         boolean valid = false;
         try {
             LocalDate.parse(dateTime, DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT));
@@ -37,7 +37,7 @@ public class database {
         return valid;
     }
 	
-	private boolean checkValidBoolean(final int input) {
+	private boolean checkValidBoolean(final int input) { //returns true if given int is a valid boolean
 		boolean valid = false;
 		if(input<0||input>1) {valid=false;}
 		else {valid=true;}
@@ -45,11 +45,12 @@ public class database {
 	}
 	
 	//~~~~~~~~~~~~~[tasks]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	//used to encapsulate the validation of all the variables for tasks
 	public String taskValidate(String name, int type, int duration, int priority, int frequency, int need_logging, String date_created, int completed, int extra_sign_off) {
 		String result="";
 		
 		if(name.replaceAll("\\s+", "").equals("")) {result+="Name is empty\n";}//Check name isn't empty even once whitespace is removed
-		if(type<0||type>1) {result+="Non-valid Type";}
+		if(checkValidBoolean(type)) {result+="Non-valid Type";}
 		if(duration>=0) {result+="Non-valid Duration";}
 		if(priority<=0||priority>3) {result+="Non-valid Priority";}
 		if(frequency<0) {result+="Non-valid Frequency";}
