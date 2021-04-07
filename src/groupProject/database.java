@@ -196,7 +196,8 @@ public class database {
 		if(mf.replaceAll("\\s+", "").equals("")) {result+="M/F is empty\n";}
 		//no point checking if it's valid type if empty
 		else if(!(mf.equals("M")||mf.equals("F"))) {result+="M/F is invalid\n";}
-		if(job<=0||job>3) {result+="Non-valid Job";}
+		//job>3 should be removed? limits number of jobs to 4
+		if(job<0||job>3) {result+="Non-valid Job";}
 		
 		return result;
 	}//end userValidate()
@@ -224,7 +225,7 @@ public class database {
 	}//end addNewUser()
 
 	public ResultSet getUserFromID(int ID) {
-		String sqlString = "Select user_name, username, job_id, notes, M_F FROM userss WHERE user_id='"+ID+"'";
+		String sqlString = "Select user_name, username, job_id, notes, M_F FROM users WHERE user_id='"+ID+"'";
 		ResultSet result = myDB.RunSQLQuery(sqlString);
 		return result;
 	}//end getUserFromID()
@@ -267,5 +268,74 @@ public class database {
 		return result;
 	}//end updateUser()
 	//~~~~~~~~~~~~~[logged_tasks]~~~~~~~~~~~~~~~~~~~~~~~~~~
+	public String loggedTaskValidate(int task, int user, int user2, String dateCompleted) {
+		String result="";
+		
+		if(task<0) {result+="Non-valid Task\n";}
+		if(user<0) {result+="Non-valid User\n";}
+		if(user2<0) {result+="Non-valid Second User\n";}
+		if(checkValidDateTime(dateCompleted)){result+="Non-valid date completed";}
+
+		return result;
+	}//end loggedTaskValidate()
+
+	public String addNewLoggedTask(int task, int user, int user2, String dateCompleted) throws SQLException{
+		String result="";
+		
+		//Find the next ID to use-------------------------
+		String findNextIDsql = "SELECT COUNT(logged_id)+1 from logged_tasks";
+		ResultSet nextIDResult = myDB.RunSQLQuery(findNextIDsql);
+		int nextID=0;
+		while(nextIDResult.next()) {
+			nextID = nextIDResult.getInt(1);
+		}
+		//------------------------------------------------
+
+		result=loggedTaskValidate(task,user,user2,dateCompleted);
+		
+		if(result.equals("")){ //if no problems then run SQL
+			String addLoggedTaskSQL = "INSERT INTO logged_tasks (logged_id, task_id, user_id, second_user_id, date_completed) VALUES ('"+nextID+"','"+task+"','"+user+"','"+user2+"','"+dateCompleted+"')";
+			boolean addResult = myDB.RunSQL(addLoggedTaskSQL);
+		}
+		
+		return result;
+	}//end addNewLoggedTask()
+
+	public ResultSet getLoggedTaskFromID(int ID) {
+		String sqlString = "Select task_id, user_id, second_user_id, date_completed FROM logged_tasks WHERE logged_id='"+ID+"'";
+		ResultSet result = myDB.RunSQLQuery(sqlString);
+		return result;
+	}//end getLoggedTaskFromID()
+
+	public ResultSet getAllLoggedTasks() {
+		String getSQL="SELECT task_id, user_id, second_user_id, date_completed FROM logged_tasks";
+		ResultSet result = myDB.RunSQLQuery(getSQL);
+		return result;
+	}
+
+	public boolean deleteLoggedTask(int ID) {
+		String sqlString ="DELETE FROM logged_tasks WHERE logged_id="+ID;
+		boolean result = myDB.RunSQL(sqlString);
+		return result;
+	}//end deleteLoggedTask()
+
+	public String updateLoggedTask(int logged_ID, int task, int user, int user2, String dateCompleted) throws SQLException {
+		//check user_ID exists
+		String checkIDsql = "SELECT task FROM logged_tasks WHERE logged_ID="+logged_ID;
+		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
+		boolean validID = false;
+		if(checkIDResult.next()) {validID=true;}
+		
+		String result="";
+		if(validID) {
+			result=loggedTaskValidate(task,user,user2,dateCompleted);
+			if(result.equals("")){
+				String updateLoggedTaskSQL = "UPDATE logged_tasks SET task_id='"+task+"',user_id='"+user+"',second_user_id='"+user2+"',date_completed='"+dateCompleted+"' WHERE logged_ID='"+logged_ID+"'";
+				boolean updateResult = myDB.RunSQL(updateLoggedTaskSQL);
+			}
+		} else {result+="Invalid ID";}
+				
+		return result;
+	}//end updateLoggedTask()
 
 }//end class database
