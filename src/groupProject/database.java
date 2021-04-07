@@ -186,6 +186,86 @@ public class database {
 		return result;
 	}
 	//~~~~~~~~~~~~~[users]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	public String userValidate(String name, String username, int job, String password, String notes, String mf) {
+		String result="";
+		
+		if(name.replaceAll("\\s+", "").equals("")) {result+="Name is empty\n";}//Check name isn't empty even once whitespace is removed
+		if(notes.replaceAll("\\s+", "").equals("")) {result+="Notes is empty\n";}
+		if(username.replaceAll("\\s+", "").equals("")) {result+="Username is empty\n";}
+		if(password.replaceAll("\\s+", "").equals("")) {result+="Password is empty\n";}
+		if(mf.replaceAll("\\s+", "").equals("")) {result+="M/F is empty\n";}
+		//no point checking if it's valid type if empty
+		else if(!(mf.equals("M")||mf.equals("F"))) {result+="M/F is invalid\n";}
+		if(job<=0||job>3) {result+="Non-valid Job";}
+		
+		return result;
+	}//end userValidate()
+
+	public String addNewUser(String name, String username, int job, String password, String notes, String mf) throws SQLException{
+		String result="";
+		
+		//Find the next ID to use-------------------------
+		String findNextIDsql = "SELECT COUNT(user_id)+1 from users";
+		ResultSet nextIDResult = myDB.RunSQLQuery(findNextIDsql);
+		int nextID=0;
+		while(nextIDResult.next()) {
+			nextID = nextIDResult.getInt(1);
+		}
+		//------------------------------------------------
+
+		result=userValidate(name,username,job,password,notes,mf);
+		
+		if(result.equals("")){ //if no problems then run SQL
+			String addUserSQL = "INSERT INTO users (user_id, user_name, username, job_id, hash_password, notes, M_F) VALUES ('"+nextID+"','"+name+"','"+username+"','"+job+"','"+password+"','"+notes+"','"+mf+"')";
+			boolean addResult = myDB.RunSQL(addUserSQL);
+		}
+		
+		return result;
+	}//end addNewUser()
+
+	public ResultSet getUserFromID(int ID) {
+		String sqlString = "Select user_name, username, job_id, notes, M_F FROM userss WHERE user_id='"+ID+"'";
+		ResultSet result = myDB.RunSQLQuery(sqlString);
+		return result;
+	}//end getUserFromID()
+
+	//when a user attempts to login, also the only time we have to get it
+	public ResultSet getPassFromUsername(String username) {
+		String sqlString = "Select hash_password FROM users WHERE user_name='"+username+"'";
+		ResultSet result = myDB.RunSQLQuery(sqlString);
+		return result;
+	}//end getPassFromUsername()
+
+	public ResultSet getAllUsers() {
+		String getSQL="SELECT user_name, username, job_id, notes, M_F FROM users";
+		ResultSet result = myDB.RunSQLQuery(getSQL);
+		return result;
+	}
+
+	public boolean deleteUser(int ID) {
+		String sqlString ="DELETE FROM users WHERE user_id="+ID;
+		boolean result = myDB.RunSQL(sqlString);
+		return result;
+	}//end deleteUser()
+
+	public String updateUser(int user_ID, String name, String username, int job, String password, String notes, String mf) throws SQLException {
+		//check user_ID exists
+		String checkIDsql = "SELECT username FROM users WHERE user_ID="+user_ID;
+		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
+		boolean validID = false;
+		if(checkIDResult.next()) {validID=true;}
+		
+		String result="";
+		if(validID) {
+			result=userValidate(name,username,job,password,notes,mf);
+			if(result.equals("")){
+				String updateUserSQL = "UPDATE users SET user_name='"+name+"',username='"+username+"',job_id='"+job+"',hash_password='"+password+"',notes='"+notes+"',M_F='"+mf+"' WHERE user_ID='"+user_ID+"'";
+				boolean updateResult = myDB.RunSQL(updateUserSQL);
+			}
+		} else {result+="Invalid ID";}
+				
+		return result;
+	}//end updateUser()
 	//~~~~~~~~~~~~~[logged_tasks]~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 }//end class database
