@@ -224,8 +224,8 @@ public class database {
 		return result;
 	}//end addNewUser()
 
-	public ResultSet getUserFromID(int ID) {
-		String sqlString = "Select user_name, username, job_id, notes, M_F FROM users WHERE user_id='"+ID+"'";
+	public ResultSet getUserFromUsername(String username) {
+		String sqlString = "Select user_id, user_name, job_id, notes, M_F FROM users WHERE username='"+username+"'";
 		ResultSet result = myDB.RunSQLQuery(sqlString);
 		return result;
 	}//end getUserFromID()
