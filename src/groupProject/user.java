@@ -9,6 +9,13 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.SecureRandom;
 
 public class user {
+    private int user_id;
+    private String username;
+    private String name;
+    private int permission;
+    private String job;
+    private String gender;
+    private String notes;
 
     private static boolean validatePassword(String original, String stored) throws NoSuchAlgorithmException, InvalidKeySpecException {
         //split stored hash apart
