@@ -1,5 +1,6 @@
 package groupProject;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -186,18 +187,25 @@ public class database {
 		return result;
 	}
 	//~~~~~~~~~~~~~[users]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	public String userValidate(String name, String username, int job, String password, String notes, String mf) {
+	public String userValidate(String name, int job, String notes, String mf) {
+		//editing username or password should be handled alone/with care
 		String result="";
 		
 		if(name.replaceAll("\\s+", "").equals("")) {result+="Name is empty\n";}//Check name isn't empty even once whitespace is removed
 		if(notes.replaceAll("\\s+", "").equals("")) {result+="Notes is empty\n";}
-		if(username.replaceAll("\\s+", "").equals("")) {result+="Username is empty\n";}
-		if(password.replaceAll("\\s+", "").equals("")) {result+="Password is empty\n";}
 		if(mf.replaceAll("\\s+", "").equals("")) {result+="M/F is empty\n";}
 		//no point checking if it's valid type if empty
 		else if(!(mf.equals("M")||mf.equals("F"))) {result+="M/F is invalid\n";}
 		//job>3 should be removed? limits number of jobs to 4
 		if(job<0||job>3) {result+="Non-valid Job";}
+		
+		return result;
+	}
+	public String userValidate(String name, String username, int job, String password, String notes, String mf) {
+		String result=userValidate(name, job, notes, mf);
+		
+		if(username.replaceAll("\\s+", "").equals("")) {result+="Username is empty\n";}
+		if(password.replaceAll("\\s+", "").equals("")) {result+="Password is empty\n";}//password already hashed
 		
 		return result;
 	}//end userValidate()
@@ -232,7 +240,7 @@ public class database {
 
 	//when a user attempts to login, also the only time we have to get it
 	public ResultSet getPassFromUsername(String username) {
-		String sqlString = "Select hash_password FROM users WHERE user_name='"+username+"'";
+		String sqlString = "Select hash_password FROM users WHERE username='"+username+"'";
 		ResultSet result = myDB.RunSQLQuery(sqlString);
 		return result;
 	}//end getPassFromUsername()
@@ -249,7 +257,7 @@ public class database {
 		return result;
 	}//end deleteUser()
 
-	public String updateUser(int user_ID, String name, String username, int job, String password, String notes, String mf) throws SQLException {
+	public String updateUser(int user_ID, String name, int job, String notes, String mf) throws SQLException {
 		//check user_ID exists
 		String checkIDsql = "SELECT username FROM users WHERE user_ID="+user_ID;
 		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
@@ -258,9 +266,9 @@ public class database {
 		
 		String result="";
 		if(validID) {
-			result=userValidate(name,username,job,password,notes,mf);
+			result=userValidate(name,job,notes,mf);
 			if(result.equals("")){
-				String updateUserSQL = "UPDATE users SET user_name='"+name+"',username='"+username+"',job_id='"+job+"',hash_password='"+password+"',notes='"+notes+"',M_F='"+mf+"' WHERE user_ID='"+user_ID+"'";
+				String updateUserSQL = "UPDATE users SET user_name='"+name+"',job_id='"+job+"',notes='"+notes+"',M_F='"+mf+"' WHERE user_ID='"+user_ID+"'";
 				boolean updateResult = myDB.RunSQL(updateUserSQL);
 			}
 		} else {result+="Invalid ID";}
