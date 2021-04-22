@@ -48,23 +48,28 @@ public class User {
 
     //password hashing
 	private static String genPassHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        //use 1000 iterations
 		int iter = 1000;
 		char[] chars = password.toCharArray();
 		byte[] salt = genSalt();
-
+        
+        //create hashed password
 		PBEKeySpec keySpec = new PBEKeySpec(chars, salt, iter, 64*8);
 		SecretKeyFactory secKeyFact = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 		byte[] hash = secKeyFact.generateSecret(keySpec).getEncoded();
 		
+        //combine these elements
 		return iter+":"+toHex(salt)+":"+toHex(hash);
 	}
 	private static byte[] genSalt() throws NoSuchAlgorithmException {
+        //create or generate a salt
 		SecureRandom secRand = SecureRandom.getInstance("SHA1PRNG");
 		byte[] salt = new byte[16];
 		secRand.nextBytes(salt);
 		return salt;
 	}
 	private static String toHex(byte[] array) throws NoSuchAlgorithmException {
+        //convert to hex
         BigInteger bigInt = new BigInteger(1, array);
         String hex = bigInt.toString(16);
         int paddLength = (array.length*2)-hex.length();
@@ -78,6 +83,7 @@ public class User {
 
     //password verification
     private static boolean verifyPassword(String password) {
+        //make sure password is of valid strength
         if (passwordStrength(password)>=7) {
             return true;
         } else {
