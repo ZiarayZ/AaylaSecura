@@ -12,10 +12,22 @@ public class User {
     private int user_id;
     private String username;
     private String name;
-    private int permission;
+    private int perms;
     private String job;
     private String gender;
     private String notes;
+
+    //to test passwords, and if the password methods work correctly
+    public void testPassword(String password) {
+        if (verifyPassword(password)) {
+            System.out.println("Verification success.");
+            System.out.println(validatePassword(password, genPassHash(password)));
+            System.out.println(passwordStrength(password));
+        } else {
+            System.out.println("Verification failed.");
+            System.out.println(passwordStrength(password));
+        }
+    }
 
     //password validation
     private static boolean validatePassword(String original, String stored) throws NoSuchAlgorithmException, InvalidKeySpecException {
