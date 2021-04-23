@@ -7,6 +7,7 @@ import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.SecureRandom;
+import java.math.BigInteger;
 
 public class User {
     private int user_id;
@@ -18,7 +19,7 @@ public class User {
     private String notes;
 
     //to test passwords, and if the password methods work correctly
-    public void testPassword(String password) {
+    public void testPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         if (verifyPassword(password)) {
             System.out.println("Verification success.");
             System.out.println(validatePassword(password, genPassHash(password)));
