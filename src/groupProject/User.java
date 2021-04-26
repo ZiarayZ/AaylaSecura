@@ -17,9 +17,10 @@ public class User {
     private String job;
     private String gender;
     private String notes;
+    private boolean logged_in = false;
 
     //to test passwords, and if the password methods work correctly
-    public void testPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public static void testPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         if (verifyPassword(password)) {
             System.out.println("Verification success.");
             System.out.println(validatePassword(password, genPassHash(password)));
@@ -28,6 +29,11 @@ public class User {
             System.out.println("Verification failed.");
             System.out.println(passwordStrength(password));
         }
+    }
+
+    //log in method
+    public boolean login(String username, String password) {
+        return false;
     }
 
     //password validation
@@ -96,8 +102,9 @@ public class User {
 
     //password verification
     private static boolean verifyPassword(String password) {
+        //to do: add character requirements for password
         //make sure password is of valid strength
-        if (passwordStrength(password)>=7) {
+        if (passwordStrength(password)>=5) {
             return true;
         } else {
             return false;
