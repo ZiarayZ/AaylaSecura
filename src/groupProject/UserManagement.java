@@ -9,7 +9,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.SecureRandom;
 import java.math.BigInteger;
 
-public class User {
+public class UserManagement {
     private int user_id;
     private String username;
     private String name;
