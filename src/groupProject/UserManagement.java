@@ -13,11 +13,13 @@ public class UserManagement {
     private int user_id;
     private String username;
     private String name;
-    private int perms;
+    //access level 0 - can only login
+    private int perms = 0;
     private String job;
     private String gender;
-    private String notes;
+    //forces user to login
     private boolean logged_in = false;
+    private database userDB = new database();
 
     //to test passwords, and if the password methods work correctly
     public static void testPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -31,9 +33,37 @@ public class UserManagement {
         }
     }
 
+    //grab access level | 0=no access, 1=caretaker, 2=manager, 3=admin etc (plan to add these values into jobs table later)
+    public int accessLevel() {
+        return perms;
+    }
+
     //log in method
-    public boolean login(String username, String password) {
-        return false;
+    public boolean login(String user_name, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, SQLException {
+        //grab hashed password
+        ResultSet query = userDB.getPassFromUsername(user_name);
+        if (query.next()) {
+            //check password with hashed password
+            if (validatePassword(password, query.getString("password"))) {
+                logged_in = true;
+            }
+        }
+        //set up user attributes if successful
+        if (logged_in) {
+            query = userDB.getUserFromUsername(user_name);
+            if (query.next()) {
+                user_id = query.getInt("user_id");
+                username = user_name;
+                name = query.getString("user_name");
+                gender = query.getString("m_f");
+                job = query.getString("job_desc");
+            }
+            //login success
+            return true;
+        } else {
+            //login fail
+            return false;
+        }
     }
 
     //password validation
