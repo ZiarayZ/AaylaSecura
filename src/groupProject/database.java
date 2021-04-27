@@ -1,6 +1,5 @@
 package groupProject;
 
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -233,7 +232,7 @@ public class database {
 	}//end addNewUser()
 
 	public ResultSet getUserFromUsername(String username) {
-		String sqlString = "Select user_id, user_name, job_id, notes, M_F FROM users WHERE username='"+username+"'";
+		String sqlString = "Select user_id, user_name, job_desc, notes, M_F FROM users INNER JOIN job ON users.job_id=jobs.job_id WHERE username='"+username+"'";
 		ResultSet result = myDB.RunSQLQuery(sqlString);
 		return result;
 	}//end getUserFromID()
