@@ -289,6 +289,7 @@ public class database {
 			validID = true;
 		}
 
+		//checking condition is valid
 		if (validID) {
 			boolean updateResult = false;
 			if (condition.equals("user_name")) {
@@ -309,6 +310,7 @@ public class database {
 		} else {
 			return "Invalid: user_ID.";
 		}
+		//successfully edited
 		return "";
 	}//end editUser()
 	//~~~~~~~~~~~~~[logged_tasks]~~~~~~~~~~~~~~~~~~~~~~~~~~
