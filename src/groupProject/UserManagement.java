@@ -38,6 +38,67 @@ public class UserManagement {
         return perms;
     }
 
+    //edit name
+    public String editName(String user_name) throws SQLException {
+        if (user_name.equals(null) || user_name.equals("")) {
+            return "Invalid: empty/null.";
+        } else {
+            //i would add more validation but names can be ANYTHING
+            return userDB.editUser(user_id, "user_name", user_name);
+        }
+    }
+    //edit password
+    public String editPassword(String password) throws SQLException {
+        if (password.equals(null) || password.equals("")) {
+            return "Invalid: empty/null.";
+        } else if (verifyPassword(password)) {
+            try {
+                String result = genPassHash(password);
+                return userDB.editUser(user_id, "password", result);
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println(e);
+                return "Invalid: NoSuchAlgorithmException.";
+            } catch (InvalidKeySpecException e) {
+                System.out.println(e);
+                return "Invalid: InvalidKeySpecException.";
+            }
+        } else {
+            return "Invalid: Failed verification.";
+        }
+    }
+    //edit gender
+    public String editGender(String gen) throws SQLException {
+        if (gen.equals(null) || gen.equals("")) {
+            return "Invalid: empty/null.";
+        } else if (gen.matches("[MmFf]")) {
+            return userDB.editUser(user_id, "m_f", gen.toUpperCase());
+        } else {
+            return "Invalid: .";
+        }
+    }
+
+    //add user to database if manager/admin+
+    public boolean addUser() {
+        if (perms>=2) {
+            return true;
+        }
+        return false;
+    }
+    //edit user in database if manager/admin+
+    public boolean editUser() {
+        if (perms>=2) {
+            return true;
+        }
+        return false;
+    }
+    //delete user in database if manager/admin+
+    public boolean deleteUser() {
+        if (perms>=2) {
+            return true;
+        }
+        return false;
+    }
+
     //log in method
     public boolean login(String user_name, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, SQLException {
         //grab hashed password
