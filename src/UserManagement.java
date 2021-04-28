@@ -7,15 +7,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.SecureRandom;
 import java.math.BigInteger;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.security.SecureRandom;
-import java.math.BigInteger;
-
 public class UserManagement {
     private int user_id;
     private String username;
