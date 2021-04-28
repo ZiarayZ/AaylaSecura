@@ -2,7 +2,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LogTasks {
-    private database taskLogDB;
+    private static database taskLogDB;
     private ResultSet taskLogQuery;
     private String taskCompletedBy;
     private String timeCompleted;

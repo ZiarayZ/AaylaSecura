@@ -7,15 +7,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.SecureRandom;
 import java.math.BigInteger;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.security.SecureRandom;
-import java.math.BigInteger;
-
 public class UserManagement {
     private int user_id;
     private String username;
@@ -26,22 +17,10 @@ public class UserManagement {
     private String gender;
     //forces user to login
     private boolean logged_in = false;
-    private database userDB;
+    private static database userDB;
 
     public UserManagement(database DB) {
         userDB = DB;
-    }
-
-    //to test passwords, and if the password methods work correctly
-    public static void testPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        if (verifyPassword(password)) {
-            System.out.println("Verification success.");
-            System.out.println(validatePassword(password, genPassHash(password)));
-            System.out.println(passwordStrength(password));
-        } else {
-            System.out.println("Verification failed.");
-            System.out.println(passwordStrength(password));
-        }
     }
 
     //grab access level | 0=no access, 1=caretaker, 2=manager, 3=admin etc (plan to add these values into jobs table later)
@@ -224,13 +203,27 @@ public class UserManagement {
 
     //password verification
     private static boolean verifyPassword(String password) {
-        //to do: add character requirements for password
-        //make sure password is of valid strength
-        if (passwordStrength(password)>=5) {
-            return true;
-        } else {
+        //doesn't contain a single upper case
+        if (!password.matches("(?=.*[A-Z]).*")) {
             return false;
         }
+        //doesn't contain a single lower case
+        if (!password.matches("(?=.*[a-z]).*")) {
+            return false;
+        }
+        //doesn't contain a single number
+        if (!password.matches("(?=.*[0-9]).*")) {
+            return false;
+        }
+        //doesn't contain a single symbol
+        if (!password.matches("(?=.*[~!@#$%^&*()_-]).*")) {
+            return false;
+        }
+        //make sure password is of valid strength
+        if (passwordStrength(password)<5) {
+            return false;
+        }
+        return true;
     }
     private static int passwordStrength(String password) {
         //strength of password on a scale of 0-10
@@ -241,8 +234,6 @@ public class UserManagement {
             score += 2;
         } else if (password.length()>=8) {
             score += 1;
-        } else {
-            return 0;
         }
 
         //contains 1 or 2 lower chars
