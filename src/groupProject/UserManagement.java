@@ -41,7 +41,7 @@ public class UserManagement {
     //edit name
     public String editName(String user_name) throws SQLException {
         if (user_name.equals(null) || user_name.equals("")) {
-            return "Invalid: empty/null.";
+            return "empty/null";
         } else {
             //i would add more validation but names can be ANYTHING
             return userDB.editUser(user_id, "user_name", user_name);
@@ -50,30 +50,30 @@ public class UserManagement {
     //edit password
     public String editPassword(String password) throws SQLException {
         if (password.equals(null) || password.equals("")) {
-            return "Invalid: empty/null.";
+            return "empty/null";
         } else if (verifyPassword(password)) {
             try {
                 String result = genPassHash(password);
                 return userDB.editUser(user_id, "password", result);
             } catch (NoSuchAlgorithmException e) {
                 System.out.println(e);
-                return "Invalid: NoSuchAlgorithmException.";
+                return "NoSuchAlgorithmException";
             } catch (InvalidKeySpecException e) {
                 System.out.println(e);
-                return "Invalid: InvalidKeySpecException.";
+                return "InvalidKeySpecException";
             }
         } else {
-            return "Invalid: Failed verification.";
+            return "failed verification";
         }
     }
     //edit gender
     public String editGender(String gen) throws SQLException {
         if (gen.equals(null) || gen.equals("")) {
-            return "Invalid: empty/null.";
+            return "empty/null";
         } else if (gen.matches("[MmFf]")) {
             return userDB.editUser(user_id, "m_f", gen.toUpperCase());
         } else {
-            return "Invalid: .";
+            return "failed verification";
         }
     }
 
