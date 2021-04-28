@@ -83,6 +83,20 @@ public class database {
 		return result;
 	}//end addNewTask()
 	
+	
+	public boolean assignCaretaker(int task_id, int user_id) {
+		String updateCaretaker = "UPDATE tasks SET assigned_caretaker = '"+user_id+"' where task_id = '"+task_id+"'";
+		boolean result = myDB.RunSQL(updateCaretaker);
+		return result;
+	}//end assignCaretaker
+	
+	public boolean clearCaretaker(int task_id) {
+		String sqlString = "UPDATE tasks SET assigned_caretaker = 'null' where task_id = '"+task_id+"'";
+		boolean result = myDB.RunSQL(sqlString);
+		return result;
+	}//end clearCaretaker
+	
+	
 	public ResultSet getTaskFromID(int ID) {
 		String sqlString = "Select task_name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off FROM tasks WHERE task_id='"+ID+"'";
 		ResultSet result = myDB.RunSQLQuery(sqlString);
