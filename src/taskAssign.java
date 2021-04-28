@@ -84,12 +84,11 @@ public class taskAssign {
 	public ArrayList<task> sortUndoneTasksByDate(){
 		ArrayList<task> unsorted = getUndoneTasks();
 		ArrayList<task> sorted = new ArrayList<task>();
-		//get current dateTime--------------------
-		LocalDateTime unformattedCurrentDateTime = LocalDateTime.now();
-	    DateTimeFormatter currentDateTime = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");  
-	    String strCurrentDateTime = unformattedCurrentDateTime.format(currentDateTime);
-		//----------------------------------------
 		
+		
+		
+	    
+	    
 		
 		return sorted;
 	}
