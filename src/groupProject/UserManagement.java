@@ -19,7 +19,11 @@ public class UserManagement {
     private String gender;
     //forces user to login
     private boolean logged_in = false;
-    private database userDB = new database();
+    private database userDB;
+
+    public UserManagement(database DB) {
+        userDB = DB;
+    }
 
     //to test passwords, and if the password methods work correctly
     public static void testPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -37,6 +41,8 @@ public class UserManagement {
     public int accessLevel() {
         return perms;
     }
+
+    //getters
     public String getUsername() {
         return username;
     }
