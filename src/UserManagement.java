@@ -64,7 +64,7 @@ public class UserManagement {
         } else if (verifyPassword(password)) {
             try {
                 String result = genPassHash(password);
-                return userDB.editUser(user_id, "password", result);
+                return userDB.editUser(user_id, "hash_password", result);
             } catch (NoSuchAlgorithmException e) {
                 System.out.println(e);
                 return "NoSuchAlgorithmException";
@@ -226,6 +226,7 @@ public class UserManagement {
         return true;
     }
     private static int passwordStrength(String password) {
+        //i may completely change this strength system later
         //strength of password on a scale of 0-10
         int score = 0;
 
