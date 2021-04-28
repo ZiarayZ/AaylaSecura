@@ -45,7 +45,7 @@ public class database {
 	
 	//~~~~~~~~~~~~~[tasks]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//used to encapsulate the validation of all the variables for tasks
-	public String taskValidate(String name, int type, int duration, int priority, int frequency, int need_logging, String date_created, int completed, int extra_sign_off) {
+	private String taskValidate(String name, int type, int duration, int priority, int frequency, int need_logging, String date_created, int completed, int extra_sign_off) {
 		String result="";
 		
 		if(name.replaceAll("\\s+", "").equals("")) {result+="Name is empty\n";}//Check name isn't empty even once whitespace is removed
