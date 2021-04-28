@@ -1,7 +1,8 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 public class taskAssign {
 	private database db;
 	ArrayList<task> allTasks;
@@ -65,12 +66,29 @@ public class taskAssign {
 		return sorted;
 	}
 	
+	private String getYear(String dateTime) {
+		String result = dateTime.substring(0, 4);
+		return result;
+	}
+	
+	private String getMonth(String dateTime) {
+		String result = dateTime.substring(5, 7);
+		return result;
+	}
+	
+	private String getDay(String dateTime) {
+		String result = dateTime.substring(8, 10);
+		return result;
+	}
+	
 	public ArrayList<task> sortUndoneTasksByDate(){
 		ArrayList<task> unsorted = getUndoneTasks();
 		ArrayList<task> sorted = new ArrayList<task>();
-		
-		
-		
+		//get current dateTime--------------------
+		LocalDateTime unformattedCurrentDateTime = LocalDateTime.now();
+	    DateTimeFormatter currentDateTime = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss");  
+	    String strCurrentDateTime = unformattedCurrentDateTime.format(currentDateTime);
+		//----------------------------------------
 		
 		
 		return sorted;
