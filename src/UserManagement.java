@@ -81,7 +81,7 @@ public class UserManagement {
         if (gen.equals(null) || gen.equals("")) {
             return "empty/null";
         } else if (gen.matches("[MmFf]")) {
-            return userDB.editUser(user_id, "m_f", gen.toUpperCase());
+            return userDB.editUser(user_id, "M_F", gen.toUpperCase());
         } else {
             return "failed verification";
         }

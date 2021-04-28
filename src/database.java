@@ -311,8 +311,8 @@ public class database {
 				} else if (condition.equals("hash_password")) {
 					String updateUserSQL = "UPDATE users SET hash_password='"+value+"' WHERE user_id='"+user_ID+"'";
 					updateResult = myDB.RunSQL(updateUserSQL);
-				} else if (condition.equals("m_f")) {
-					String updateUserSQL = "UPDATE users SET m_f='"+value+"' WHERE user_id='"+user_ID+"'";
+				} else if (condition.equals("M_F")) {
+					String updateUserSQL = "UPDATE users SET M_F='"+value+"' WHERE user_id='"+user_ID+"'";
 					updateResult = myDB.RunSQL(updateUserSQL);
 				} else {
 					return "Invalid: column type.";
