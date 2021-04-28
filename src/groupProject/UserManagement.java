@@ -37,6 +37,24 @@ public class UserManagement {
     public int accessLevel() {
         return perms;
     }
+    public String getUsername() {
+        return username;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getJob() {
+        return job;
+    }
+    public String getGender() {
+        if (gender.toUpperCase().equals("M")) {
+            return "Male";
+        } else if (gender.toUpperCase().equals("F")) {
+            return "Female";
+        } else {
+            return gender;
+        }
+    }
 
     //edit name
     public String editName(String user_name) throws SQLException {
