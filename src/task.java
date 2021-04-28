@@ -24,7 +24,7 @@ public class task {
 		this.extra_sign_off = extra_sign_off;
 	}
 	
-	public task(int id, String name, int type, int duration, int priority,	int frequency, int need_logging, String date_created, int completed, int extra_sign_off, int assigned_caretaker) { //crete a task with a caretaker
+	public task(int id, String name, int type, int duration, int priority,	int frequency, int need_logging, String date_created, int completed, int extra_sign_off, int assigned_caretaker) { //create a task with a caretaker
 		this.id = id;
 		this.name = name;
 		this.type = duration;

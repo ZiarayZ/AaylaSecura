@@ -10,6 +10,16 @@ public class taskAssign {
 		this.db=db;
 	}
 	
+	public boolean allocateCaretaker(int task_id, int caretaker_id) {
+		boolean result = db.assignCaretaker(task_id, caretaker_id);
+		return result;
+	}
+	
+	public boolean removeAllocatedCaretaker(int task_id) {
+		boolean result = db.clearCaretaker(task_id);
+		return result;
+	}
+	
 	//get all tasks
 	public ArrayList<task> getAllTasks() {
 		ArrayList<task> myTasks = new ArrayList<task>();
@@ -25,9 +35,36 @@ public class taskAssign {
 		}
 		return myTasks;
 	}
-	
-	
 		
+	
+	//get all undone tasks
+	public ArrayList<task> getUndoneTasks(){
+		ArrayList<task> allTasks = getAllTasks();
+		ArrayList<task> undoneTasks = new ArrayList<task>();
+		for(int a=0;a<allTasks.size();a++) {
+			if(allTasks.get(a).getCompleted()==0) {
+				undoneTasks.add(allTasks.get(a));
+			}
+		}
+		return undoneTasks;
+	}
+	
+	
+	public ArrayList<task> sortUndoneTasksByPriority() {
+		ArrayList<task> unsorted = getUndoneTasks();
+		ArrayList<task> sorted = new ArrayList<task>();
+		
+		for(int maxPriority=3;maxPriority>0;maxPriority--) {//this orders it with a priority range of 1-3 with 3 being the highest priority
+			for(int a=0;a<unsorted.size();a++) {
+				if(unsorted.get(a).getPriority()==maxPriority) {
+					sorted.add(unsorted.get(a));
+					unsorted.remove(a);
+				}
+			}
+		}
+		return sorted;
+		
+	}
 	
 	
 	
