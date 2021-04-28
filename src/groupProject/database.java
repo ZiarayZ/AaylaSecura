@@ -353,8 +353,10 @@ public class database {
 		return result;
 	}//end getLoggedTaskFromID()
 
-	public ResultSet getAllLoggedTasks() {
-		String getSQL = "SELECT task_id, user_id, second_user_id, date_completed FROM logged_tasks";
+	//3 inner joins to get task name and 2 different users' names
+	public ResultSet getAllLoggedTasks(String condition) {
+		//double check the sql statement is correct later
+		String getSQL = "SELECT tasks.name, users1.user_name, users2.user_name, logged_tasks.date_completed FROM logged_tasks INNER JOIN tasks ON logged_tasks.task_id=tasks.task_id INNER JOIN users AS users1 ON logged_tasks.user_id=users.user_id INNER JOIN users AS users2 ON logged_tasks.second_user_id=users.user_id"+condition;
 		ResultSet result = myDB.RunSQLQuery(getSQL);
 		return result;
 	}
