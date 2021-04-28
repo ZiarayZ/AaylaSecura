@@ -11,7 +11,7 @@ public class AaylaSecuraMain {
 
 	public static void  main(String[] args) {
 		try {
-			database.addNewJob("test job");
+			System.out.println(database.addNewJob(""));
 			ResultSet jobs = db.getAllJobs();
 			while(jobs.next()) {
 				System.out.println(jobs.getInt(1)+"|"+jobs.getString(2));

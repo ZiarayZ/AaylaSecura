@@ -86,6 +86,7 @@ public class database {
 	
 	public boolean assignCaretaker(int task_id, int user_id) {
 		String updateCaretaker = "UPDATE tasks SET assigned_caretaker = '"+user_id+"' where task_id = '"+task_id+"'";
+		//include check that user_id exists
 		boolean result = myDB.RunSQL(updateCaretaker);
 		return result;
 	}//end assignCaretaker
@@ -148,6 +149,7 @@ public class database {
 		if(result.equals("")) {
 			String addJobSQL= new String("INSERT INTO job (job_id, job_desc) VALUES ('"+nextID+"','"+name+"')");
 			boolean addResult = myDB.RunSQL(addJobSQL);
+			if(!addResult) {result+="SQL Failed";}
 		}
 		
 		
