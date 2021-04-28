@@ -63,7 +63,17 @@ public class taskAssign {
 			}
 		}
 		return sorted;
+	}
+	
+	public ArrayList<task> sortUndoneTasksByDate(){
+		ArrayList<task> unsorted = getUndoneTasks();
+		ArrayList<task> sorted = new ArrayList<task>();
 		
+		
+		
+		
+		
+		return sorted;
 	}
 	
 	
