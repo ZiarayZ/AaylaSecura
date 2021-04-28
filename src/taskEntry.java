@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class taskEntry {
 	
-	static database db;
+	private database db;
 	
-	public taskEntry() {
-		db=new database();
+	public taskEntry(database db) {
+		this.db = db;
 		//create UI?
 	}
 	

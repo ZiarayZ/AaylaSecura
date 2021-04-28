@@ -10,8 +10,9 @@ public class task {
 	private String date_created;
 	private int completed;
 	private int extra_sign_off;
+	private int assigned_caretaker;
 	
-	public task(int id, String name, int type, int duration, int priority,	int frequency, int need_logging, String date_created, int completed, int extra_sign_off) {
+	public task(int id, String name, int type, int duration, int priority,	int frequency, int need_logging, String date_created, int completed, int extra_sign_off) { //create a task without a caretaker
 		this.id = id;
 		this.name = name;
 		this.type = duration;
@@ -23,6 +24,18 @@ public class task {
 		this.extra_sign_off = extra_sign_off;
 	}
 	
+	public task(int id, String name, int type, int duration, int priority,	int frequency, int need_logging, String date_created, int completed, int extra_sign_off, int assigned_caretaker) { //crete a task with a caretaker
+		this.id = id;
+		this.name = name;
+		this.type = duration;
+		this.priority = priority;
+		this.frequency = frequency;
+		this.need_logging = need_logging;
+		this.date_created = date_created;
+		this.completed = completed;
+		this.extra_sign_off = extra_sign_off;
+		this.assigned_caretaker = assigned_caretaker;
+	}
 	public int getID() {
 		return id;
 	}
@@ -52,5 +65,9 @@ public class task {
 	}
 	public int getExtraSignOff() {
 		return extra_sign_off;
+	}
+	
+	public int getAssignedCaretaker() {
+		return assigned_caretaker;
 	}
 }
