@@ -13,7 +13,11 @@ public class taskEntry {
 	
 	//add task
 	public String addTask(String name, int type, int duration, int priority, int frequency, int need_logging, String date_created, int completed, int extra_sign_off) throws SQLException {
-		String result = db.addNewTask(name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off);
+		String result;
+		boolean boolResult = checkExistingTask(name, date_created);
+		if(boolResult) {
+			result = db.addNewTask(name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off);
+		}else {result="Task Already Exists";}
 		return result;
 	}
 	//edit task
@@ -70,6 +74,35 @@ public class taskEntry {
 	}
 	
 	
-	//check if task already exists~~~~~~~~~~~~~~~~~~~~~
+	private boolean checkDateTimeSameDay(String dateTime1, String dateTime2) {
+		String day1 = dateTime1.substring(0,10);
+		String day2 = dateTime2.substring(0,10);
+		if(day1.equals(day2)) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	
+	//check if task already exists
+	private boolean checkExistingTask(String name, String date_created) { //checks if a task made the same day with the same name exists
+		ArrayList<task> undoneTasks = getUndoneTasks();
+		
+		for(int a=0;a<undoneTasks.size();a++) {
+			task tempTask = undoneTasks.get(a);
+			if(name.equals(tempTask.getName())) {
+				if(checkDateTimeSameDay(date_created,tempTask.getDateCreated())) {
+					return true;
+				}
+			}
+		}
+				
+		return false;
+	}
+	
+	
+	
 	
 }
