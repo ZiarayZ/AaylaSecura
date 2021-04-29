@@ -33,6 +33,7 @@ public class UserManagement {
     }
 
     //grab access level | 0=no access, 1=caretaker, 2=manager, 3=admin etc (plan to add these values into jobs table later)
+    //may update to RBAC if i have the time and knowledge
     public int accessLevel() {
         return perms;
     }
@@ -96,11 +97,33 @@ public class UserManagement {
     }
 
     //add user to database if manager/admin+
-    public boolean addUser() {
-        if (perms>=2) {
-            return true;
+    public boolean addUser(String new_name, String new_username, int new_job, String password, String new_notes, String new_gender) throws SQLException {
+        if (perms > 2) {
+            String newPass = "";
+            try {
+                newPass = genPassHash(password);
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println(e);//replace with error prompt in UI
+                return false;
+            } catch (InvalidKeySpecException e) {
+                System.out.println(e);//replace with error prompt in UI
+                return false;
+            }
+            if (!newPass.equals("")) {
+                String problem = userDB.addNewUser(new_name, new_username, new_job, newPass, new_notes, new_gender);
+                if (problem.equals("")) {
+                    return true;
+                } else {
+                    System.out.println(problem);
+                    return false;
+                }
+            } else {
+                //just incase somehow
+                return false;
+            }
+        } else {
+            return false;
         }
-        return false;
     }
     //edit user in database if manager/admin+
     public boolean editUser() {
