@@ -9,7 +9,7 @@ public class AaylaSecuraMain {
 	private UserManagement user = new UserManagement(db);
 	private LogTasks logged_tasks = new LogTasks(db);
 
-	public static void  main(String[] args) {
+	public static void main(String[] args) {
 		try {
 			System.out.println(database.addNewJob("test job"));
 			ResultSet jobs = db.getAllJobs();

@@ -79,6 +79,9 @@ public class database {
 		if(result.equals("")){ //if no problems then run SQL
 			String addTaskSQL = "INSERT INTO tasks (task_id, task_name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off) VALUES ('"+nextID+"','"+name+"','"+type+"','"+duration+"','"+priority+"','"+frequency+"','"+need_logging+"','"+date_created+"','"+completed+"','"+extra_sign_off+"')";
 			boolean addResult = myDB.RunSQL(addTaskSQL);
+			if (!addResult) {
+				result = "Insert failed.";
+			}
 		}
 		
 		return result;
@@ -130,6 +133,9 @@ public class database {
 			if(result.equals("")){
 				String updateTaskSQL = "UPDATE tasks SET task_name='"+name+"',type='"+type+"',duration='"+duration+"',priority='"+priority+"',frequency='"+frequency+"',need_logging='"+need_logging+"',date_created'"+date_created+"',completed='"+completed+"', extra_sign_off='"+extra_sign_off+"' WHERE task_ID='"+task_ID+"'";
 				boolean updateResult = myDB.RunSQL(updateTaskSQL);
+				if (!updateResult) {
+					result = "Update failed.";
+				}
 			}
 		} else {result+="Invalid ID";}
 				
@@ -190,6 +196,9 @@ public class database {
 			if(result.equals("")) {
 				String updateJobSQL="UPDATE job SET job_desc='"+name+"' WHERE job_id="+job_id;
 				boolean addResult = myDB.RunSQL(updateJobSQL);
+				if (!addResult) {
+					result = "Insert failed.";
+				}
 			}
 		} else {result+="Invalid ID";}
 		
@@ -253,6 +262,9 @@ public class database {
 			if (result.equals("") && !(newPass.equals(""))) { //if no problems then run SQL
 				String addUserSQL = "INSERT INTO users (user_id, user_name, username, job_id, hash_password, notes, M_F) VALUES ('"+nextID+"','"+name+"','"+username+"','"+job+"','"+newPass+"','"+notes+"','"+mf+"')";
 				boolean addResult = myDB.RunSQL(addUserSQL);
+				if (!addResult) {
+					result = "Insert failed.";
+				}
 			}
 			
 			return result;
@@ -298,6 +310,9 @@ public class database {
 				if (result.equals("")){
 					String updateUserSQL = "UPDATE users SET user_name='"+name+"',job_id='"+job+"',notes='"+notes+"',M_F='"+mf+"' WHERE user_id='"+user_ID+"'";
 					boolean updateResult = myDB.RunSQL(updateUserSQL);
+					if (!updateResult) {
+						result = "Update failed.";
+					}
 				}
 			} else {
 				result += "Invalid ID";
@@ -369,6 +384,9 @@ public class database {
 			if (result.equals("")) { //if no problems then run SQL
 				String addLoggedTaskSQL = "INSERT INTO logged_tasks (logged_id, task_id, user_id, second_user_id, date_completed) VALUES ('"+nextID+"','"+task+"','"+user+"','"+user2+"','"+dateCompleted+"')";
 				boolean addResult = myDB.RunSQL(addLoggedTaskSQL);
+				if (!addResult) {
+					result = "Insert failed.";
+				}
 			}
 			
 			return result;
@@ -407,6 +425,9 @@ public class database {
 				if (result.equals("")){
 					String updateLoggedTaskSQL = "UPDATE logged_tasks SET task_id='"+task+"',user_id='"+user+"',second_user_id='"+user2+"',date_completed='"+dateCompleted+"' WHERE logged_ID='"+logged_ID+"'";
 					boolean updateResult = myDB.RunSQL(updateLoggedTaskSQL);
+					if (!updateResult) {
+						result = "Update failed.";
+					}
 				}
 			} else {result += "Invalid ID";}
 					
