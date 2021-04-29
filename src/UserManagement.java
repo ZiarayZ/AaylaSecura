@@ -1,5 +1,6 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -23,11 +24,14 @@ public class UserManagement {
         userDB = DB;
     }
 
+    public static String testPassStrength(String password) {
+        return password + " " + passwordStrength(password);
+    }
+
     //grab access level | 0=no access, 1=caretaker, 2=manager, 3=admin etc (plan to add these values into jobs table later)
     public int accessLevel() {
         return perms;
     }
-
     //getters
     public String getUsername() {
         return username;
@@ -216,55 +220,58 @@ public class UserManagement {
             return false;
         }
         //doesn't contain a single symbol
-        if (!password.matches("(?=.*[~!@#$%^&*()_-]).*")) {
+        if (!password.matches("(?=.*\\W).*")) {
             return false;
         }
         //make sure password is of valid strength
-        if (passwordStrength(password)<5) {
+        if (passwordStrength(password)<60) {
             return false;
         }
         return true;
     }
-    private static int passwordStrength(String password) {
-        //i may completely change this strength system later
-        //strength of password on a scale of 0-10
-        int score = 0;
+    private static float passwordStrength(String password) {
+        float score = 0;
 
-        //total length 8-10 or 11+
-        if (password.length()>10) {
-            score += 2;
-        } else if (password.length()>=8) {
-            score += 1;
+        //if no password return 0
+        if (password.equals("") || password.equals(null)) {
+            return score;
         }
 
-        //contains 1 or 2 lower chars
-        if (password.matches("(?=.*[a-z].*[a-z]).*")) {
-            score += 2;
-        } else if (password.matches("(?=.*[a-z]).*")) {
-            score += 1;
+        //record every character in password, repetitions diminish value from 5
+        HashMap<Character,Integer> letters = new HashMap<Character,Integer>();
+        char chr;
+        for (int i=0; i<password.length(); i++) {
+            chr = password.charAt(i);
+            if (letters.containsKey(chr)) {
+                letters.put(chr, letters.get(chr)+1);
+            } else {
+                letters.put(chr, 1);
+            }
+            if (letters.get(chr) - password.length()*30/100 > 1) {
+                score += 5.0 / letters.get(chr) - password.length()*30/100;
+            } else {
+                score += 5.0;
+            }
         }
 
-        //contains 1 or 2 upper chars
-        if (password.matches("(?=.*[A-Z].*[A-Z]).*")) {
-            score += 2;
-        } else if (password.matches("(?=.*[A-Z]).*")) {
-            score += 1;
+        //bonus for mixing things
+        int varCount = 0;
+        if (password.matches("(?=.*[a-z]).*")) {
+            varCount += 1;
         }
-
-        //contains 1 or 2 digit chars
-        if (password.matches("(?=.*[0-9].*[0-9]).*")) {
-            score += 2;
-        } else if (password.matches("(?=.*[0-9]).*")) {
-            score += 1;
+        if (password.matches("(?=.*[A-Z]).*")) {
+            varCount += 1;
         }
-
-        //contains 1 or 2 special chars ~!@#$%^&*()_-
-        if (password.matches("(?=.*[~!@#$%^&*()_-].*[~!@#$%^&*()_-]).*")) {
-            score += 2;
-        } else if (password.matches("(?=.*[~!@#$%^&*()_-]).*")) {
-            score += 1;
+        if (password.matches("(?=.*[0-9]).*")) {
+            varCount += 1;
         }
+        if (password.matches("(?=.*\\W).*")) {
+            varCount += 1;
+        }
+        score += (varCount - 1) * 10;
 
+        //adding length into it
+        score -= 16 - password.length();
         return score;
     }
 }

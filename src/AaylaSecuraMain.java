@@ -22,6 +22,10 @@ public class AaylaSecuraMain {
 		} catch (NullPointerException e) {
 			System.out.println(e);
 		}
+
+		System.out.println(UserManagement.testPassStrength("password"));
+		System.out.println(UserManagement.testPassStrength("SqU1bb7E@-"));
+		System.out.println(UserManagement.testPassStrength("such a long gigantic password i've put in here"));
 	}
 	
 	
