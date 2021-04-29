@@ -20,10 +20,6 @@ public class database {
 		myDB.Connect("src\\groupDatabase.db");
 	}
 	
-	public static void  main(String[] args) throws SQLException{
-		addNewJob("test job");
-	}
-	
 	
 	private boolean checkValidDateTime(final String dateTime) { //returns true if given date time is valid
         boolean valid = false;
@@ -42,6 +38,23 @@ public class database {
 		if(input<0||input>1) {valid=false;}
 		else {valid=true;}
 		return valid;
+	}
+	
+	public boolean clearAllDatabase() {
+		
+		String deleteTaskSQL = "DELETE FROM tasks";
+		String deleteJobSQL = "DELETE FROM job";
+		String deleteUserSQL = "DELETE FROM users";
+		String deleteloggedSQL = "DELETE FROM logged_tasks";
+		
+		boolean result1=myDB.RunSQL(deleteloggedSQL);
+		boolean result2=myDB.RunSQL(deleteTaskSQL);
+		boolean result3=myDB.RunSQL(deleteUserSQL);
+		boolean result4=myDB.RunSQL(deleteJobSQL);
+		
+		
+		if(result1&&result2&&result3&&result4) {return true;}
+		else {return false;}
 	}
 	
 	//~~~~~~~~~~~~~[tasks]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
