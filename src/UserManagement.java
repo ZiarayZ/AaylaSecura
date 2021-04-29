@@ -167,7 +167,7 @@ public class UserManagement {
     }
 
     //password hashing
-	private static String genPassHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public static String genPassHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         //use 1000 iterations
 		int iter = 1000;
 		char[] chars = password.toCharArray();

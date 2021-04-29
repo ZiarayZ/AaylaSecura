@@ -1,4 +1,5 @@
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -236,10 +237,21 @@ public class database {
 			}
 			//------------------------------------------------
 
+			//validate then convert password into a hashed one
 			result = userValidate(name, username, job, password, notes, mf);
+			String newPass = "";
+			try {
+				newPass = UserManagement.genPassHash(password);
+			} catch (NoSuchAlgorithmException e) {
+				System.out.println(e);
+				result += "NoSuchAlgorithmException.";
+			} catch (InvalidKeySpecException e) {
+				System.out.println(e);
+				result += "InvalidKeySpecException.";
+			}
 			
-			if (result.equals("")) { //if no problems then run SQL
-				String addUserSQL = "INSERT INTO users (user_id, user_name, username, job_id, hash_password, notes, M_F) VALUES ('"+nextID+"','"+name+"','"+username+"','"+job+"','"+password+"','"+notes+"','"+mf+"')";
+			if (result.equals("") && !(newPass.equals(""))) { //if no problems then run SQL
+				String addUserSQL = "INSERT INTO users (user_id, user_name, username, job_id, hash_password, notes, M_F) VALUES ('"+nextID+"','"+name+"','"+username+"','"+job+"','"+newPass+"','"+notes+"','"+mf+"')";
 				boolean addResult = myDB.RunSQL(addUserSQL);
 			}
 			
