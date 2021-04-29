@@ -24,12 +24,7 @@ public class UserManagement {
         userDB = DB;
     }
     public void listAll() {
-        System.out.println(user_id);
-        System.out.println(username);
-        System.out.println(name);
-        System.out.println(perms);
-        System.out.println(job);
-        System.out.println(gender);
+        System.out.println(user_id + "| " + username + " " + name + " " + perms + " " + job + " " + gender + " | is logged in? " + logged_in);
     }
 
     //grab access level | 0=no access, 1=caretaker, 2=manager, 3=admin etc (plan to add these values into jobs table later)
