@@ -8,10 +8,10 @@ public class AaylaSecuraMain {
 	static database db = new database();
 	private static UserManagement user = new UserManagement(db);
 	private LogTasks logged_tasks = new LogTasks(db);
-	private static databaseReset dbReset = new databaseReset();
+	private static databaseReset dbReset = new databaseReset(db);
 
 	public static void main(String[] args) {
-		dbReset.reset(db);
+		dbReset.reset();
 		try {
 			ResultSet jobs = db.getAllJobs();
 			ResultSet users = db.getAllUsers();
