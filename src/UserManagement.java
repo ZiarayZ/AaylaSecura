@@ -23,9 +23,13 @@ public class UserManagement {
     public UserManagement(database DB) {
         userDB = DB;
     }
-
-    public static String testPassStrength(String password) {
-        return password + " " + passwordStrength(password);
+    public void listAll() {
+        System.out.println(user_id);
+        System.out.println(username);
+        System.out.println(name);
+        System.out.println(perms);
+        System.out.println(job);
+        System.out.println(gender);
     }
 
     //grab access level | 0=no access, 1=caretaker, 2=manager, 3=admin etc (plan to add these values into jobs table later)
@@ -114,13 +118,21 @@ public class UserManagement {
     }
 
     //log in method
-    public boolean login(String user_name, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, SQLException {
+    public boolean login(String user_name, String password) throws SQLException {
         //grab hashed password
         ResultSet query = userDB.getPassFromUsername(user_name);
         if (query.next()) {
             //check password with hashed password
-            if (validatePassword(password, query.getString("password"))) {
-                logged_in = true;
+            try {
+                if (validatePassword(password, query.getString("hash_password"))) {
+                    logged_in = true;
+                }
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println(e);
+                return false;
+            } catch (InvalidKeySpecException e) {
+                System.out.println(e);
+                return false;
             }
         }
         //set up user attributes if successful

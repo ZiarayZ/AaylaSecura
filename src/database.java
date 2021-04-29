@@ -216,7 +216,7 @@ public class database {
 			String result = "";
 			
 			if (name.replaceAll("\\s+", "").equals("")) {result += "Name is empty\n";}//Check name isn't empty even once whitespace is removed
-			if (notes.replaceAll("\\s+", "").equals("")) {result += "Notes is empty\n";}
+			//if (notes.replaceAll("\\s+", "").equals("")) {result += "Notes is empty\n";}//notes can be empty
 			if (mf.replaceAll("\\s+", "").equals("")) {result += "M/F is empty\n";}
 			//no point checking if it's valid type if empty
 			else if (!(mf.equals("M")||mf.equals("F"))) {result += "M/F is invalid\n";}
@@ -271,7 +271,7 @@ public class database {
 		}//end addNewUser()
 
 		public ResultSet getUserFromUsername(String username) {
-			String sqlString = "Select user_id, user_name, job_desc, notes, M_F FROM users INNER JOIN job ON users.job_id=jobs.job_id WHERE username='"+username+"'";
+			String sqlString = "Select user_id, user_name, job_desc, notes, M_F FROM users INNER JOIN job ON users.job_id=job.job_id WHERE username='"+username+"'";
 			ResultSet result = myDB.RunSQLQuery(sqlString);
 			return result;
 		}//end getUserFromID()
@@ -283,8 +283,8 @@ public class database {
 			return result;
 		}//end getPassFromUsername()
 
-		public ResultSet getAllUsers() {
-			String getSQL = "SELECT user_name, username, job_id, notes, M_F FROM users";
+		public ResultSet getAllUsers() {//hash_password added in temporarily for debugging/testing, may change
+			String getSQL = "SELECT user_id, user_name, username, job.job_desc, hash_password, notes, M_F FROM users INNER JOIN job ON users.job_id=job.job_id";
 			ResultSet result = myDB.RunSQLQuery(getSQL);
 			return result;
 		}

@@ -6,26 +6,28 @@ import java.sql.SQLException;
 public class AaylaSecuraMain {
 	
 	static database db = new database();
-	private UserManagement user = new UserManagement(db);
+	private static UserManagement user = new UserManagement(db);
 	private LogTasks logged_tasks = new LogTasks(db);
 
 	public static void main(String[] args) {
 		try {
-			System.out.println(database.addNewJob("test job"));
 			ResultSet jobs = db.getAllJobs();
+			ResultSet users = db.getAllUsers();
 			while(jobs.next()) {
 				System.out.println(jobs.getInt(1)+"|"+jobs.getString(2));
 			}
+			while(users.next()) {
+				System.out.println(users.getInt(1)+"|"+users.getString(2)+" "+users.getString(3)+" "+users.getString(4)+" "+users.getString(5)+" "+users.getString(6)+" "+users.getString(7));
+			}
+			//testing login functions correctly
+			System.out.println(user.login("Strong123", "temp123"));
+			user.listAll();
 		//catching exceptions to test other stuff
 		} catch (SQLException e) {
 			System.out.println(e);
 		} catch (NullPointerException e) {
 			System.out.println(e);
 		}
-
-		System.out.println(UserManagement.testPassStrength("password"));
-		System.out.println(UserManagement.testPassStrength("SqU1bb7E@-"));
-		System.out.println(UserManagement.testPassStrength("such a long gigantic password i've put in here"));
 	}
 	
 	
