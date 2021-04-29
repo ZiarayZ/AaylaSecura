@@ -259,21 +259,11 @@ public class database {
 			}
 			//------------------------------------------------
 
-			//validate then convert password into a hashed one
+			//validate then insert record
 			result = userValidate(name, username, job, password, notes, mf);
-			String newPass = "";
-			try {
-				newPass = UserManagement.genPassHash(password);
-			} catch (NoSuchAlgorithmException e) {
-				System.out.println(e);
-				result += "NoSuchAlgorithmException.";
-			} catch (InvalidKeySpecException e) {
-				System.out.println(e);
-				result += "InvalidKeySpecException.";
-			}
 			
-			if (result.equals("") && !(newPass.equals(""))) { //if no problems then run SQL
-				String addUserSQL = "INSERT INTO users (user_id, user_name, username, job_id, hash_password, notes, M_F) VALUES ('"+nextID+"','"+name+"','"+username+"','"+job+"','"+newPass+"','"+notes+"','"+mf+"')";
+			if (result.equals("")) { //if no problems then run SQL
+				String addUserSQL = "INSERT INTO users (user_id, user_name, username, job_id, hash_password, notes, M_F) VALUES ('"+nextID+"','"+name+"','"+username+"','"+job+"','"+password+"','"+notes+"','"+mf+"')";
 				boolean addResult = myDB.RunSQL(addUserSQL);
 				if (!addResult) {
 					result = "Insert failed.";
