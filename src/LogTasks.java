@@ -10,7 +10,7 @@ public class LogTasks {
     public LogTasks(database DB) {
         taskLogDB = DB;
         try {
-            reloadLoggedTasks(taskLogDB.getAllLoggedTasks(""));
+            reloadLoggedTasks(taskLogDB.getAllLoggedTasks(" ORDER BY logged_tasks.logged_id DESC"));
         } catch (SQLException e) {
             System.out.println(e);//change to give error code window
         }
