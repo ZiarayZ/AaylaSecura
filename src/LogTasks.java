@@ -6,9 +6,11 @@ public class LogTasks {
     private static database taskLogDB;
     private ArrayList<LoggedTask> logged_tasks;
     private LoggedTask current;
-
+    //link to UI
+    private TaskLogUI theTaskLogWindow;
     public LogTasks(database DB) {
         taskLogDB = DB;
+        theTaskLogWindow = new TaskLogUI(this);
         try {
             reloadLoggedTasks(taskLogDB.getAllLoggedTasks(" ORDER BY logged_tasks.logged_id DESC"));
         } catch (SQLException e) {
