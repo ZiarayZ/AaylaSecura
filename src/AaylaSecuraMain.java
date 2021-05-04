@@ -23,10 +23,6 @@ public class AaylaSecuraMain {
 			while(users.next()) {
 				System.out.println(users.getInt(1)+"| "+users.getString(2)+" "+users.getString(3)+" "+users.getString(4)+" "+users.getString(5)+" "+users.getString(6)+" "+users.getString(7));
 			}
-			//testing login functions correctly
-			user.listAll();
-			System.out.println("Login: " + user.login("Strong123", "temp123"));
-			user.listAll();
 		//catching exceptions to test other stuff
 		} catch (SQLException e) {
 			System.out.println(e);
