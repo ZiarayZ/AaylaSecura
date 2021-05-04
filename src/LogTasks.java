@@ -15,6 +15,8 @@ public class LogTasks {
             reloadLoggedTasks(taskLogDB.getAllLoggedTasks(" ORDER BY logged_tasks.logged_id DESC"));
         } catch (SQLException e) {
             System.out.println(e);//change to give error code window
+        } catch (NullPointerException e) {
+            System.out.println(e);
         }
     }
 
@@ -41,6 +43,7 @@ public class LogTasks {
         reloadLoggedTasks(taskLogDB.getAllLoggedTasks(" ORDER BY logged_tasks.date_completed "+desc));
     }
     private void reloadLoggedTasks(ResultSet taskLogQuery) throws SQLException {
+        logged_tasks = new ArrayList<LoggedTask>();
         while (taskLogQuery.next()) {
             logged_tasks.add(new LoggedTask(taskLogQuery.getInt(1),//logged_id
                                             taskLogQuery.getInt(2),//task_id
