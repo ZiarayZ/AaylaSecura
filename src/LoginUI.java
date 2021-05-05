@@ -68,7 +68,7 @@ public class LoginUI extends JFrame {
 		nameField = new JTextField();
 		nameField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//grab input username
+				//i see no reason for this
 			}
 		});
 		nameField.setBackground(new Color(119, 136, 153));
@@ -85,7 +85,7 @@ public class LoginUI extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//grab input password
+				//i see no reason for this
 			}
 		});
 		passwordField.setBackground(new Color(119, 136, 153));
@@ -102,8 +102,8 @@ public class LoginUI extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				//verify login with UserManagement
 				try {
-					//add grabbed username and password instead of ""
-					if (User.login("","")) {
+					//add grabbed username and password
+					if (User.login(nameField.getText(), passwordField.getPassword())) {
 						//handle successful login
 					} else {
 						//handle failed login
@@ -121,6 +121,11 @@ public class LoginUI extends JFrame {
 		btnUpdatePasswordButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				//verify password here
+				if (UserManagement.verifyPassword("")) {
+					//handle password change
+				} else {
+					//handle password fail
+				}
 			}
 		});
 		btnUpdatePasswordButton.setBounds(300, 236, 117, 37);

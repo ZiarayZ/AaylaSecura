@@ -142,7 +142,7 @@ public class UserManagement {
     }
 
     //log in method
-    public boolean login(String user_name, String password) throws SQLException {
+    public boolean login(String user_name, char[] password) throws SQLException {
         //grab hashed password
         ResultSet query = userDB.getPassFromUsername(user_name);
         if (query.next()) {
@@ -178,7 +178,7 @@ public class UserManagement {
     }
 
     //password validation
-    private static boolean validatePassword(String original, String stored) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    private static boolean validatePassword(char[] original, String stored) throws NoSuchAlgorithmException, InvalidKeySpecException {
         //split stored hash apart
         String[] parts = stored.split(":");
         int iter = Integer.parseInt(parts[0]);
@@ -186,7 +186,7 @@ public class UserManagement {
         byte[] hash = fromHex(parts[2]);
 
         //hash original using stored
-        PBEKeySpec keySpec = new PBEKeySpec(original.toCharArray(), salt, iter, hash.length*8);
+        PBEKeySpec keySpec = new PBEKeySpec(original, salt, iter, hash.length*8);
         SecretKeyFactory secKeyFact = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         byte[] testHash = secKeyFact.generateSecret(keySpec).getEncoded();
         
@@ -242,7 +242,7 @@ public class UserManagement {
 	}
 
     //password verification
-    private static boolean verifyPassword(String password) {
+    public static boolean verifyPassword(String password) {
         //doesn't contain a single upper case
         if (!password.matches("(?=.*[A-Z]).*")) {
             return false;
