@@ -23,6 +23,7 @@ public class AaylaSecuraMain {
 			while(users.next()) {
 				System.out.println(users.getInt(1)+"| "+users.getString(2)+" "+users.getString(3)+" "+users.getString(4)+" "+users.getString(5)+" "+users.getString(6)+" "+users.getString(7));
 			}
+			user.displayLogin();
 		//catching exceptions to test other stuff
 		} catch (SQLException e) {
 			System.out.println(e);

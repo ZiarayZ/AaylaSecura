@@ -20,17 +20,23 @@ public class UserManagement {
     private boolean logged_in = false;
     private static database userDB;
     //connect to login ui
-    private LoginUI theLoginWindow;
+    private LoginUI LoginWindow;
     //connect to manage users ui
-    private ManageUsersUI theManageWindow;
+    private ManageUsersUI ManageWindow;
     
     public UserManagement(database DB) {
         userDB = DB;
-        theLoginWindow = new LoginUI(this);
-        theManageWindow = new ManageUsersUI(this);
+        LoginWindow = new LoginUI(this);
+        ManageWindow = new ManageUsersUI(this);
     }
     public void listAll() {
         System.out.println(user_id + "| " + username + " " + name + " " + perms + " " + job + " " + gender + " | is logged in? " + logged_in);
+    }
+    public void displayLogin() {
+        LoginWindow.setVisible(true);
+    }
+    public void displayUsers() {
+        ManageWindow.setVisible(true);
     }
 
     //grab access level | 0=no access, 1=caretaker, 2=manager, 3=admin etc (plan to add these values into jobs table later)

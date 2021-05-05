@@ -105,12 +105,19 @@ public class LoginUI extends JFrame {
 					//add grabbed username and password
 					if (User.login(nameField.getText(), passwordField.getPassword())) {
 						//handle successful login
+						System.out.println("Login success.");
 					} else {
 						//handle failed login
+						System.out.println("Login fail: Invalid Username or Password.");
 					}
 				} catch (SQLException e) {
 					//handle sql exception
 					//handle failed login
+					System.out.println("Login fail: SQLException.");
+				} catch (NullPointerException e) {
+					//handle null result from sql error
+					//handle failed login
+					System.out.println("Login fail: NullPointerException.");
 				}
 			}
 		});
