@@ -68,7 +68,7 @@ public class LoginUI extends JFrame {
 		nameField = new JTextField();
 		nameField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//grab input username and check if valid
+				//grab input username
 			}
 		});
 		nameField.setBackground(new Color(119, 136, 153));
