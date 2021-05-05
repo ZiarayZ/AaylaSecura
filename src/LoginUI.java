@@ -16,6 +16,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class LoginUI extends JFrame {
@@ -24,7 +25,7 @@ public class LoginUI extends JFrame {
 	private JLabel lblHeadingLabel;
 	private JTextField nameField;
 	private JPasswordField passwordField;
-	private UserManagement verifyTheUser;
+	private UserManagement User;
 	/**
 	 * Launch the application.
 	 */
@@ -45,7 +46,7 @@ public class LoginUI extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginUI(UserManagement verifyUser) {
-		verifyTheUser = verifyUser;
+		User = verifyUser;
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 534, 363);
@@ -66,8 +67,8 @@ public class LoginUI extends JFrame {
 		
 		nameField = new JTextField();
 		nameField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//check username here
+			public void actionPerformed(ActionEvent event) {
+				//grab input username and check if valid
 			}
 		});
 		nameField.setBackground(new Color(119, 136, 153));
@@ -83,8 +84,8 @@ public class LoginUI extends JFrame {
 		
 		passwordField = new JPasswordField();
 		passwordField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//check for correct password here
+			public void actionPerformed(ActionEvent event) {
+				//grab input password
 			}
 		});
 		passwordField.setBackground(new Color(119, 136, 153));
@@ -98,8 +99,19 @@ public class LoginUI extends JFrame {
 		
 		JButton btnLoginButton = new JButton("Login");
 		btnLoginButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//verify login with UserManagement here
+			public void actionPerformed(ActionEvent event) {
+				//verify login with UserManagement
+				try {
+					//add grabbed username and password instead of ""
+					if (User.login("","")) {
+						//handle successful login
+					} else {
+						//handle failed login
+					}
+				} catch (SQLException e) {
+					//handle sql exception
+					//handle failed login
+				}
 			}
 		});
 		btnLoginButton.setBounds(98, 236, 117, 37);
@@ -107,7 +119,7 @@ public class LoginUI extends JFrame {
 		
 		JButton btnUpdatePasswordButton = new JButton("Update Password");
 		btnUpdatePasswordButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent event) {
 				//verify password here
 			}
 		});
