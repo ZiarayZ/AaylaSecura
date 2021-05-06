@@ -1,12 +1,15 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.regex.Pattern;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.SecureRandom;
 import java.math.BigInteger;
+import java.nio.CharBuffer;
 
 public class UserManagement {
     private int user_id;
@@ -54,6 +57,9 @@ public class UserManagement {
     public String getJob() {
         return job;
     }
+    public boolean getLogin() {
+        return logged_in;
+    }
     public String getGender() {
         if (gender.toUpperCase().equals("M")) {
             return "Male";
@@ -74,10 +80,10 @@ public class UserManagement {
         }
     }
     //edit password
-    public String editPassword(String password) throws SQLException {
-        if (password.equals(null) || password.equals("")) {
+    public String editPassword(char[] password) throws SQLException {
+        if (password.equals(null) || password.length == 0) {
             return "empty/null";
-        } else if (verifyPassword(password)) {
+        } else {
             try {
                 String result = genPassHash(password);
                 return userDB.editUser(user_id, "hash_password", result);
@@ -88,8 +94,6 @@ public class UserManagement {
                 System.out.println(e);
                 return "InvalidKeySpecException";
             }
-        } else {
-            return "failed verification";
         }
     }
     //edit gender
@@ -104,7 +108,7 @@ public class UserManagement {
     }
 
     //add user to database if manager/admin+
-    public boolean addUser(String new_name, String new_username, int new_job, String password, String new_notes, String new_gender) throws SQLException {
+    public boolean addUser(String new_name, String new_username, int new_job, char[] password, String new_notes, String new_gender) throws SQLException {
         if (perms > 2) {
             String newPass = "";
             try {
@@ -213,10 +217,10 @@ public class UserManagement {
     }
 
     //password hashing
-	public static String genPassHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public static String genPassHash(char[] password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         //use 1000 iterations
 		int iter = 1000;
-		char[] chars = password.toCharArray();
+		char[] chars = password;
 		byte[] salt = genSalt();
         
         //create hashed password
@@ -248,21 +252,21 @@ public class UserManagement {
 	}
 
     //password verification
-    public static boolean verifyPassword(String password) {
-        //doesn't contain a single upper case
-        if (!password.matches("(?=.*[A-Z]).*")) {
+    public static boolean verifyPassword(char[] password) {
+        //doesn't contain a single upper case: "(?=.*[A-Z]).*"
+        if (!Pattern.matches("(?=.*[A-Z]).*", CharBuffer.wrap(password))) {
             return false;
         }
-        //doesn't contain a single lower case
-        if (!password.matches("(?=.*[a-z]).*")) {
+        //doesn't contain a single lower case: "(?=.*[a-z]).*"
+        if (!Pattern.matches("(?=.*[a-z]).*", CharBuffer.wrap(password))) {
             return false;
         }
-        //doesn't contain a single number
-        if (!password.matches("(?=.*[0-9]).*")) {
+        //doesn't contain a single number: "(?=.*[0-9]).*"
+        if (!Pattern.matches("(?=.*[0-9]).*", CharBuffer.wrap(password))) {
             return false;
         }
-        //doesn't contain a single symbol
-        if (!password.matches("(?=.*\\W).*")) {
+        //doesn't contain a single symbol: "(?=.*\\W).*"
+        if (!Pattern.matches("(?=.*\\W).*", CharBuffer.wrap(password))) {
             return false;
         }
         //make sure password is of valid strength
@@ -271,26 +275,26 @@ public class UserManagement {
         }
         return true;
     }
-    private static float passwordStrength(String password) {
+    private static float passwordStrength(char[] password) {
         float score = 0;
 
         //if no password return 0
-        if (password.equals("") || password.equals(null)) {
+        if (password.equals(null) || password.length == 0) {
             return score;
         }
 
         //record every character in password, repetitions diminish value from 5
         HashMap<Character,Integer> letters = new HashMap<Character,Integer>();
         char chr;
-        for (int i=0; i<password.length(); i++) {
-            chr = password.charAt(i);
+        for (int i=0; i<password.length; i++) {
+            chr = password[i];
             if (letters.containsKey(chr)) {
                 letters.put(chr, letters.get(chr)+1);
             } else {
                 letters.put(chr, 1);
             }
-            if (letters.get(chr) - password.length()*30/100 > 1) {
-                score += 5.0 / letters.get(chr) - password.length()*30/100;
+            if (letters.get(chr) - password.length*30/100 > 1) {
+                score += 5.0 / letters.get(chr) - password.length*30/100;
             } else {
                 score += 5.0;
             }
@@ -298,22 +302,22 @@ public class UserManagement {
 
         //bonus for mixing things
         int varCount = 0;
-        if (password.matches("(?=.*[a-z]).*")) {
+        if (Pattern.matches("(?=.*[a-z]).*", CharBuffer.wrap(password))) {
             varCount += 1;
         }
-        if (password.matches("(?=.*[A-Z]).*")) {
+        if (Pattern.matches("(?=.*[A-Z]).*", CharBuffer.wrap(password))) {
             varCount += 1;
         }
-        if (password.matches("(?=.*[0-9]).*")) {
+        if (Pattern.matches("(?=.*[0-9]).*", CharBuffer.wrap(password))) {
             varCount += 1;
         }
-        if (password.matches("(?=.*\\W).*")) {
+        if (Pattern.matches("(?=.*\\W).*", CharBuffer.wrap(password))) {
             varCount += 1;
         }
         score += (varCount - 1) * 10;
 
         //adding length into it
-        score -= 16 - password.length();
+        score -= 16 - password.length;
         return score;
     }
 }

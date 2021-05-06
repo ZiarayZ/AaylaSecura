@@ -128,10 +128,24 @@ public class LoginUI extends JFrame {
 		btnUpdatePasswordButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				//verify password here
-				if (UserManagement.verifyPassword("")) {
-					//handle password change
+				if (User.getLogin()) {
+					if (UserManagement.verifyPassword(passwordField.getPassword())) {
+						//handle password change
+						try {
+							System.out.println(User.editPassword(passwordField.getPassword()));
+							System.out.println("Password Update success.");
+						} catch (SQLException e) {
+							System.out.println("Password Update fail: SQLException.");
+						} catch (NullPointerException e) {
+							System.out.println("Password Update fail: NullPointerException.");
+						}
+					} else {
+						//handle password fail
+						System.out.println("Password Update fail: Password too weak.");
+					}
 				} else {
-					//handle password fail
+						//handle password fail
+						System.out.println("Password Update fail: Not Logged in.");
 				}
 			}
 		});

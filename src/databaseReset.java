@@ -20,8 +20,8 @@ public class databaseReset {
 			//user
 			//name, username, job_id, hashed_password, notes, M_F(gender)
 			try {
-				db.addNewUser("Jeremy Strong", "Strong123", 3, UserManagement.genPassHash("temp123"), "", "M");
-				db.addNewUser("Ed" , "Ed123", 2, UserManagement.genPassHash("hash password"), "", "M");
+				db.addNewUser("Jeremy Strong", "Strong123", 3, UserManagement.genPassHash("temp123".toCharArray()), "", "M");
+				db.addNewUser("Ed" , "Ed123", 2, UserManagement.genPassHash("hash password".toCharArray()), "", "M");
 			} catch (NoSuchAlgorithmException e) {
 				System.out.println(e);
 			} catch (InvalidKeySpecException e) {
