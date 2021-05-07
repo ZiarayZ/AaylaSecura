@@ -107,7 +107,7 @@ public class LoginUI extends JFrame {
 		changePasswordField.setBounds(191, 198, 202, 20);
 		contentPane.add(changePasswordField);
 		
-		JLabel lblChangePasswordLabel = new JLabel("Password");
+		JLabel lblChangePasswordLabel = new JLabel("New Password");
 		lblChangePasswordLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblChangePasswordLabel.setBounds(98, 201, 83, 14);
 		contentPane.add(lblChangePasswordLabel);
