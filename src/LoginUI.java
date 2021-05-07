@@ -24,6 +24,7 @@ public class LoginUI extends JFrame {
 	private JLabel lblHeadingLabel;
 	private JTextField nameField;
 	private JPasswordField passwordField;
+	private JPasswordField changePasswordField;
 	private UserManagement User;
 	/**
 	 * Launch the application.
@@ -95,6 +96,21 @@ public class LoginUI extends JFrame {
 		lblPasswordLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPasswordLabel.setBounds(98, 151, 83, 14);
 		contentPane.add(lblPasswordLabel);
+
+		changePasswordField = new JPasswordField();
+		changePasswordField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				//i see no reason for this
+			}
+		});
+		changePasswordField.setBackground(new Color(119, 136, 153));
+		changePasswordField.setBounds(191, 198, 202, 20);
+		contentPane.add(changePasswordField);
+		
+		JLabel lblChangePasswordLabel = new JLabel("Password");
+		lblChangePasswordLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblChangePasswordLabel.setBounds(98, 201, 83, 14);
+		contentPane.add(lblChangePasswordLabel);
 		
 		JButton btnLoginButton = new JButton("Login");
 		btnLoginButton.addActionListener(new ActionListener() {
@@ -126,12 +142,13 @@ public class LoginUI extends JFrame {
 		JButton btnUpdatePasswordButton = new JButton("Update Password");
 		btnUpdatePasswordButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				String username = nameField.getText();
 				//verify password here
 				if (User.getLogin()) {
-					if (UserManagement.verifyPassword(passwordField.getPassword())) {
+					if (UserManagement.verifyPassword(changePasswordField.getPassword())) {
 						//handle password change
 						try {
-							System.out.println(User.editPassword(passwordField.getPassword()));
+							System.out.println(User.editPassword(changePasswordField.getPassword()));
 							System.out.println("Password Update success.");
 						} catch (SQLException e) {
 							System.out.println("Password Update fail: SQLException.");
@@ -142,8 +159,26 @@ public class LoginUI extends JFrame {
 						//handle password fail
 						System.out.println("Password Update fail: Password too weak.");
 					}
+				} else if (!username.equals(null) && !username.equals("")) {
+					try {
+						if (User.login(username, passwordField.getPassword())) {
+							User.editPassword(changePasswordField.getPassword());
+							System.out.println("Password Update success.");
+						} else {
+							//handle login fail
+							System.out.println("Password Update fail: Failed Login.");
+						}
+					} catch (SQLException e) {
+						//handle sql exception
+						//handle failed Password Update
+						System.out.println("Password Update fail: SQLException.");
+					} catch (NullPointerException e) {
+						//handle null result from sql error
+						//handle failed Password Update
+						System.out.println("Password Update fail: NullPointerException.");
+					}
 				} else {
-						//handle password fail
+						//handle final password update fails
 						System.out.println("Password Update fail: Not Logged in.");
 				}
 			}
