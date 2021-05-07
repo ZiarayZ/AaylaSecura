@@ -42,14 +42,15 @@ public class UserManagement {
         ManageWindow.setVisible(true);
     }
     public void listPerms() {
-
+        for (String key: perms.keySet()) {
+            System.out.println(key +"| "+ perms.get(key));
+        }
     }
 
-    //grab access level | 0=no access, 1=caretaker, 2=manager, 3=admin etc (plan to add these values into jobs table later)
-    //may update to RBAC if i have the time and knowledge
-    public int accessLevel(String item) {
-        if (perms.containsKey(item)) {
-            return perms.get(item);
+    //grab access level of a certain feature, 0 = no access, 1+ = limited access
+    public int accessLevel(String feature) {
+        if (perms.containsKey(feature)) {
+            return perms.get(feature);//can still return 0
         } else {
             return 0;
         }
@@ -184,13 +185,76 @@ public class UserManagement {
                 username = user_name;
                 name = query.getString("user_name");
                 gender = query.getString("m_f");
+                job_id = query.getInt("job_id");
                 job = query.getString("job_desc");
+                if (setPerms(query.getString("job_perms"), query.getString("user_perms"))) {
+                    //login success
+                    return true;
+                } else {
+                    //login fail
+                    return false;
+                }
+            } else {
+                //login fail
+                return false;
             }
-            //login success
-            return true;
         } else {
             //login fail
             return false;
+        }
+    }
+    private boolean setPerms(String jobPerms, String userPerms) {
+        //database stores perms as: {MU:1,MS:0} etc
+        if (jobPerms.equals("{}")) {
+            if (userPerms.equals("{}")) {
+                //no perms at ALL
+                perms.clear();
+                return true;
+            } else if (!(userPerms.charAt(0) == '{' && jobPerms.charAt(userPerms.length()-1) == '}')) {
+                //database perms is in an invalid format
+                return false;
+            } else {
+                //strip {} and split the items apart, then put into perms HashMap
+                String[] permsLevel = userPerms.replaceAll("[{}]", "").split(",");
+                String[] permLevel;
+                for (String i: permsLevel) {
+                    permLevel = i.split(":");
+                    perms.put(permLevel[0], Integer.parseInt(permLevel[1]));
+                }
+                return true;
+            }
+        } else if (!(jobPerms.charAt(0) == '{' && jobPerms.charAt(jobPerms.length()-1) == '}')) {
+            //database perms is in an invalid format
+            return false;
+        } else {
+            if (userPerms.equals("{}")) {
+                //strip {} and split the items apart, then put into perms HashMap
+                String[] permsLevel = jobPerms.replaceAll("[{}]", "").split(",");
+                String[] permLevel;
+                for (String i: permsLevel) {
+                    permLevel = i.split(":");
+                    perms.put(permLevel[0], Integer.parseInt(permLevel[1]));
+                }
+                return true;
+            } else if (!(userPerms.charAt(0) == '{' && jobPerms.charAt(userPerms.length()-1) == '}')) {
+                //database perms is in an invalid format
+                return false;
+            } else {
+                //combine with , the two database perms
+                //strip {} and split the items apart, then put into perms HashMap
+                String[] permsLevel = (userPerms.replaceAll("[{}]", "") + "," + jobPerms.replaceAll("[{}]", "")).split(",");
+                String[] permLevel;
+                int permValue;
+                for (String i: permsLevel) {
+                    permLevel = i.split(":");
+                    permValue = Integer.parseInt(permLevel[1]);
+                    //incase userPerms has higher permission levels than jobPerms we check that too
+                    if ((!perms.containsKey(permLevel[0])) || perms.get(permLevel[0]) < permValue) {
+                        perms.put(permLevel[0], permValue);
+                    }
+                }
+                return true;
+            }
         }
     }
 
