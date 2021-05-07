@@ -272,7 +272,7 @@ public class database {
 		}//end addNewUser()
 
 		public ResultSet getUserFromUsername(String username) {
-			String sqlString = "Select user_id, user_name, job_desc, notes, M_F FROM users INNER JOIN job ON users.job_id=job.job_id WHERE username='"+username+"'";
+			String sqlString = "Select user_id, user_name, job_id, job_desc, job_perms, user_perms, notes, M_F FROM users INNER JOIN job ON users.job_id=job.job_id WHERE username='"+username+"'";
 			ResultSet result = myDB.RunSQLQuery(sqlString);
 			return result;
 		}//end getUserFromID()
