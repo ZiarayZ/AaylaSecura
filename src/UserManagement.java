@@ -1,14 +1,17 @@
+//imports for sql
 import java.sql.ResultSet;
 import java.sql.SQLException;
+//import for permissions
 import java.util.HashMap;
+//imports for passwords
 import java.util.regex.Pattern;
+import java.nio.CharBuffer;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.SecureRandom;
 import java.math.BigInteger;
-import java.nio.CharBuffer;
 
 public class UserManagement {
     private int user_id;
@@ -18,7 +21,7 @@ public class UserManagement {
     private HashMap<String,Integer> perms = new HashMap<String,Integer>();
     private int job_id;
     private String job;
-    private String gender;
+    private char gender;
     //forces user to login
     private boolean logged_in = false;
     private static database userDB;
@@ -69,12 +72,12 @@ public class UserManagement {
         return logged_in;
     }
     public String getGender() {
-        if (gender.toUpperCase().equals("M")) {
+        if (gender == 'M') {
             return "Male";
-        } else if (gender.toUpperCase().equals("F")) {
+        } else if (gender == 'F') {
             return "Female";
         } else {
-            return gender;
+            return Character.toString(gender);
         }
     }
 
@@ -184,9 +187,17 @@ public class UserManagement {
                 user_id = query.getInt("user_id");
                 username = user_name;
                 name = query.getString("user_name");
-                gender = query.getString("m_f");
                 job_id = query.getInt("job_id");
                 job = query.getString("job_desc");
+                //convert gender from string to character
+                String gend = query.getString("m_f").toUpperCase();
+                //since storing one character string anyway
+                if (gend.length() == 1) {
+                    gender = gend.charAt(0);
+                } else {
+                    //login fail
+                    return false;
+                }
                 if (setPerms(query.getString("job_perms"), query.getString("user_perms"))) {
                     //login success
                     return true;
@@ -248,8 +259,8 @@ public class UserManagement {
                 for (String i: permsLevel) {
                     permLevel = i.split(":");
                     permValue = Integer.parseInt(permLevel[1]);
-                    //incase userPerms has higher permission levels than jobPerms we check that too
-                    if ((!perms.containsKey(permLevel[0])) || perms.get(permLevel[0]) < permValue) {
+                    //incase there's an increase or decrease to a user's perms that overwrites their job's perms
+                    if (!perms.containsKey(permLevel[0])) {
                         perms.put(permLevel[0], permValue);
                     }
                 }
