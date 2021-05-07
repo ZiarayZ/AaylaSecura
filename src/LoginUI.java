@@ -144,22 +144,7 @@ public class LoginUI extends JFrame {
 			public void actionPerformed(ActionEvent event) {
 				String username = nameField.getText();
 				//verify password here
-				if (User.getLogin()) {
-					if (UserManagement.verifyPassword(changePasswordField.getPassword())) {
-						//handle password change
-						try {
-							System.out.println(User.editPassword(changePasswordField.getPassword()));
-							System.out.println("Password Update success.");
-						} catch (SQLException e) {
-							System.out.println("Password Update fail: SQLException.");
-						} catch (NullPointerException e) {
-							System.out.println("Password Update fail: NullPointerException.");
-						}
-					} else {
-						//handle password fail
-						System.out.println("Password Update fail: Password too weak.");
-					}
-				} else if (!username.equals(null) && !username.equals("")) {
+				if (!username.equals(null) && !username.equals("")) {
 					try {
 						if (User.login(username, passwordField.getPassword())) {
 							User.editPassword(changePasswordField.getPassword());
