@@ -14,8 +14,9 @@ public class UserManagement {
     private int user_id;
     private String username;
     private String name;
-    //access level 0 - can only login
-    private int perms = 0;
+    //permissions listed in a hashmap
+    private HashMap<String,Integer> perms = new HashMap<String,Integer>();
+    private int job_id;
     private String job;
     private String gender;
     //forces user to login
@@ -32,7 +33,7 @@ public class UserManagement {
         ManageWindow = new ManageUsersUI(this);
     }
     public void listAll() {
-        System.out.println(user_id + "| " + username + " " + name + " " + perms + " " + job + " " + gender + " | is logged in? " + logged_in);
+        System.out.println(user_id + "| " + username + " " + name + " " + job + " " + gender + " | is logged in? " + logged_in);
     }
     public void displayLogin() {
         LoginWindow.setVisible(true);
@@ -40,11 +41,18 @@ public class UserManagement {
     public void displayUsers() {
         ManageWindow.setVisible(true);
     }
+    public void listPerms() {
+
+    }
 
     //grab access level | 0=no access, 1=caretaker, 2=manager, 3=admin etc (plan to add these values into jobs table later)
     //may update to RBAC if i have the time and knowledge
-    public int accessLevel() {
-        return perms;
+    public int accessLevel(String item) {
+        if (perms.containsKey(item)) {
+            return perms.get(item);
+        } else {
+            return 0;
+        }
     }
     //getters
     public String getUsername() {
@@ -108,7 +116,7 @@ public class UserManagement {
 
     //add user to database if manager/admin+
     public boolean addUser(String new_name, String new_username, int new_job, char[] password, String new_notes, String new_gender) throws SQLException {
-        if (perms > 2) {
+        if (perms.containsKey("MU") && perms.get("MU") >= 1) {
             String newPass = "";
             try {
                 newPass = genPassHash(password);
@@ -137,14 +145,14 @@ public class UserManagement {
     }
     //edit user in database if manager/admin+
     public boolean editUser() {
-        if (perms>=2) {
+        if (perms.containsKey("MU") && perms.get("MU") >= 1) {
             return true;
         }
         return false;
     }
     //delete user in database if manager/admin+
     public boolean deleteUser() {
-        if (perms>=2) {
+        if (perms.containsKey("MU") && perms.get("MU") >= 2) {
             return true;
         }
         return false;
