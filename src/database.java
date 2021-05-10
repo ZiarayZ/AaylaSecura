@@ -216,9 +216,10 @@ public class database {
 		return result;
 	}
 
-	public String updateJobPerms(int job_id, String perms) throws SQLException {
+	//update adds perms, edit overwrites perms
+	public String editJobPerms(int job_id, String perms) throws SQLException {
 		//check job_ID exists
-		String checkIDsql = "SELECT job_desc FROM job WHERE job_ID="+job_id;
+		String checkIDsql = "SELECT job_desc FROM job WHERE job_id="+job_id;
 		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
 		boolean validID = false;
 		if (checkIDResult.next()) {validID = true;}
@@ -228,9 +229,39 @@ public class database {
 			//check {} format
 			if (!(perms.charAt(0) == '{' && perms.charAt(perms.length()-1) == '}')) {result += "One of '{}' missing.";}
 			//check {perm_name:perm_value,perm_name:perm_value}
-			else if (!perms.matches("{(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]}")) {result += "Format: '{MU:1,A:0}' failed.";}
+			else if (!perms.matches("{(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]+}")) {result += "Format: '{MU:1,A:0}' failed.";}
 			if (result.equals("")) {
 				String updateJobSQL = "UPDATE job SET job_perms='" + perms + "' WHERE job_id=" + job_id;
+				boolean addResult = myDB.RunSQL(updateJobSQL);
+				if (!addResult) {
+					result = "Insert failed.";
+				}
+			}
+		} else {result+="Invalid ID.";}
+		
+		return result;
+	}
+	public String updateJobPerms(int job_id, String perms) throws SQLException {
+		//check job_ID exists
+		String checkIDsql = "SELECT job_perms FROM job WHERE job_id="+job_id;
+		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
+		boolean validID = false;
+		String jobPerms = "";
+		if (checkIDResult.next()) {
+			validID = true;
+			jobPerms = checkIDResult.getString(1);//get perms
+			if (!jobPerms.equals("{}")) {
+				jobPerms = jobPerms.substring(1, jobPerms.length()-1);//remove {}
+			}
+		}
+
+		String result = "";
+		if (validID) {
+			//check perm_name:perm_value,perm_name:perm_value
+			if (!perms.matches("(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]+")) {result += "Format: 'MU:1,A:0' failed.";}
+			if (result.equals("")) {
+				jobPerms = "{" + jobPerms + "," + perms + "}";
+				String updateJobSQL = "UPDATE job SET job_perms='" + jobPerms + "' WHERE job_id=" + job_id;
 				boolean addResult = myDB.RunSQL(updateJobSQL);
 				if (!addResult) {
 					result = "Insert failed.";
@@ -381,6 +412,62 @@ public class database {
 			//successfully edited
 			return "";
 		}//end editUser()
+
+		//update adds perms, edit overwrites perms
+		public String editUserPerms(int user_id, String perms) throws SQLException {
+			//check user_ID exists
+			String checkIDsql = "SELECT username FROM users WHERE user_id="+user_id;
+			ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
+			boolean validID = false;
+			if (checkIDResult.next()) {validID = true;}
+	
+			String result = "";
+			if (validID) {
+				//check {} format
+				if (!(perms.charAt(0) == '{' && perms.charAt(perms.length()-1) == '}')) {result += "One of '{}' missing.";}
+				//check {perm_name:perm_value,perm_name:perm_value}
+				else if (!perms.matches("{(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]+}")) {result += "Format: '{MU:1,A:0}' failed.";}
+				if (result.equals("")) {
+					String updateUserSQL = "UPDATE users SET user_perms='" + perms + "' WHERE user_id=" + user_id;
+					boolean addResult = myDB.RunSQL(updateUserSQL);
+					if (!addResult) {
+						result = "Insert failed.";
+					}
+				}
+			} else {result+="Invalid ID.";}
+			
+			return result;
+		}
+		public String updateUserPerms(int user_id, String perms) throws SQLException {
+			//check user_ID exists
+			String checkIDsql = "SELECT user_perms FROM users WHERE user_id="+user_id;
+			ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
+			boolean validID = false;
+			String userPerms = "";
+			if (checkIDResult.next()) {
+				validID = true;
+				userPerms = checkIDResult.getString(1);//get perms
+				if (!userPerms.equals("{}")) {
+					userPerms = userPerms.substring(1, userPerms.length()-1);//remove {}
+				}
+			}
+	
+			String result = "";
+			if (validID) {
+				//check perm_name:perm_value,perm_name:perm_value
+				if (!perms.matches("(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]+")) {result += "Format: 'MU:1,A:0' failed.";}
+				if (result.equals("")) {
+					userPerms = "{" + userPerms + "," + perms + "}";
+					String updateUserSQL = "UPDATE users SET user_perms='" + userPerms + "' WHERE user_id=" + user_id;
+					boolean addResult = myDB.RunSQL(updateUserSQL);
+					if (!addResult) {
+						result = "Insert failed.";
+					}
+				}
+			} else {result+="Invalid ID.";}
+			
+			return result;
+		}
 		//~~~~~~~~~~~~~[logged_tasks]~~~~~~~~~~~~~~~~~~~~~~~~~~
 		public String loggedTaskValidate(int task, int user, int user2, String dateCompleted) {
 			String result = "";
