@@ -120,7 +120,7 @@ public class UserManagement {
 
     //add user to database if manager/admin+
     public boolean addUser(String new_name, String new_username, int new_job, char[] password, String new_notes, String new_gender) throws SQLException {
-        if (perms.containsKey("MU") && perms.get("MU") >= 1) {
+        if (perms.containsKey("MU") && perms.get("MU") >= 2) {
             String newPass = "";
             try {
                 newPass = genPassHash(password);
@@ -148,7 +148,7 @@ public class UserManagement {
         }
     }
     //edit user in database if manager/admin+
-    public boolean editUser() {
+    public boolean editUser() {//if the targetted user is beneath this user in "rank"
         if (perms.containsKey("MU") && perms.get("MU") >= 1) {
             return true;
         }
@@ -156,7 +156,7 @@ public class UserManagement {
     }
     //delete user in database if manager/admin+
     public boolean deleteUser() {
-        if (perms.containsKey("MU") && perms.get("MU") >= 2) {
+        if (perms.containsKey("MU") && perms.get("MU") >= 3) {
             return true;
         }
         return false;
