@@ -195,7 +195,7 @@ public class database {
 	}
 
 	public String updateJob(int job_id, String name) throws SQLException {
-		//check task_ID exists
+		//check job_ID exists
 		String checkIDsql = "SELECT job_desc FROM job WHERE job_ID="+job_id;
 		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
 		boolean validID = false;
@@ -215,9 +215,34 @@ public class database {
 		
 		return result;
 	}
+
+	public String updateJobPerms(int job_id, String perms) throws SQLException {
+		//check job_ID exists
+		String checkIDsql = "SELECT job_desc FROM job WHERE job_ID="+job_id;
+		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
+		boolean validID = false;
+		if (checkIDResult.next()) {validID = true;}
+
+		String result = "";
+		if (validID) {
+			//check {} format
+			if (!(perms.charAt(0) == '{' && perms.charAt(perms.length()-1) == '}')) {result += "One of '{}' missing.";}
+			//check {perm_name:perm_value,perm_name:perm_value}
+			else if (!perms.matches("{(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]}")) {result += "Format: '{MU:1,A:0}' failed.";}
+			if (result.equals("")) {
+				String updateJobSQL = "UPDATE job SET job_perms='" + perms + "' WHERE job_id=" + job_id;
+				boolean addResult = myDB.RunSQL(updateJobSQL);
+				if (!addResult) {
+					result = "Insert failed.";
+				}
+			}
+		} else {result+="Invalid ID.";}
+		
+		return result;
+	}
 	
 	public ResultSet getAllJobs() {
-		String getSQL="SELECT job_id, job_desc FROM job";
+		String getSQL="SELECT job_id, job_desc, job_perms FROM job";
 		ResultSet result = myDB.RunSQLQuery(getSQL);
 		return result;
 	}

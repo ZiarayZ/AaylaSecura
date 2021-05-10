@@ -17,7 +17,7 @@ public class AaylaSecuraMain {
 			ResultSet users = db.getAllUsers();
 			System.out.println("Jobs:");
 			while(jobs.next()) {
-				System.out.println(jobs.getInt(1)+"| "+jobs.getString(2));
+				System.out.println(jobs.getInt(1)+"| "+jobs.getString(2)+" "+jobs.getString(3));
 			}
 			System.out.println("Users:");
 			while(users.next()) {
