@@ -44,14 +44,16 @@ public class database {
 		String deleteJobSQL = "DELETE FROM job";
 		String deleteUserSQL = "DELETE FROM users";
 		String deleteloggedSQL = "DELETE FROM logged_tasks";
+		String deletePermsSQL = "DELETE FROM perms";
 		
 		boolean result1=myDB.RunSQL(deleteloggedSQL);
 		boolean result2=myDB.RunSQL(deleteTaskSQL);
 		boolean result3=myDB.RunSQL(deleteUserSQL);
 		boolean result4=myDB.RunSQL(deleteJobSQL);
+		boolean result5=myDB.RunSQL(deletePermsSQL);
 		
 		
-		if(result1&&result2&&result3&&result4) {return true;}
+		if(result1&&result2&&result3&&result4&&result5) {return true;}
 		else {return false;}
 	}
 	
@@ -277,274 +279,301 @@ public class database {
 		ResultSet result = myDB.RunSQLQuery(getSQL);
 		return result;
 	}
+	//~~~~~~~~~~~~~[perms]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	public String permsValidate(String name, String desc) {
+		String result = "";
+		if (name.replaceAll("\\s+", "").equals("")) {result += "Name is empty\n";}//Check name isn't empty even once whitespace is removed
+		if (desc.replaceAll("\\s+", "").equals("")) {result += "Desc is empty\n";}//Check desc isn't empty even once whitespace is removed
+		return result;
+	}
+
+	//these perms methods are for testing and populating tables atm
+	public String addNewPerms(String name, String desc) throws SQLException {
+		String findNextIDsql = new String("SELECT COUNT(job_id)+1 from job");
+		ResultSet nextIDResult = myDB.RunSQLQuery(findNextIDsql);
+		int nextID = 0;
+		while (nextIDResult.next()) {
+			nextID = nextIDResult.getInt(1);
+		}
+		String result = "";
+		result += permsValidate(name, desc);
+
+		if (result.equals("")) {
+			String addPermsSQL= new String("INSERT INTO perms (perm_id, perm_name, perm_desc) VALUES ('"+nextID+"','"+name+"','"+desc+"')");
+			boolean addResult = myDB.RunSQL(addPermsSQL);
+			if (!addResult) {result += "SQL Failed";}
+		}
+
+		return result;
+	}
 	//~~~~~~~~~~~~~[users]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		public String userValidate(String name, int job, String notes, String mf) {
-			//editing username or password should be handled alone/with care
-			String result = "";
-			
-			if (name.replaceAll("\\s+", "").equals("")) {result += "Name is empty\n";}//Check name isn't empty even once whitespace is removed
-			//if (notes.replaceAll("\\s+", "").equals("")) {result += "Notes is empty\n";}//notes can be empty
-			if (mf.replaceAll("\\s+", "").equals("")) {result += "M/F is empty\n";}
-			//no point checking if it's valid type if empty
-			else if (!(mf.equals("M")||mf.equals("F"))) {result += "M/F is invalid\n";}
-			//job>3 should be removed? limits number of jobs to 4
-			if (job<0||job>3) {result += "Non-valid Job";}
-			
-			return result;
+	public String userValidate(String name, int job, String notes, String mf) {
+		//editing username or password should be handled alone/with care
+		String result = "";
+		
+		if (name.replaceAll("\\s+", "").equals("")) {result += "Name is empty\n";}//Check name isn't empty even once whitespace is removed
+		//if (notes.replaceAll("\\s+", "").equals("")) {result += "Notes is empty\n";}//notes can be empty
+		if (mf.replaceAll("\\s+", "").equals("")) {result += "M/F is empty\n";}
+		//no point checking if it's valid type if empty
+		else if (!(mf.equals("M")||mf.equals("F"))) {result += "M/F is invalid\n";}
+		//job>3 should be removed? limits number of jobs to 4
+		if (job<0||job>3) {result += "Non-valid Job";}
+		
+		return result;
+	}
+	public String userValidate(String name, String username, int job, String password, String notes, String mf) {
+		String result = userValidate(name, job, notes, mf);
+		
+		if (username.replaceAll("\\s+", "").equals("")) {result += "Username is empty\n";}
+		if (password.replaceAll("\\s+", "").equals("")) {result += "Password is empty\n";}//password already hashed
+		
+		return result;
+	}//end userValidate()
+
+	public String addNewUser(String name, String username, int job, String password, String notes, String mf) throws SQLException{
+		String result = "";
+		
+		//Find the next ID to use-------------------------
+		String findNextIDsql = "SELECT COUNT(user_id)+1 from users";
+		ResultSet nextIDResult = myDB.RunSQLQuery(findNextIDsql);
+		int nextID = 0;
+		while (nextIDResult.next()) {
+			nextID = nextIDResult.getInt(1);
 		}
-		public String userValidate(String name, String username, int job, String password, String notes, String mf) {
-			String result = userValidate(name, job, notes, mf);
-			
-			if (username.replaceAll("\\s+", "").equals("")) {result += "Username is empty\n";}
-			if (password.replaceAll("\\s+", "").equals("")) {result += "Password is empty\n";}//password already hashed
-			
-			return result;
-		}//end userValidate()
+		//------------------------------------------------
 
-		public String addNewUser(String name, String username, int job, String password, String notes, String mf) throws SQLException{
-			String result = "";
-			
-			//Find the next ID to use-------------------------
-			String findNextIDsql = "SELECT COUNT(user_id)+1 from users";
-			ResultSet nextIDResult = myDB.RunSQLQuery(findNextIDsql);
-			int nextID = 0;
-			while (nextIDResult.next()) {
-				nextID = nextIDResult.getInt(1);
+		//validate then insert record
+		result = userValidate(name, username, job, password, notes, mf);
+		
+		if (result.equals("")) { //if no problems then run SQL
+			String addUserSQL = "INSERT INTO users (user_id, user_name, username, job_id, hash_password, notes, M_F) VALUES ('"+nextID+"','"+name+"','"+username+"','"+job+"','"+password+"','"+notes+"','"+mf+"')";
+			boolean addResult = myDB.RunSQL(addUserSQL);
+			if (!addResult) {
+				result = "Insert failed.";
 			}
-			//------------------------------------------------
-
-			//validate then insert record
-			result = userValidate(name, username, job, password, notes, mf);
-			
-			if (result.equals("")) { //if no problems then run SQL
-				String addUserSQL = "INSERT INTO users (user_id, user_name, username, job_id, hash_password, notes, M_F) VALUES ('"+nextID+"','"+name+"','"+username+"','"+job+"','"+password+"','"+notes+"','"+mf+"')";
-				boolean addResult = myDB.RunSQL(addUserSQL);
-				if (!addResult) {
-					result = "Insert failed.";
-				}
-			}
-			
-			return result;
-		}//end addNewUser()
-
-		public ResultSet getUserFromUsername(String username) {
-			String sqlString = "Select user_id, user_name, job_id, job_desc, job_perms, user_perms, notes, M_F FROM users INNER JOIN job ON users.job_id=job.job_id WHERE username='"+username+"'";
-			ResultSet result = myDB.RunSQLQuery(sqlString);
-			return result;
-		}//end getUserFromID()
-
-		//when a user attempts to login, also the only time we have to get it
-		public ResultSet getPassFromUsername(String username) {
-			String sqlString = "Select hash_password FROM users WHERE username='"+username+"'";
-			ResultSet result = myDB.RunSQLQuery(sqlString);
-			return result;
-		}//end getPassFromUsername()
-
-		public ResultSet getAllUsers() {//hash_password added in temporarily for debugging/testing, may change
-			String getSQL = "SELECT user_id, user_name, username, job.job_desc, hash_password, notes, M_F FROM users INNER JOIN job ON users.job_id=job.job_id";
-			ResultSet result = myDB.RunSQLQuery(getSQL);
-			return result;
 		}
+		
+		return result;
+	}//end addNewUser()
 
-		public boolean deleteUser(int ID) {
-			String sqlString = "DELETE FROM users WHERE user_id="+ID;
-			boolean result = myDB.RunSQL(sqlString);
-			return result;
-		}//end deleteUser()
+	public ResultSet getUserFromUsername(String username) {
+		String sqlString = "Select user_id, user_name, job_id, job_desc, job_perms, user_perms, notes, M_F FROM users INNER JOIN job ON users.job_id=job.job_id WHERE username='"+username+"'";
+		ResultSet result = myDB.RunSQLQuery(sqlString);
+		return result;
+	}//end getUserFromID()
 
-		public String updateUser(int user_ID, String name, int job, String notes, String mf) throws SQLException {
-			//check user_ID exists
-			String checkIDsql = "SELECT username FROM users WHERE user_id="+user_ID;
-			ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
-			boolean validID = false;
-			if (checkIDResult.next()) {
-				validID = true;
-			}
-			
-			String result = "";
-			if (validID) {
-				result = userValidate(name, job, notes, mf);
-				if (result.equals("")){
-					String updateUserSQL = "UPDATE users SET user_name='"+name+"',job_id='"+job+"',notes='"+notes+"',M_F='"+mf+"' WHERE user_id='"+user_ID+"'";
-					boolean updateResult = myDB.RunSQL(updateUserSQL);
-					if (!updateResult) {
-						result = "Update failed.";
-					}
-				}
-			} else {
-				result += "Invalid ID";
-			}
-					
-			return result;
-		}//end updateUser()
+	//when a user attempts to login, also the only time we have to get it
+	public ResultSet getPassFromUsername(String username) {
+		String sqlString = "Select hash_password FROM users WHERE username='"+username+"'";
+		ResultSet result = myDB.RunSQLQuery(sqlString);
+		return result;
+	}//end getPassFromUsername()
 
-		//edit specific fields(condition) of the user
-		public String editUser(int user_ID, String condition, String value) throws SQLException {
-			//checking id is a valid id
-			String checkIDsql = "SELECT username FROM users WHERE user_id="+user_ID;
-			ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
-			boolean validID = false;
-			if (checkIDResult.next()) {
-				validID = true;
-			}
+	public ResultSet getAllUsers() {//hash_password added in temporarily for debugging/testing, may change
+		String getSQL = "SELECT user_id, user_name, username, job.job_desc, hash_password, notes, M_F FROM users INNER JOIN job ON users.job_id=job.job_id";
+		ResultSet result = myDB.RunSQLQuery(getSQL);
+		return result;
+	}
 
-			//checking condition is valid
-			if (validID) {
-				boolean updateResult = false;
-				if (condition.equals("user_name")) {
-					String updateUserSQL = "UPDATE users SET user_name='"+value+"' WHERE user_id='"+user_ID+"'";
-					updateResult = myDB.RunSQL(updateUserSQL);
-				} else if (condition.equals("hash_password")) {
-					String updateUserSQL = "UPDATE users SET hash_password='"+value+"' WHERE user_id='"+user_ID+"'";
-					updateResult = myDB.RunSQL(updateUserSQL);
-				} else if (condition.equals("M_F")) {
-					String updateUserSQL = "UPDATE users SET M_F='"+value+"' WHERE user_id='"+user_ID+"'";
-					updateResult = myDB.RunSQL(updateUserSQL);
-				} else {
-					return "Invalid: column type.";
-				}
+	public boolean deleteUser(int ID) {
+		String sqlString = "DELETE FROM users WHERE user_id="+ID;
+		boolean result = myDB.RunSQL(sqlString);
+		return result;
+	}//end deleteUser()
+
+	public String updateUser(int user_ID, String name, int job, String notes, String mf) throws SQLException {
+		//check user_ID exists
+		String checkIDsql = "SELECT username FROM users WHERE user_id="+user_ID;
+		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
+		boolean validID = false;
+		if (checkIDResult.next()) {
+			validID = true;
+		}
+		
+		String result = "";
+		if (validID) {
+			result = userValidate(name, job, notes, mf);
+			if (result.equals("")){
+				String updateUserSQL = "UPDATE users SET user_name='"+name+"',job_id='"+job+"',notes='"+notes+"',M_F='"+mf+"' WHERE user_id='"+user_ID+"'";
+				boolean updateResult = myDB.RunSQL(updateUserSQL);
 				if (!updateResult) {
-					return "Invalid: Failed to update.";
+					result = "Update failed.";
 				}
+			}
+		} else {
+			result += "Invalid ID";
+		}
+				
+		return result;
+	}//end updateUser()
+
+	//edit specific fields(condition) of the user
+	public String editUser(int user_ID, String condition, String value) throws SQLException {
+		//checking id is a valid id
+		String checkIDsql = "SELECT username FROM users WHERE user_id="+user_ID;
+		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
+		boolean validID = false;
+		if (checkIDResult.next()) {
+			validID = true;
+		}
+
+		//checking condition is valid
+		if (validID) {
+			boolean updateResult = false;
+			if (condition.equals("user_name")) {
+				String updateUserSQL = "UPDATE users SET user_name='"+value+"' WHERE user_id='"+user_ID+"'";
+				updateResult = myDB.RunSQL(updateUserSQL);
+			} else if (condition.equals("hash_password")) {
+				String updateUserSQL = "UPDATE users SET hash_password='"+value+"' WHERE user_id='"+user_ID+"'";
+				updateResult = myDB.RunSQL(updateUserSQL);
+			} else if (condition.equals("M_F")) {
+				String updateUserSQL = "UPDATE users SET M_F='"+value+"' WHERE user_id='"+user_ID+"'";
+				updateResult = myDB.RunSQL(updateUserSQL);
 			} else {
-				return "Invalid: user_ID.";
+				return "Invalid: column type.";
 			}
-			//successfully edited
-			return "";
-		}//end editUser()
-
-		//update adds perms, edit overwrites perms
-		public String editUserPerms(int user_id, String perms) throws SQLException {
-			//check user_ID exists
-			String checkIDsql = "SELECT username FROM users WHERE user_id="+user_id;
-			ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
-			boolean validID = false;
-			if (checkIDResult.next()) {validID = true;}
-	
-			String result = "";
-			if (validID) {
-				//check {} format
-				if (!(perms.charAt(0) == '{' && perms.charAt(perms.length()-1) == '}')) {result += "One of '{}' missing.";}
-				//check {perm_name:perm_value,perm_name:perm_value}
-				else if (!perms.matches("{(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]+}")) {result += "Format: '{MU:1,A:0}' failed.";}
-				if (result.equals("")) {
-					String updateUserSQL = "UPDATE users SET user_perms='" + perms + "' WHERE user_id=" + user_id;
-					boolean addResult = myDB.RunSQL(updateUserSQL);
-					if (!addResult) {
-						result = "Insert failed.";
-					}
-				}
-			} else {result+="Invalid ID.";}
-			
-			return result;
+			if (!updateResult) {
+				return "Invalid: Failed to update.";
+			}
+		} else {
+			return "Invalid: user_ID.";
 		}
-		public String updateUserPerms(int user_id, String perms) throws SQLException {
-			//check user_ID exists
-			String checkIDsql = "SELECT user_perms FROM users WHERE user_id="+user_id;
-			ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
-			boolean validID = false;
-			String userPerms = "";
-			if (checkIDResult.next()) {
-				validID = true;
-				userPerms = checkIDResult.getString(1);//get perms
-				if (!userPerms.equals("{}")) {
-					userPerms = userPerms.substring(1, userPerms.length()-1);//remove {}
-				}
-			}
-	
-			String result = "";
-			if (validID) {
-				//check perm_name:perm_value,perm_name:perm_value
-				if (!perms.matches("(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]+")) {result += "Format: 'MU:1,A:0' failed.";}
-				if (result.equals("")) {
-					userPerms = "{" + userPerms + "," + perms + "}";
-					String updateUserSQL = "UPDATE users SET user_perms='" + userPerms + "' WHERE user_id=" + user_id;
-					boolean addResult = myDB.RunSQL(updateUserSQL);
-					if (!addResult) {
-						result = "Insert failed.";
-					}
-				}
-			} else {result+="Invalid ID.";}
-			
-			return result;
-		}
-		//~~~~~~~~~~~~~[logged_tasks]~~~~~~~~~~~~~~~~~~~~~~~~~~
-		public String loggedTaskValidate(int task, int user, int user2, String dateCompleted) {
-			String result = "";
-			
-			if (task<0) {result += "Non-valid Task\n";}
-			if (user<0) {result += "Non-valid User\n";}
-			if (user2<0) {result += "Non-valid Second User\n";}
-			if (checkValidDateTime(dateCompleted)) {result += "Non-valid date completed";}
+		//successfully edited
+		return "";
+	}//end editUser()
 
-			return result;
-		}//end loggedTaskValidate()
+	//update adds perms, edit overwrites perms
+	public String editUserPerms(int user_id, String perms) throws SQLException {
+		//check user_ID exists
+		String checkIDsql = "SELECT username FROM users WHERE user_id="+user_id;
+		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
+		boolean validID = false;
+		if (checkIDResult.next()) {validID = true;}
 
-		public String addNewLoggedTask(int task, int user, int user2, String dateCompleted) throws SQLException{
-			String result = "";
-			
-			//Find the next ID to use-------------------------
-			String findNextIDsql = "SELECT COUNT(logged_id)+1 from logged_tasks";
-			ResultSet nextIDResult = myDB.RunSQLQuery(findNextIDsql);
-			int nextID = 0;
-			while (nextIDResult.next()) {
-				nextID = nextIDResult.getInt(1);
-			}
-			//------------------------------------------------
-
-			result = loggedTaskValidate(task, user, user2, dateCompleted);
-			
-			if (result.equals("")) { //if no problems then run SQL
-				String addLoggedTaskSQL = "INSERT INTO logged_tasks (logged_id, task_id, user_id, second_user_id, date_completed) VALUES ('"+nextID+"','"+task+"','"+user+"','"+user2+"','"+dateCompleted+"')";
-				boolean addResult = myDB.RunSQL(addLoggedTaskSQL);
+		String result = "";
+		if (validID) {
+			//check {} format
+			if (!(perms.charAt(0) == '{' && perms.charAt(perms.length()-1) == '}')) {result += "One of '{}' missing.";}
+			//check {perm_name:perm_value,perm_name:perm_value}
+			else if (!perms.matches("{(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]+}")) {result += "Format: '{MU:1,A:0}' failed.";}
+			if (result.equals("")) {
+				String updateUserSQL = "UPDATE users SET user_perms='" + perms + "' WHERE user_id=" + user_id;
+				boolean addResult = myDB.RunSQL(updateUserSQL);
 				if (!addResult) {
 					result = "Insert failed.";
 				}
 			}
-			
-			return result;
-		}//end addNewLoggedTask()
-
-		public ResultSet getLoggedTaskFromID(int ID) {
-			String sqlString = "Select task_id, user_id, second_user_id, date_completed FROM logged_tasks WHERE logged_id='"+ID+"'";
-			ResultSet result = myDB.RunSQLQuery(sqlString);
-			return result;
-		}//end getLoggedTaskFromID()
-
-		//3 inner joins to get task name and 2 different users' names
-		public ResultSet getAllLoggedTasks(String condition) {
-			//double check the sql statement is correct later
-			String getSQL = "SELECT logged_id, tasks.task_id, tasks.task_name, users1.user_id, users1.user_name, users2.user_id, users2.user_name, date_completed FROM logged_tasks INNER JOIN tasks ON logged_tasks.task_id=tasks.task_id INNER JOIN users AS users1 ON logged_tasks.user_id=users1.user_id INNER JOIN users AS users2 ON logged_tasks.second_user_id=users2.user_id"+condition;
-			ResultSet result = myDB.RunSQLQuery(getSQL);
-			return result;
+		} else {result+="Invalid ID.";}
+		
+		return result;
+	}
+	public String updateUserPerms(int user_id, String perms) throws SQLException {
+		//check user_ID exists
+		String checkIDsql = "SELECT user_perms FROM users WHERE user_id="+user_id;
+		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
+		boolean validID = false;
+		String userPerms = "";
+		if (checkIDResult.next()) {
+			validID = true;
+			userPerms = checkIDResult.getString(1);//get perms
+			if (!userPerms.equals("{}")) {
+				userPerms = userPerms.substring(1, userPerms.length()-1);//remove {}
+			}
 		}
 
-		public boolean deleteLoggedTask(int ID) {
-			String sqlString = "DELETE FROM logged_tasks WHERE logged_id="+ID;
-			boolean result = myDB.RunSQL(sqlString);
-			return result;
-		}//end deleteLoggedTask()
-
-		public String updateLoggedTask(int logged_ID, int task, int user, int user2, String dateCompleted) throws SQLException {
-			//check user_ID exists
-			String checkIDsql = "SELECT task FROM logged_tasks WHERE logged_ID="+logged_ID;
-			ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
-			boolean validID = false;
-			if (checkIDResult.next()) {validID=true;}
-			
-			String result = "";
-			if (validID) {
-				result = loggedTaskValidate(task, user, user2, dateCompleted);
-				if (result.equals("")){
-					String updateLoggedTaskSQL = "UPDATE logged_tasks SET task_id='"+task+"',user_id='"+user+"',second_user_id='"+user2+"',date_completed='"+dateCompleted+"' WHERE logged_ID='"+logged_ID+"'";
-					boolean updateResult = myDB.RunSQL(updateLoggedTaskSQL);
-					if (!updateResult) {
-						result = "Update failed.";
-					}
+		String result = "";
+		if (validID) {
+			//check perm_name:perm_value,perm_name:perm_value
+			if (!perms.matches("(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]+")) {result += "Format: 'MU:1,A:0' failed.";}
+			if (result.equals("")) {
+				userPerms = "{" + userPerms + "," + perms + "}";
+				String updateUserSQL = "UPDATE users SET user_perms='" + userPerms + "' WHERE user_id=" + user_id;
+				boolean addResult = myDB.RunSQL(updateUserSQL);
+				if (!addResult) {
+					result = "Insert failed.";
 				}
-			} else {result += "Invalid ID";}
-					
-			return result;
-		}//end updateLoggedTask()
+			}
+		} else {result+="Invalid ID.";}
+		
+		return result;
+	}
+	//~~~~~~~~~~~~~[logged_tasks]~~~~~~~~~~~~~~~~~~~~~~~~~~
+	public String loggedTaskValidate(int task, int user, int user2, String dateCompleted) {
+		String result = "";
+		
+		if (task<0) {result += "Non-valid Task\n";}
+		if (user<0) {result += "Non-valid User\n";}
+		if (user2<0) {result += "Non-valid Second User\n";}
+		if (checkValidDateTime(dateCompleted)) {result += "Non-valid date completed";}
 
-	}//end class database
+		return result;
+	}//end loggedTaskValidate()
+
+	public String addNewLoggedTask(int task, int user, int user2, String dateCompleted) throws SQLException{
+		String result = "";
+		
+		//Find the next ID to use-------------------------
+		String findNextIDsql = "SELECT COUNT(logged_id)+1 from logged_tasks";
+		ResultSet nextIDResult = myDB.RunSQLQuery(findNextIDsql);
+		int nextID = 0;
+		while (nextIDResult.next()) {
+			nextID = nextIDResult.getInt(1);
+		}
+		//------------------------------------------------
+
+		result = loggedTaskValidate(task, user, user2, dateCompleted);
+		
+		if (result.equals("")) { //if no problems then run SQL
+			String addLoggedTaskSQL = "INSERT INTO logged_tasks (logged_id, task_id, user_id, second_user_id, date_completed) VALUES ('"+nextID+"','"+task+"','"+user+"','"+user2+"','"+dateCompleted+"')";
+			boolean addResult = myDB.RunSQL(addLoggedTaskSQL);
+			if (!addResult) {
+				result = "Insert failed.";
+			}
+		}
+		
+		return result;
+	}//end addNewLoggedTask()
+
+	public ResultSet getLoggedTaskFromID(int ID) {
+		String sqlString = "Select task_id, user_id, second_user_id, date_completed FROM logged_tasks WHERE logged_id='"+ID+"'";
+		ResultSet result = myDB.RunSQLQuery(sqlString);
+		return result;
+	}//end getLoggedTaskFromID()
+
+	//3 inner joins to get task name and 2 different users' names
+	public ResultSet getAllLoggedTasks(String condition) {
+		//double check the sql statement is correct later
+		String getSQL = "SELECT logged_id, tasks.task_id, tasks.task_name, users1.user_id, users1.user_name, users2.user_id, users2.user_name, date_completed FROM logged_tasks INNER JOIN tasks ON logged_tasks.task_id=tasks.task_id INNER JOIN users AS users1 ON logged_tasks.user_id=users1.user_id INNER JOIN users AS users2 ON logged_tasks.second_user_id=users2.user_id"+condition;
+		ResultSet result = myDB.RunSQLQuery(getSQL);
+		return result;
+	}
+
+	public boolean deleteLoggedTask(int ID) {
+		String sqlString = "DELETE FROM logged_tasks WHERE logged_id="+ID;
+		boolean result = myDB.RunSQL(sqlString);
+		return result;
+	}//end deleteLoggedTask()
+
+	public String updateLoggedTask(int logged_ID, int task, int user, int user2, String dateCompleted) throws SQLException {
+		//check user_ID exists
+		String checkIDsql = "SELECT task FROM logged_tasks WHERE logged_ID="+logged_ID;
+		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
+		boolean validID = false;
+		if (checkIDResult.next()) {validID=true;}
+		
+		String result = "";
+		if (validID) {
+			result = loggedTaskValidate(task, user, user2, dateCompleted);
+			if (result.equals("")){
+				String updateLoggedTaskSQL = "UPDATE logged_tasks SET task_id='"+task+"',user_id='"+user+"',second_user_id='"+user2+"',date_completed='"+dateCompleted+"' WHERE logged_ID='"+logged_ID+"'";
+				boolean updateResult = myDB.RunSQL(updateLoggedTaskSQL);
+				if (!updateResult) {
+					result = "Update failed.";
+				}
+			}
+		} else {result += "Invalid ID";}
+				
+		return result;
+	}//end updateLoggedTask()
+
+}//end class database

@@ -15,8 +15,16 @@ public class databaseReset {
 			db.clearAllDatabase();
 			//job
 			database.addNewJob("Caretaker");//code for caretaker 1
+			db.editJobPerms(0, "{Rank:3,MU:1}");
 			database.addNewJob("Manager");//code for manager 2
+			db.editJobPerms(1, "{Rank:2,MU:2}");
 			database.addNewJob("Admin");//code for admin 3
+			db.editJobPerms(2, "{Rank:1,MU:3}");
+
+			//perms - definitions
+			db.addNewPerms("Rank", "Overall Access Level");
+			db.addNewPerms("MU", "Manage Users");
+
 			//user
 			//name, username, job_id, hashed_password, notes, M_F(gender)
 			try {
