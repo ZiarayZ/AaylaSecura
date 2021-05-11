@@ -7,11 +7,13 @@ public class AaylaSecuraMain {
 	private static databaseReset dbReset = new databaseReset(db);
 	private static UserManagement user;
 	private static LogTasks logged_tasks;
+	private static UserInterface window;
 
 	public static void main(String[] args) {
 		dbReset.reset();
 		logged_tasks = new LogTasks(db);
 		user = new UserManagement(db);
+		window = new UserInterface(db, user);
 		try {
 			ResultSet jobs = db.getAllJobs();
 			System.out.println("Jobs:");
@@ -19,9 +21,8 @@ public class AaylaSecuraMain {
 				System.out.println(jobs.getInt(1)+"| "+jobs.getString(2)+" "+jobs.getString(3));
 			}
 			//somehow set the main menu visible once login succeeds
-			//this sets both the login menu and manage users menu visible at the same time
-			user.displayLogin();
-			user.displayUsers();
+			window.setVisible(true);
+			window.displayLogin();
 		//catching exceptions to test other stuff
 		} catch (SQLException e) {
 			System.out.println(e);

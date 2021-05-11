@@ -38,12 +38,6 @@ public class UserManagement {
     public void listAll() {
         System.out.println(user_id + "| " + username + " " + name + " " + job + " " + gender + " | is logged in? " + logged_in);
     }
-    public void displayLogin() {
-        LoginWindow.setVisible(true);
-    }
-    public void displayUsers() {
-        ManageWindow.setVisible(true);
-    }
     public void listPerms() {
         for (String key: perms.keySet()) {
             System.out.println(key +"| "+ perms.get(key));

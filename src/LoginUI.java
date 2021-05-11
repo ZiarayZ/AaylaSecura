@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
-public class LoginUI extends JFrame {
+public class LoginUI {
 
 	private JPanel contentPane;
 	private JLabel lblHeadingLabel;
@@ -29,7 +29,7 @@ public class LoginUI extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -40,20 +40,16 @@ public class LoginUI extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
 	public LoginUI(UserManagement verifyUser) {
 		User = verifyUser;
-		setTitle("Login");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 534, 363);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
-		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		lblHeadingLabel = new JLabel("Please Login");
@@ -121,7 +117,7 @@ public class LoginUI extends JFrame {
 					if (User.login(nameField.getText(), passwordField.getPassword())) {
 						//handle successful login
 						System.out.println("Login success.");
-						setVisible(false);
+						
 					} else {
 						//handle failed login
 						System.out.println("Login fail: Invalid Username or Password.");
@@ -171,5 +167,13 @@ public class LoginUI extends JFrame {
 		});
 		btnUpdatePasswordButton.setBounds(300, 236, 117, 37);
 		contentPane.add(btnUpdatePasswordButton);
+	}
+
+	//sets window to have this contentPane
+	public void setWindow(JFrame wind) {
+		wind.setTitle("Login");
+		wind.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		wind.setBounds(100, 100, 534, 363);
+		wind.setContentPane(contentPane);
 	}
 }

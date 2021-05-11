@@ -6,26 +6,27 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableColumnModel;
-
-import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JTable;
+
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
-public class ManageUsersUI extends JFrame {
+public class ManageUsersUI {
 
 	private JPanel contentPane;
 	private JTable userTable;
 	private database userDB;
 	private UserManagement userModify;
+	private boolean isVisible;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -36,7 +37,7 @@ public class ManageUsersUI extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
@@ -44,13 +45,9 @@ public class ManageUsersUI extends JFrame {
 	public ManageUsersUI(UserManagement modifyUser, database db) {
 		userModify = modifyUser;
 		userDB = db;
-		setTitle("Manage Users");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 771, 522);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JButton btnAddUserButton = new JButton("Add User");
@@ -122,5 +119,12 @@ public class ManageUsersUI extends JFrame {
 
 		Object[][] data = {{}};
 		return data;
+	}
+
+	public void setWindow(JFrame wind) {
+		wind.setTitle("Manage Users");
+		wind.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		wind.setBounds(100, 100, 771, 522);
+		wind.setContentPane(contentPane);
 	}
 }
