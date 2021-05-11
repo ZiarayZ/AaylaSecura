@@ -3,17 +3,24 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableColumnModel;
+
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class ManageUsersUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTable userTable;
+	private database userDB;
 	private UserManagement userModify;
 	/**
 	 * Launch the application.
@@ -22,7 +29,7 @@ public class ManageUsersUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ManageUsersUI frame = new ManageUsersUI(null);
+					ManageUsersUI frame = new ManageUsersUI(null, new database());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -34,8 +41,9 @@ public class ManageUsersUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ManageUsersUI(UserManagement modifyUser) {
+	public ManageUsersUI(UserManagement modifyUser, database db) {
 		userModify = modifyUser;
+		userDB = db;
 		setTitle("Manage Users");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 771, 522);
@@ -60,6 +68,7 @@ public class ManageUsersUI extends JFrame {
 				//delete a user here
 			}
 		});
+		btnRemoveUserButton.setEnabled(false);
 		btnRemoveUserButton.setBounds(327, 400, 134, 44);
 		contentPane.add(btnRemoveUserButton);
 		
@@ -69,12 +78,40 @@ public class ManageUsersUI extends JFrame {
 				//edit a user here
 			}
 		});
+		btnEditUserButton.setEnabled(false);
 		btnEditUserButton.setBounds(561, 400, 124, 44);
 		contentPane.add(btnEditUserButton);
 		
-		userTable = new JTable();
-		userTable.setBackground(new Color(192, 192, 192));
-		userTable.setBounds(35, 34, 685, 337);
-		contentPane.add(userTable);
+		String[] colHeaders = {"ID", "Name", "Username", "Role", "Gender"};
+		Object[][] data = populateTable();
+		userTable = new JTable(data,colHeaders);
+		TableColumnModel tcm = userTable.getColumnModel();
+		tcm.removeColumn(tcm.getColumn(0));
+		JScrollPane scrollPane = new JScrollPane(userTable);
+		scrollPane.setBackground(new Color(192, 192, 192));
+		scrollPane.setBounds(35, 34, 685, 337);
+		contentPane.add(scrollPane);
+	}
+
+	public Object[][] populateTable() {
+		ArrayList<Object[]> tempData = new ArrayList<Object[]>();
+
+		//call for all users info
+		ResultSet sql = userDB.getAllUsers();
+		try {
+			while (sql.next()) {
+				Object[] dataPoint = {sql.getInt(1), sql.getString(2), sql.getString(3), sql.getString(4), sql.getString(5)};
+				tempData.add(dataPoint);
+			}
+			Object[][] data = new Object[tempData.size()][5];
+			return tempData.toArray(data);
+		} catch (SQLException e) {
+			System.out.println(e);//need to display error window instead
+		} catch (NullPointerException e) {
+			System.out.println(e);//need to display error window instead
+		}
+
+		Object[][] data = {{}};
+		return data;
 	}
 }

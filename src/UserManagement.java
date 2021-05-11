@@ -33,7 +33,7 @@ public class UserManagement {
     public UserManagement(database DB) {
         userDB = DB;
         LoginWindow = new LoginUI(this);
-        ManageWindow = new ManageUsersUI(this);
+        ManageWindow = new ManageUsersUI(this, DB);
     }
     public void listAll() {
         System.out.println(user_id + "| " + username + " " + name + " " + job + " " + gender + " | is logged in? " + logged_in);

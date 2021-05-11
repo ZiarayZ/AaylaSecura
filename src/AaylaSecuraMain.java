@@ -21,7 +21,7 @@ public class AaylaSecuraMain {
 			}
 			System.out.println("Users:");
 			while(users.next()) {
-				System.out.println(users.getInt(1)+"| "+users.getString(2)+" "+users.getString(3)+" "+users.getString(4)+" "+users.getString(5)+" "+users.getString(6)+" "+users.getString(7));
+				System.out.println(users.getInt(1)+"| "+users.getString(2)+" "+users.getString(3)+" "+users.getString(4)+" "+users.getString(5));
 			}
 			//somehow set the main menu visible once login succeeds
 			//this sets both the login menu and manage users menu visible at the same time

@@ -19,10 +19,11 @@ public class databaseReset {
 			database.addNewJob("Manager");//code for manager 2
 			db.editJobPerms(2, "{Rank:2,MU:2}");
 			database.addNewJob("Admin");//code for admin 3
-			db.editJobPerms(3, "{Rank:1,A:1,MU:3}");
+			db.editJobPerms(3, "{Rank:1,AP:1,MU:3}");
 
 			//perms - definitions
 			db.addNewPerms("Rank", "Overall Access Level");
+			db.addNewPerms("AP", "Administrator Permissions");
 			db.addNewPerms("MU", "Manage Users");
 
 			//user

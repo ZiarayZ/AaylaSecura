@@ -289,7 +289,7 @@ public class database {
 
 	//these perms methods are for testing and populating tables atm
 	public String addNewPerms(String name, String desc) throws SQLException {
-		String findNextIDsql = new String("SELECT COUNT(job_id)+1 from job");
+		String findNextIDsql = new String("SELECT COUNT(perm_id)+1 from perms");
 		ResultSet nextIDResult = myDB.RunSQLQuery(findNextIDsql);
 		int nextID = 0;
 		while (nextIDResult.next()) {
@@ -370,7 +370,7 @@ public class database {
 	}//end getPassFromUsername()
 
 	public ResultSet getAllUsers() {
-		String getSQL = "SELECT user_id, user_name, username, job.job_desc, M_F FROM users INNER JOIN job ON users.job_id=job.job_id";
+		String getSQL = "SELECT user_id, user_name, username, job.job_desc, M_F FROM users INNER JOIN job ON users.job_id=job.job_id ORDER BY user_name";
 		ResultSet result = myDB.RunSQLQuery(getSQL);
 		return result;
 	}
