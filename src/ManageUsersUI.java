@@ -100,9 +100,16 @@ public class ManageUsersUI extends JFrame {
 
 		//call for all users info
 		ResultSet sql = userDB.getAllUsers();
+		String gender;
 		try {
 			while (sql.next()) {
-				Object[] dataPoint = {sql.getInt(1), sql.getString(2), sql.getString(3), sql.getString(4), sql.getString(5)};
+				gender = sql.getString(5);
+				if (gender.equals("M")) {
+					gender = "Male";
+				} else {
+					gender = "Female";
+				}
+				Object[] dataPoint = {sql.getInt(1), sql.getString(2), sql.getString(3), sql.getString(4), gender};
 				tempData.add(dataPoint);
 			}
 			Object[][] data = new Object[tempData.size()][5];
