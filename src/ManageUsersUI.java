@@ -85,8 +85,10 @@ public class ManageUsersUI extends JFrame {
 		String[] colHeaders = {"ID", "Name", "Username", "Role", "Gender"};
 		Object[][] data = populateTable();
 		userTable = new JTable(data,colHeaders);
+		//this removes the id column, but you should be able to call 'userTable.getModel().getValueAt(row, 0)' to get the id
 		TableColumnModel tcm = userTable.getColumnModel();
-		tcm.removeColumn(tcm.getColumn(0));//this removes the id column, but you should be able to call 'userTable.getModel().getValueAt(row, 0)' to get the id
+		tcm.removeColumn(tcm.getColumn(0));
+		//import table into a scroll pane so that the table headers are visible and other things
 		JScrollPane scrollPane = new JScrollPane(userTable);
 		scrollPane.setBackground(new Color(192, 192, 192));
 		scrollPane.setBounds(35, 34, 685, 337);
