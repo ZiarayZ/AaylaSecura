@@ -119,6 +119,9 @@ public class LoginUI extends JFrame {
 				try {
 					//add grabbed username and password
 					if (User.login(nameField.getText(), passwordField.getPassword())) {
+						changePasswordField.setText("");
+						passwordField.setText("");
+						nameField.setText("");
 						//handle successful login
 						System.out.println("Login success.");
 						setVisible(false);
@@ -149,6 +152,9 @@ public class LoginUI extends JFrame {
 					try {
 						if (User.login(username, passwordField.getPassword())) {
 							User.editPassword(changePasswordField.getPassword());
+							changePasswordField.setText("");
+							passwordField.setText("");
+							nameField.setText("");
 							System.out.println("Password Update success.");
 						} else {
 							//handle login fail
