@@ -369,8 +369,8 @@ public class database {
 		return result;
 	}//end getPassFromUsername()
 
-	public ResultSet getAllUsers() {//hash_password added in temporarily for debugging/testing, may change
-		String getSQL = "SELECT user_id, user_name, username, job.job_desc, hash_password, notes, M_F FROM users INNER JOIN job ON users.job_id=job.job_id";
+	public ResultSet getAllUsers() {
+		String getSQL = "SELECT user_id, user_name, username, job.job_desc, M_F FROM users INNER JOIN job ON users.job_id=job.job_id";
 		ResultSet result = myDB.RunSQLQuery(getSQL);
 		return result;
 	}
