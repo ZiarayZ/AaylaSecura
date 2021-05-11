@@ -14,14 +14,9 @@ public class AaylaSecuraMain {
 		user = new UserManagement(db);
 		try {
 			ResultSet jobs = db.getAllJobs();
-			ResultSet users = db.getAllUsers();
 			System.out.println("Jobs:");
 			while(jobs.next()) {
 				System.out.println(jobs.getInt(1)+"| "+jobs.getString(2)+" "+jobs.getString(3));
-			}
-			System.out.println("Users:");
-			while(users.next()) {
-				System.out.println(users.getInt(1)+"| "+users.getString(2)+" "+users.getString(3)+" "+users.getString(4)+" "+users.getString(5));
 			}
 			//somehow set the main menu visible once login succeeds
 			//this sets both the login menu and manage users menu visible at the same time
