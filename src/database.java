@@ -231,7 +231,7 @@ public class database {
 			//check {} format
 			if (!(perms.charAt(0) == '{' && perms.charAt(perms.length()-1) == '}')) {result += "One of '{}' missing.";}
 			//check {perm_name:perm_value,perm_name:perm_value}
-			else if (!perms.matches("{(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]+}")) {result += "Format: '{MU:1,A:0}' failed.";}
+			else if (!perms.matches("\\{(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]+\\}")) {result += "Format: '{MU:1,A:0}' failed.";}
 			if (result.equals("")) {
 				String updateJobSQL = "UPDATE job SET job_perms='" + perms + "' WHERE job_id=" + job_id;
 				boolean addResult = myDB.RunSQL(updateJobSQL);
@@ -357,7 +357,7 @@ public class database {
 	}//end addNewUser()
 
 	public ResultSet getUserFromUsername(String username) {
-		String sqlString = "Select user_id, user_name, job_id, job_desc, job_perms, user_perms, notes, M_F FROM users INNER JOIN job ON users.job_id=job.job_id WHERE username='"+username+"'";
+		String sqlString = "Select user_id, user_name, job.job_id, job.job_desc, job.job_perms, user_perms, notes, M_F FROM users INNER JOIN job ON users.job_id=job.job_id WHERE username='"+username+"'";
 		ResultSet result = myDB.RunSQLQuery(sqlString);
 		return result;
 	}//end getUserFromID()
@@ -455,7 +455,7 @@ public class database {
 			//check {} format
 			if (!(perms.charAt(0) == '{' && perms.charAt(perms.length()-1) == '}')) {result += "One of '{}' missing.";}
 			//check {perm_name:perm_value,perm_name:perm_value}
-			else if (!perms.matches("{(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]+}")) {result += "Format: '{MU:1,A:0}' failed.";}
+			else if (!perms.matches("\\{(([a-zA-Z]+:[0-9]+,)+)?[a-zA-Z]+:[0-9]+\\}")) {result += "Format: '{MU:1,A:0}' failed.";}
 			if (result.equals("")) {
 				String updateUserSQL = "UPDATE users SET user_perms='" + perms + "' WHERE user_id=" + user_id;
 				boolean addResult = myDB.RunSQL(updateUserSQL);

@@ -79,7 +79,7 @@ public class LoginUI extends JFrame {
 		JLabel lblUsernameLabel = new JLabel("Username");
 		lblUsernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsernameLabel.setLabelFor(nameField);
-		lblUsernameLabel.setBounds(98, 101, 83, 14);
+		lblUsernameLabel.setBounds(90, 101, 90, 14);
 		contentPane.add(lblUsernameLabel);
 		
 		passwordField = new JPasswordField();
@@ -94,7 +94,7 @@ public class LoginUI extends JFrame {
 		
 		JLabel lblPasswordLabel = new JLabel("Password");
 		lblPasswordLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPasswordLabel.setBounds(98, 151, 83, 14);
+		lblPasswordLabel.setBounds(90, 151, 90, 14);
 		contentPane.add(lblPasswordLabel);
 
 		changePasswordField = new JPasswordField();
@@ -109,7 +109,7 @@ public class LoginUI extends JFrame {
 		
 		JLabel lblChangePasswordLabel = new JLabel("New Password");
 		lblChangePasswordLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblChangePasswordLabel.setBounds(98, 201, 83, 14);
+		lblChangePasswordLabel.setBounds(90, 201, 90, 14);
 		contentPane.add(lblChangePasswordLabel);
 		
 		JButton btnLoginButton = new JButton("Login");
@@ -121,6 +121,7 @@ public class LoginUI extends JFrame {
 					if (User.login(nameField.getText(), passwordField.getPassword())) {
 						//handle successful login
 						System.out.println("Login success.");
+						setVisible(false);
 					} else {
 						//handle failed login
 						System.out.println("Login fail: Invalid Username or Password.");
