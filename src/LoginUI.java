@@ -117,9 +117,11 @@ public class LoginUI {
 					//add grabbed username and password
 					if (User.login(nameField.getText(), passwordField.getPassword())) {
 						//handle successful login
-						System.out.println("Login success.");
+						changePasswordField.setText("");
+						passwordField.setText("");
+						nameField.setText("");
 						window.displayMain();
-						
+						System.out.println("Login success.");
 					} else {
 						//handle failed login
 						System.out.println("Login fail: Invalid Username or Password.");
@@ -147,6 +149,10 @@ public class LoginUI {
 					try {
 						if (User.login(username, passwordField.getPassword())) {
 							User.editPassword(changePasswordField.getPassword());
+							changePasswordField.setText("");
+							passwordField.setText("");
+							nameField.setText("");
+							window.displayMain();
 							System.out.println("Password Update success.");
 						} else {
 							//handle login fail
