@@ -20,6 +20,7 @@ import java.awt.event.ActionEvent;
 
 public class LoginUI {
 
+	private UserInterface window;
 	private JPanel contentPane;
 	private JLabel lblHeadingLabel;
 	private JTextField nameField;
@@ -117,6 +118,7 @@ public class LoginUI {
 					if (User.login(nameField.getText(), passwordField.getPassword())) {
 						//handle successful login
 						System.out.println("Login success.");
+						window.displayMain();
 						
 					} else {
 						//handle failed login
@@ -170,10 +172,13 @@ public class LoginUI {
 	}
 
 	//sets window to have this contentPane
-	public void setWindow(JFrame wind) {
-		wind.setTitle("Login");
-		wind.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		wind.setBounds(100, 100, 534, 363);
-		wind.setContentPane(contentPane);
+	public void setWindow(UserInterface wind) {
+		window = wind;
+	}
+	public void displayWindow() {
+		window.setTitle("Login");
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setBounds(100, 100, 534, 363);
+		window.setContentPane(contentPane);
 	}
 }

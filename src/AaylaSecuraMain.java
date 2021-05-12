@@ -22,7 +22,6 @@ public class AaylaSecuraMain {
 			}
 			//somehow set the main menu visible once login succeeds
 			window.setVisible(true);
-			window.displayLogin();
 		//catching exceptions to test other stuff
 		} catch (SQLException e) {
 			System.out.println(e);

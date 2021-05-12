@@ -22,7 +22,7 @@ public class ManageUsersUI {
 	private JTable userTable;
 	private database userDB;
 	private UserManagement userModify;
-	private boolean isVisible;
+	private UserInterface window;
 	/**
 	 * Launch the application.
 	 */
@@ -121,10 +121,14 @@ public class ManageUsersUI {
 		return data;
 	}
 
-	public void setWindow(JFrame wind) {
-		wind.setTitle("Manage Users");
-		wind.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		wind.setBounds(100, 100, 771, 522);
-		wind.setContentPane(contentPane);
+	//sets window to have this contentPane
+	public void setWindow(UserInterface wind) {
+		window = wind;
+	}
+	public void displayWindow() {
+		window.setTitle("Manage Users");
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setBounds(100, 100, 771, 522);
+		window.setContentPane(contentPane);
 	}
 }
