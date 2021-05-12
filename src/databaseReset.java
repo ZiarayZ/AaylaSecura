@@ -22,9 +22,9 @@ public class databaseReset {
 			db.editJobPerms(3, "{Rank:1,AP:1,MU:3}");
 
 			//perms - definitions
-			db.addNewPerms("Rank", "Overall Access Level");
-			db.addNewPerms("AP", "Administrator Permissions");
-			db.addNewPerms("MU", "Manage Users");
+			db.addNewPerms("Rank", "Overall Access Level");//closer to 1 the higher their "rank", 0 is no rank at all
+			db.addNewPerms("AP", "Administrator Permissions");//0 admin perms or 1 all admin perms
+			db.addNewPerms("MU", "Manage Users");//0 no perms, higher number, higher perms
 
 			//user
 			//name, username, job_id, hashed_password, notes, M_F(gender)
