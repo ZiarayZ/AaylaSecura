@@ -118,11 +118,12 @@ public class ManageUsersUI {
 	//sets window to have this contentPane
 	public void setWindow(UserInterface wind) {
 		window = wind;
+		window.getPane().add(contentPane, "Users");
 	}
 	public void displayWindow() {
 		window.setTitle("Manage Users");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setBounds(100, 100, 771, 522);
-		window.setContentPane(contentPane);
+		window.getCardLayout().show(window.getPane(), "Users");
 	}
 }

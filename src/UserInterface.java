@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.CardLayout;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -8,14 +9,15 @@ public class UserInterface extends JFrame {
     private ManageUsersUI usersWindow;
     private UserManagement user;
     private JPanel contentPane;
+    private JPanel mainPane;
     private JButton usersBtn;
+    private CardLayout cardLayout;
     
     public UserInterface(database db, UserManagement newUser) {
         user = newUser;
         loginWindow = new LoginUI(user);
         usersWindow = new ManageUsersUI(user, db);
-        loginWindow.setWindow(this);
-        usersWindow.setWindow(this);
+		mainPane = new JPanel(new CardLayout());
 		contentPane = new JPanel();
         contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -36,9 +38,20 @@ public class UserInterface extends JFrame {
             }
         });
         contentPane.add(usersBtn);
+        mainPane.add(contentPane, "Main Menu");
+        loginWindow.setWindow(this);
+        usersWindow.setWindow(this);
+        getContentPane().add(mainPane);
+        cardLayout = (CardLayout) mainPane.getLayout();
         displayMain();
     }//craft a main menu to default to
 
+    public JPanel getPane() {
+        return mainPane;
+    }
+    public CardLayout getCardLayout() {
+        return cardLayout;
+    }
     public void displayLogin() {
         loginWindow.displayWindow();
     }
@@ -49,11 +62,11 @@ public class UserInterface extends JFrame {
         setTitle("Main Menu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 400, 300);
-		setContentPane(contentPane);
         if (user.getLogin()) {
             usersBtn.setEnabled(true);
         } else {
             usersBtn.setEnabled(false);
         }
+		cardLayout.show(mainPane, "Main Menu");
     }
 }

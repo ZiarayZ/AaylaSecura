@@ -169,11 +169,12 @@ public class LoginUI {
 	//sets window to have this contentPane
 	public void setWindow(UserInterface wind) {
 		window = wind;
+		window.getPane().add(contentPane, "Login");
 	}
 	public void displayWindow() {
 		window.setTitle("Login");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setBounds(100, 100, 534, 363);
-		window.setContentPane(contentPane);
+		window.getCardLayout().show(window.getPane(), "Login");
 	}
 }
