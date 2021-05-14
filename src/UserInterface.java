@@ -38,25 +38,29 @@ public class UserInterface extends JFrame {
             }
         });
         contentPane.add(usersBtn);
+        //add all JPanels to main CardLayout JPanel
         mainPane.add(contentPane, "Main Menu");
         loginWindow.setWindow(this);
         usersWindow.setWindow(this);
+		mainPane.add(loginWindow, "Login");
+		mainPane.add(usersWindow, "Users");
+        //assign master Pane
         getContentPane().add(mainPane);
         cardLayout = (CardLayout) mainPane.getLayout();
         displayMain();
     }//craft a main menu to default to
 
-    public JPanel getPane() {
-        return mainPane;
-    }
-    public CardLayout getCardLayout() {
-        return cardLayout;
-    }
     public void displayLogin() {
-        loginWindow.displayWindow();
+		setTitle("Login");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//replace with "DO_NOTHING_ON_CLOSE" handle the operation in the "windowClosing" method of a registered "WindowListener" object
+		setBounds(100, 100, 534, 363);
+		cardLayout.show(mainPane, "Login");
     }
     public void displayUsers() {
-        usersWindow.displayWindow();
+		setTitle("Manage Users");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//replace with "DO_NOTHING_ON_CLOSE" handle the operation in the "windowClosing" method of a registered "WindowListener" object
+		setBounds(100, 100, 771, 522);
+		cardLayout.show(mainPane, "Users");
     }
     public void displayMain() {
         setTitle("Main Menu");

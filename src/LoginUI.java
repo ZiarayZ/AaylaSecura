@@ -7,10 +7,9 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
-public class LoginUI {
+public class LoginUI extends JPanel {
 
 	private UserInterface window;
-	private JPanel contentPane;
 	private JLabel lblHeadingLabel;
 	private JTextField nameField;
 	private JPasswordField passwordField;
@@ -37,10 +36,9 @@ public class LoginUI {
 	 */
 	public LoginUI(UserManagement verifyUser) {
 		User = verifyUser;
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(255, 255, 255));
-		contentPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
-		contentPane.setLayout(null);
+		setBackground(new Color(255, 255, 255));
+		setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
+		setLayout(null);
 		
 		lblHeadingLabel = new JLabel("Please Login");
 		lblHeadingLabel.setOpaque(true);
@@ -49,7 +47,7 @@ public class LoginUI {
 		lblHeadingLabel.setForeground(new Color(105, 105, 105));
 		lblHeadingLabel.setBackground(new Color(224, 255, 255));
 		lblHeadingLabel.setBounds(126, 11, 267, 37);
-		contentPane.add(lblHeadingLabel);
+		add(lblHeadingLabel);
 		
 		nameField = new JTextField();
 		nameField.addActionListener(new ActionListener() {
@@ -59,14 +57,14 @@ public class LoginUI {
 		});
 		nameField.setBackground(new Color(119, 136, 153));
 		nameField.setBounds(191, 98, 203, 20);
-		contentPane.add(nameField);
+		add(nameField);
 		nameField.setColumns(10);
 		
 		JLabel lblUsernameLabel = new JLabel("Username");
 		lblUsernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsernameLabel.setLabelFor(nameField);
 		lblUsernameLabel.setBounds(90, 101, 90, 14);
-		contentPane.add(lblUsernameLabel);
+		add(lblUsernameLabel);
 		
 		passwordField = new JPasswordField();
 		passwordField.addActionListener(new ActionListener() {
@@ -76,12 +74,12 @@ public class LoginUI {
 		});
 		passwordField.setBackground(new Color(119, 136, 153));
 		passwordField.setBounds(191, 148, 202, 20);
-		contentPane.add(passwordField);
+		add(passwordField);
 		
 		JLabel lblPasswordLabel = new JLabel("Password");
 		lblPasswordLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPasswordLabel.setBounds(90, 151, 90, 14);
-		contentPane.add(lblPasswordLabel);
+		add(lblPasswordLabel);
 
 		changePasswordField = new JPasswordField();
 		changePasswordField.addActionListener(new ActionListener() {
@@ -91,12 +89,12 @@ public class LoginUI {
 		});
 		changePasswordField.setBackground(new Color(119, 136, 153));
 		changePasswordField.setBounds(191, 198, 202, 20);
-		contentPane.add(changePasswordField);
+		add(changePasswordField);
 		
 		JLabel lblChangePasswordLabel = new JLabel("New Password");
 		lblChangePasswordLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblChangePasswordLabel.setBounds(90, 201, 90, 14);
-		contentPane.add(lblChangePasswordLabel);
+		add(lblChangePasswordLabel);
 		
 		JButton btnLoginButton = new JButton("Login");
 		btnLoginButton.addActionListener(new ActionListener() {
@@ -127,7 +125,7 @@ public class LoginUI {
 			}
 		});
 		btnLoginButton.setBounds(98, 236, 117, 37);
-		contentPane.add(btnLoginButton);
+		add(btnLoginButton);
 		
 		JButton btnUpdatePasswordButton = new JButton("Update Password");
 		btnUpdatePasswordButton.addActionListener(new ActionListener() {
@@ -163,18 +161,11 @@ public class LoginUI {
 			}
 		});
 		btnUpdatePasswordButton.setBounds(300, 236, 117, 37);
-		contentPane.add(btnUpdatePasswordButton);
+		add(btnUpdatePasswordButton);
 	}
 
 	//sets window to have this contentPane
 	public void setWindow(UserInterface wind) {
 		window = wind;
-		window.getPane().add(contentPane, "Login");
-	}
-	public void displayWindow() {
-		window.setTitle("Login");
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setBounds(100, 100, 534, 363);
-		window.getCardLayout().show(window.getPane(), "Login");
 	}
 }

@@ -9,9 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
-public class ManageUsersUI {
+public class ManageUsersUI extends JPanel {
 
-	private JPanel contentPane;
 	private JTable userTable;
 	private JDialog enterInfo;
 	private database userDB;
@@ -39,39 +38,38 @@ public class ManageUsersUI {
 	public ManageUsersUI(UserManagement modifyUser, database db) {
 		userModify = modifyUser;
 		userDB = db;
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(255, 255, 255));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(null);
+		setBackground(new Color(255, 255, 255));
+		setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLayout(null);
 		
 		JButton btnAddUserButton = new JButton("Add User");
 		btnAddUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//add a user here
+				//create or show form to add user
 			}
 		});
 		btnAddUserButton.setBounds(99, 400, 134, 44);
-		contentPane.add(btnAddUserButton);
+		add(btnAddUserButton);
 		
 		JButton btnRemoveUserButton = new JButton("Remove User");
 		btnRemoveUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//delete a user here
+				//create or show JDialog box to confirm
 			}
 		});
 		btnRemoveUserButton.setEnabled(false);
 		btnRemoveUserButton.setBounds(327, 400, 134, 44);
-		contentPane.add(btnRemoveUserButton);
+		add(btnRemoveUserButton);
 		
 		JButton btnEditUserButton = new JButton("Edit User");
 		btnEditUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//edit a user here
+				//create or show form to edit user
 			}
 		});
 		btnEditUserButton.setEnabled(false);
 		btnEditUserButton.setBounds(561, 400, 124, 44);
-		contentPane.add(btnEditUserButton);
+		add(btnEditUserButton);
 		
 		String[] colHeaders = {"ID", "Name", "Username", "Role", "Gender"};
 		Object[][] data = populateTable();
@@ -83,7 +81,7 @@ public class ManageUsersUI {
 		JScrollPane scrollPane = new JScrollPane(userTable);
 		scrollPane.setBackground(new Color(192, 192, 192));
 		scrollPane.setBounds(35, 34, 685, 337);
-		contentPane.add(scrollPane);
+		add(scrollPane);
 	}
 
 	public Object[][] populateTable() {
@@ -118,12 +116,5 @@ public class ManageUsersUI {
 	//sets window to have this contentPane
 	public void setWindow(UserInterface wind) {
 		window = wind;
-		window.getPane().add(contentPane, "Users");
-	}
-	public void displayWindow() {
-		window.setTitle("Manage Users");
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setBounds(100, 100, 771, 522);
-		window.getCardLayout().show(window.getPane(), "Users");
 	}
 }
