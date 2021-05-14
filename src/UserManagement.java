@@ -25,15 +25,9 @@ public class UserManagement {
     //forces user to login
     private boolean logged_in = false;
     private static database userDB;
-    //connect to login ui
-    private LoginUI LoginWindow;
-    //connect to manage users ui
-    private ManageUsersUI ManageWindow;
     
     public UserManagement(database DB) {
         userDB = DB;
-        LoginWindow = new LoginUI(this);
-        ManageWindow = new ManageUsersUI(this, DB);
     }
     public void listAll() {
         System.out.println(user_id + "| " + username + " " + name + " " + job + " " + gender + " | is logged in? " + logged_in);
