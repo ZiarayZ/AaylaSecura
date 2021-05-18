@@ -8,8 +8,8 @@ public class AaylaSecuraMain {
 	private static UserManagement user;
 	private static LogTasks logged_tasks;
 	private static UserInterface window;
+	private static CreateReports reportCreation;
 
-private static CreateReports reportCreation;
 	public static void main(String[] args) {
 		dbReset.reset();
 		logged_tasks = new LogTasks(db);
@@ -25,8 +25,6 @@ private static CreateReports reportCreation;
 			//somehow set the main menu visible once login succeeds
 			window.setVisible(true);
 			//this sets both the login menu and manage users menu visible at the same time
-			user.displayLogin();
-			user.displayUsers();
 			reportCreation.createTaskStatusReport();
 		//catching exceptions to test other stuff
 		} catch (SQLException e) {
