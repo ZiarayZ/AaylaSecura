@@ -4,8 +4,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Window.Type;
 import javax.swing.border.EtchedBorder;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
 
 public class LoginUI extends JPanel {
 
@@ -103,6 +103,9 @@ public class LoginUI extends JPanel {
 				try {
 					//add grabbed username and password
 					if (User.login(nameField.getText(), passwordField.getPassword())) {
+						changePasswordField.setText("");
+						passwordField.setText("");
+						nameField.setText("");
 						//handle successful login
 						changePasswordField.setText("");
 						passwordField.setText("");
