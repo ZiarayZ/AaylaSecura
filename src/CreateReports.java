@@ -37,7 +37,8 @@ public class CreateReports {
     } //end of task status report
     
     public void createCaretakerReport() throws IOException {
-    	ResultSet caretakerDetails = dbConnect.RunSQLQuery(""); //details to display in this report not decided yet
+    	//sql query to display user and number of logged tasks (not tested)
+    	ResultSet caretakerDetails = dbConnect.RunSQLQuery("SELECT user_name, COUNT(logged_id) FROM users LEFT JOIN logged_tasks ON user_id = user_id GROUP BY user_name, user_id"); //details to display in this report not decided yet
     	caretakerPerformance = caretakerDetails.toString();
     	
     	File caretakerFile = new File("Caretaker.txt");
