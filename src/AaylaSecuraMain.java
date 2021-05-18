@@ -14,8 +14,8 @@ public class AaylaSecuraMain {
 		dbReset.reset();
 		logged_tasks = new LogTasks(db);
 		user = new UserManagement(db);
-		window = new UserInterface(db, user);
 		reportCreation = new CreateReports(db);
+		window = new UserInterface(db, user, logged_tasks);
 		try {
 			ResultSet jobs = db.getAllJobs();
 			System.out.println("Jobs:");

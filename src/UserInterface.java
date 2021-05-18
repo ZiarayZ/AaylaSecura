@@ -7,16 +7,15 @@ import javax.swing.border.EmptyBorder;
 public class UserInterface extends JFrame {
     private LoginUI loginWindow;
     private ManageUsersUI usersWindow;
+    private TaskLogUI logTasksWindow;
     private UserManagement user;
     private JPanel contentPane;
     private JPanel mainPane;
     private JButton usersBtn;
     private CardLayout cardLayout;
     
-    public UserInterface(database db, UserManagement newUser) {
+    public UserInterface(database db, UserManagement newUser, LogTasks loggingTask) {
         user = newUser;
-        loginWindow = new LoginUI(user);
-        usersWindow = new ManageUsersUI(user, db);
 		mainPane = new JPanel(new CardLayout());
 		contentPane = new JPanel();
         contentPane.setBackground(new Color(255, 255, 255));
@@ -38,15 +37,22 @@ public class UserInterface extends JFrame {
             }
         });
         contentPane.add(usersBtn);
-        //add all JPanels to main CardLayout JPanel
+
+        //collect all JPanels together
         mainPane.add(contentPane, "Main Menu");
-        loginWindow.setWindow(this);
-        usersWindow.setWindow(this);
+        //create other JPanels
+        loginWindow = new LoginUI(this, user);
+        usersWindow = new ManageUsersUI(this, user, db);
+        logTasksWindow = new TaskLogUI(this, loggingTask);
+        //add all other JPanels to main CardLayout JPanel
 		mainPane.add(loginWindow, "Login");
 		mainPane.add(usersWindow, "Users");
-        //assign master Pane
+		mainPane.add(logTasksWindow, "LogTasks");
+        //assign to master Pane
         getContentPane().add(mainPane);
+        //create CardLayout once done
         cardLayout = (CardLayout) mainPane.getLayout();
+        //make sure main menu is displayed first (may change to login menu)
         displayMain();
     }//craft a main menu to default to
 
@@ -61,6 +67,12 @@ public class UserInterface extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//replace with "DO_NOTHING_ON_CLOSE" handle the operation in the "windowClosing" method of a registered "WindowListener" object
 		setBounds(100, 100, 771, 522);
 		cardLayout.show(mainPane, "Users");
+    }
+    public void displayLogTasks() {
+		setTitle("Log Tasks");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//replace with "DO_NOTHING_ON_CLOSE" handle the operation in the "windowClosing" method of a registered "WindowListener" object
+		setBounds(100, 100, 976, 686);
+		cardLayout.show(mainPane, "LogTasks");
     }
     public void displayMain() {
         setTitle("Main Menu");

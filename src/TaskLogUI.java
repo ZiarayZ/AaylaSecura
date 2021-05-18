@@ -18,9 +18,9 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.CaretEvent;
 
-public class TaskLogUI extends JFrame {
+public class TaskLogUI extends JPanel {
 
-	private JPanel contentPane;
+	private UserInterface window;
 	private JTable taskListTable;
 	private JTextField caretakerNameField;
 	private JTextField timeCompletedField;
@@ -28,7 +28,7 @@ public class TaskLogUI extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -39,21 +39,18 @@ public class TaskLogUI extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
-	 * Create the frame.
+	 * Create the panel.
 	 */
-	public TaskLogUI(LogTasks loggingTask) {
+	public TaskLogUI(UserInterface UI, LogTasks loggingTask) {//, UserManagement User, database db) {
 		taskLog = loggingTask;
-		setTitle("Log Tasks");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 976, 686);
-		contentPane = new JPanel();
-		contentPane.setBackground(new Color(255, 255, 255));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		//sets window to have this contentPane
+		window = UI;
+		setBackground(new Color(255, 255, 255));
+		setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLayout(null);
 		
 		JLabel lblHeadingLabel = new JLabel("Please Log a Completed Task");
 		lblHeadingLabel.setForeground(new Color(105, 105, 105));
@@ -62,12 +59,12 @@ public class TaskLogUI extends JFrame {
 		lblHeadingLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHeadingLabel.setBackground(new Color(224, 255, 255));
 		lblHeadingLabel.setBounds(256, 55, 444, 67);
-		contentPane.add(lblHeadingLabel);
+		add(lblHeadingLabel);
 		
 		taskListTable = new JTable();
 		taskListTable.setBackground(new Color(192, 192, 192));
 		taskListTable.setBounds(68, 150, 820, 232);
-		contentPane.add(taskListTable);
+		add(taskListTable);
 		
 		caretakerNameField = new JTextField();
 		caretakerNameField.addActionListener(new ActionListener() {
@@ -77,12 +74,12 @@ public class TaskLogUI extends JFrame {
 		});
 		caretakerNameField.setBackground(new Color(112, 128, 144));
 		caretakerNameField.setBounds(261, 427, 118, 20);
-		contentPane.add(caretakerNameField);
+		add(caretakerNameField);
 		caretakerNameField.setColumns(10);
 		
 		JLabel lblNameLabel = new JLabel("Completed By");
 		lblNameLabel.setBounds(179, 430, 72, 14);
-		contentPane.add(lblNameLabel);
+		add(lblNameLabel);
 		
 		timeCompletedField = new JTextField();
 		timeCompletedField.addActionListener(new ActionListener() {
@@ -92,22 +89,22 @@ public class TaskLogUI extends JFrame {
 		});
 		timeCompletedField.setBackground(new Color(112, 128, 144));
 		timeCompletedField.setBounds(261, 473, 118, 20);
-		contentPane.add(timeCompletedField);
+		add(timeCompletedField);
 		timeCompletedField.setColumns(10);
 		
 		JLabel lblTimeLabel = new JLabel("Time Completed");
 		lblTimeLabel.setBounds(179, 476, 85, 14);
-		contentPane.add(lblTimeLabel);
+		add(lblTimeLabel);
 		
 		JTextArea addCommentsField = new JTextArea();
 		//need to find out how to handle input in a text area
 		addCommentsField.setBackground(new Color(112, 128, 144));
 		addCommentsField.setBounds(641, 425, 213, 68);
-		contentPane.add(addCommentsField);
+		add(addCommentsField);
 		
 		JLabel lblNewLabel = new JLabel("Additional Comments");
 		lblNewLabel.setBounds(513, 430, 118, 14);
-		contentPane.add(lblNewLabel);
+		add(lblNewLabel);
 		
 		JButton sortByCaretakerButton = new JButton("Sort By Caretaker");
 		sortByCaretakerButton.addActionListener(new ActionListener() {
@@ -116,7 +113,7 @@ public class TaskLogUI extends JFrame {
 			}
 		});
 		sortByCaretakerButton.setBounds(78, 553, 125, 37);
-		contentPane.add(sortByCaretakerButton);
+		add(sortByCaretakerButton);
 		
 		JButton sortByDeadlineButton = new JButton("Sort By Deadline");
 		sortByDeadlineButton.addActionListener(new ActionListener() {
@@ -125,7 +122,7 @@ public class TaskLogUI extends JFrame {
 			}
 		});
 		sortByDeadlineButton.setBounds(213, 553, 132, 37);
-		contentPane.add(sortByDeadlineButton);
+		add(sortByDeadlineButton);
 		
 		JButton editCompletedButton = new JButton("Edit Completed Task");
 		editCompletedButton.addActionListener(new ActionListener() {
@@ -134,7 +131,7 @@ public class TaskLogUI extends JFrame {
 			}
 		});
 		editCompletedButton.setBounds(355, 553, 133, 37);
-		contentPane.add(editCompletedButton);
+		add(editCompletedButton);
 		
 		JButton logTaskButton = new JButton("Log Task");
 		logTaskButton.addActionListener(new ActionListener() {
@@ -143,7 +140,7 @@ public class TaskLogUI extends JFrame {
 			}
 		});
 		logTaskButton.setBounds(498, 553, 118, 37);
-		contentPane.add(logTaskButton);
+		add(logTaskButton);
 		
 		JButton undoLoggedTaskButton = new JButton("Undo Changes");
 		undoLoggedTaskButton.addActionListener(new ActionListener() {
@@ -152,7 +149,7 @@ public class TaskLogUI extends JFrame {
 			}
 		});
 		undoLoggedTaskButton.setBounds(626, 553, 124, 37);
-		contentPane.add(undoLoggedTaskButton);
+		add(undoLoggedTaskButton);
 		
 		JButton createReportButton = new JButton("Create Report");
 		createReportButton.addActionListener(new ActionListener() {
@@ -161,6 +158,6 @@ public class TaskLogUI extends JFrame {
 			}
 		});
 		createReportButton.setBounds(760, 553, 128, 37);
-		contentPane.add(createReportButton);
+		add(createReportButton);
 	}
 }

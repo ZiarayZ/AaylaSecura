@@ -35,9 +35,10 @@ public class ManageUsersUI extends JPanel {
 	/**
 	 * Create the frame.
 	 */
-	public ManageUsersUI(UserManagement modifyUser, database db) {
+	public ManageUsersUI(UserInterface UI, UserManagement modifyUser, database db) {
 		userModify = modifyUser;
 		userDB = db;
+		window = UI;
 		setBackground(new Color(255, 255, 255));
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(null);
@@ -111,10 +112,5 @@ public class ManageUsersUI extends JPanel {
 
 		Object[][] data = {{}};
 		return data;
-	}
-
-	//sets window to have this contentPane
-	public void setWindow(UserInterface wind) {
-		window = wind;
 	}
 }

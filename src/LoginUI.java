@@ -34,8 +34,9 @@ public class LoginUI extends JPanel {
 	/**
 	 * Create the frame.
 	 */
-	public LoginUI(UserManagement verifyUser) {
+	public LoginUI(UserInterface UI, UserManagement verifyUser) {
 		User = verifyUser;
+		window = UI;
 		setBackground(new Color(255, 255, 255));
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
 		setLayout(null);
@@ -165,10 +166,5 @@ public class LoginUI extends JPanel {
 		});
 		btnUpdatePasswordButton.setBounds(300, 236, 117, 37);
 		add(btnUpdatePasswordButton);
-	}
-
-	//sets window to have this contentPane
-	public void setWindow(UserInterface wind) {
-		window = wind;
 	}
 }
