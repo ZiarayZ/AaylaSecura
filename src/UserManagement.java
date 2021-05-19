@@ -59,6 +59,16 @@ public class UserManagement {
     public boolean getLogin() {
         return logged_in;
     }
+    public void logout() {
+        logged_in = false;
+        //zero out all information held
+        user_id = 0;
+        username = null;
+        name = null;
+        job_id = 0;
+        job = null;
+        gender = Character.MIN_VALUE;
+    }
     public String getGender() {
         if (gender == 'M') {
             return "Male";

@@ -11,6 +11,7 @@ public class UserInterface extends JFrame {
     private UserManagement user;
     private JPanel contentPane;
     private JPanel mainPane;
+    private JButton loginBtn;
     private JButton usersBtn;
     private JButton logTaskBtn;
     private JButton backBtn;
@@ -25,7 +26,7 @@ public class UserInterface extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
         //add buttons to access cards
-        JButton loginBtn = new JButton("Login");
+        loginBtn = new JButton("Login");
         loginBtn.setBounds(6, 100, 125, 50);
         loginBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -55,7 +56,7 @@ public class UserInterface extends JFrame {
         //create other JPanels
         loginWindow = new LoginUI(this, user);
         usersWindow = new ManageUsersUI(this, user, db);
-        logTasksWindow = new TaskLogUI(this, loggingTask);
+        logTasksWindow = new TaskLogUI(this, loggingTask, db);
         //create back button to navigate back to main menu
         backBtn = new JButton("<");
         backBtn.setBounds(0, 0, 50, 30);
@@ -82,6 +83,9 @@ public class UserInterface extends JFrame {
     }
 
     public void displayLogin() {
+        if (user.getLogin()) {
+            user.logout();
+        }
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//replace with "DO_NOTHING_ON_CLOSE" handle the operation in the "windowClosing" method of a registered "WindowListener" object
 		setBounds(100, 100, 534, 363);
@@ -109,9 +113,11 @@ public class UserInterface extends JFrame {
         if (user.getLogin()) {
             usersBtn.setEnabled(true);
             logTaskBtn.setEnabled(true);
+            loginBtn.setText("Logout");
         } else {
             usersBtn.setEnabled(false);
             logTaskBtn.setEnabled(false);
+            loginBtn.setText("Login");
         }
 		cardLayout.show(mainPane, "Main Menu");
     }

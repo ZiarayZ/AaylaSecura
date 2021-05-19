@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Color;
@@ -12,15 +13,20 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.table.TableColumnModel;
 import javax.swing.event.CaretEvent;
 
 public class TaskLogUI extends JPanel {
 
 	private UserInterface window;
+	private database taskDB;
 	private JTable taskListTable;
 	private JTextField caretakerNameField;
 	private JTextField timeCompletedField;
@@ -44,8 +50,9 @@ public class TaskLogUI extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public TaskLogUI(UserInterface UI, LogTasks loggingTask) {//, UserManagement User, database db) {
+	public TaskLogUI(UserInterface UI, LogTasks loggingTask, database DB) {//, UserManagement User, database db) {
 		taskLog = loggingTask;
+		taskDB = DB;
 		//sets window to have this contentPane
 		window = UI;
 		setBackground(new Color(255, 255, 255));
@@ -61,10 +68,20 @@ public class TaskLogUI extends JPanel {
 		lblHeadingLabel.setBounds(256, 55, 444, 67);
 		add(lblHeadingLabel);
 		
-		taskListTable = new JTable();
-		taskListTable.setBackground(new Color(192, 192, 192));
-		taskListTable.setBounds(68, 150, 820, 232);
-		add(taskListTable);
+		String[] colHeaders = {"Logged Task ID", "Task ID", "Task Name", "First User ID", "First User", "Second User ID", "Second User", "Date Completed"};
+		Object[][] data = populateTable();
+		taskListTable = new JTable(data,colHeaders);
+		//this removes the id column, but you should be able to call 'userTable.getModel().getValueAt(row, 0)' to get the id
+		TableColumnModel tcm = taskListTable.getColumnModel();
+		tcm.removeColumn(tcm.getColumn(0));//Logged Task ID
+		tcm.removeColumn(tcm.getColumn(0));//Task ID -1
+		tcm.removeColumn(tcm.getColumn(1));//First User ID -2
+		tcm.removeColumn(tcm.getColumn(2));//Second User ID -3
+		//import table into a scroll pane so that the table headers are visible and other things
+		JScrollPane scrollPane = new JScrollPane(taskListTable);
+		scrollPane.setBackground(new Color(192, 192, 192));
+		scrollPane.setBounds(68, 150, 820, 232);
+		add(scrollPane);
 		
 		caretakerNameField = new JTextField();
 		caretakerNameField.addActionListener(new ActionListener() {
@@ -159,5 +176,27 @@ public class TaskLogUI extends JPanel {
 		});
 		createReportButton.setBounds(760, 553, 128, 54);
 		add(createReportButton);
+	}
+	
+	public Object[][] populateTable() {
+		ArrayList<Object[]> tempData = new ArrayList<Object[]>();
+
+		//call for all users info
+		ResultSet sql = taskDB.getAllLoggedTasks(" ORDER BY tasks.task_name");
+		try {
+			while (sql.next()) {
+				Object[] dataPoint = {sql.getInt(1), sql.getInt(2), sql.getString(3), sql.getInt(4), sql.getString(5), sql.getInt(6), sql.getString(7), sql.getString(8)};
+				tempData.add(dataPoint);
+			}
+			Object[][] data = new Object[tempData.size()][8];
+			return tempData.toArray(data);
+		} catch (SQLException e) {
+			System.out.println(e);//need to display error window instead
+		} catch (NullPointerException e) {
+			System.out.println(e);//need to display error window instead
+		}
+
+		Object[][] data = {{}};
+		return data;
 	}
 }
