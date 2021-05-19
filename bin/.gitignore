@@ -7,12 +7,10 @@
 /LoginUI$3.class
 /LoginUI$4.class
 /LoginUI$5.class
-/LoginUI$6.class
 /LoginUI.class
 /ManageUsersUI$1.class
 /ManageUsersUI$2.class
 /ManageUsersUI$3.class
-/ManageUsersUI$4.class
 /ManageUsersUI.class
 /TaskLogUI$1.class
 /TaskLogUI$2.class
@@ -22,8 +20,12 @@
 /TaskLogUI$6.class
 /TaskLogUI$7.class
 /TaskLogUI$8.class
-/TaskLogUI$9.class
 /TaskLogUI.class
+/UserInterface$1.class
+/UserInterface$2.class
+/UserInterface$3.class
+/UserInterface$4.class
+/UserInterface.class
 /UserManagement.class
 /database.class
 /databaseReset.class
@@ -33,3 +35,5 @@
 /task.class
 /taskAssign.class
 /taskEntry.class
+/TaskStatus.txt
+/groupDatabase.db-journal

@@ -26,6 +26,8 @@ public class AaylaSecuraMain {
 			window.setVisible(true);
 			//this sets both the login menu and manage users menu visible at the same time
 			reportCreation.createTaskStatusReport();
+			reportCreation.createCaretakerReport();
+			reportCreation.createCompletedTaskReport();
 		//catching exceptions to test other stuff
 		} catch (SQLException e) {
 			System.out.println(e);

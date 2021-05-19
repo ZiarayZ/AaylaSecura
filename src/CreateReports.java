@@ -1,3 +1,4 @@
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -34,11 +35,15 @@ public class CreateReports {
     		System.out.println("Failed to connect "+ e);
     	}
     	pwrite.close();
+    	
+    	//display text file on click (could go here or in code for UI with filepath in .open)
+    	Desktop desktop = Desktop.getDesktop(); 
+    	desktop.open(statusFile);
     } //end of task status report
     
     public void createCaretakerReport() throws IOException {
     	//sql query to display user and number of logged tasks (not tested)
-    	ResultSet caretakerDetails = dbConnect.RunSQLQuery("SELECT user_name, COUNT(logged_id) FROM users LEFT JOIN logged_tasks ON users.user_id = logged_task.user_id GROUP BY user_name, user_id"); //details to display in this report not decided yet
+    	ResultSet caretakerDetails = dbConnect.RunSQLQuery("SELECT user_name, COUNT(logged_id) FROM users LEFT JOIN logged_tasks ON users.user_id = logged_tasks.user_id GROUP BY user_name, user_id");
     	caretakerPerformance = caretakerDetails.toString();
     	
     	File caretakerFile = new File("Caretaker.txt");
@@ -53,6 +58,10 @@ public class CreateReports {
     		System.out.println("Failed to connect "+ e);
     	}
     	pwrite.close();
+    	
+    	//display text file on click
+    	Desktop desktop = Desktop.getDesktop(); 
+    	desktop.open(caretakerFile);
     } //end of caretaker report
     
     public void createCompletedTaskReport() throws IOException {
@@ -71,5 +80,8 @@ public class CreateReports {
     		System.out.println("Failed to connect " + e);
     	}
     	pwrite.close();
+    	
+    	Desktop desktop = Desktop.getDesktop(); 
+    	desktop.open(completedFile);
     } //end of completed task report
 }
