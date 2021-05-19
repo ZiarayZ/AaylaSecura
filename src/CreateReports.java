@@ -54,7 +54,7 @@ public class CreateReports {
     	
     	try {
     		while (caretakerPerformance.next()) {
-    			pwrite.println("Caretaker name: " + caretakerPerformance.getString(1)+" "+ "No. of Logged Tasks: "+ caretakerPerformance.getString(2));
+    			pwrite.println("Caretaker name: " + caretakerPerformance.getString(1)+" "+ " No. of Logged Tasks: "+ caretakerPerformance.getString(2));
     		}
     	} catch (SQLException e) {
     		System.out.println("Failed to connect "+ e);
@@ -67,7 +67,7 @@ public class CreateReports {
     } //end of caretaker report
     
     public void createCompletedTaskReport() throws IOException {
-    	taskCompletionLevel = tasksDB.getAllLoggedTasks(null); //error to fix here
+    	taskCompletionLevel = tasksDB.getAllLoggedTasks(" ORDER BY date_completed ");//show logged tasks in date order 
     	
     	File completedFile = new File("Completed.txt");
     	FileWriter fwrite = new FileWriter(completedFile, false);
@@ -75,7 +75,10 @@ public class CreateReports {
     	
     	try {
     		while (taskCompletionLevel.next()) {
-    			pwrite.println(" "+ taskCompletionLevel.getString(1));//still need to finish this println
+    			//will likely change this
+    			pwrite.println(taskCompletionLevel.getString(1) + " " + taskCompletionLevel.getString(2) + taskCompletionLevel.getString(3) 
+    							+ " " + taskCompletionLevel.getString(4) + " " + taskCompletionLevel.getString(5) + " " + taskCompletionLevel.getString(6)
+    							+ " " + taskCompletionLevel.getString(7) + " " + taskCompletionLevel.getString(8));
     		}
     	} catch (SQLException e) {
     		System.out.println("Failed to connect " + e);
