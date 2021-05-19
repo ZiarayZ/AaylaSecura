@@ -164,7 +164,7 @@ public class LoginUI extends JPanel {
 				}
 			}
 		});
-		btnUpdatePasswordButton.setBounds(300, 236, 117, 37);
+		btnUpdatePasswordButton.setBounds(300, 236, 157, 37);
 		add(btnUpdatePasswordButton);
 	}
 }

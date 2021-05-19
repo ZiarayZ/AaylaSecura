@@ -78,7 +78,7 @@ public class TaskLogUI extends JPanel {
 		caretakerNameField.setColumns(10);
 		
 		JLabel lblNameLabel = new JLabel("Completed By");
-		lblNameLabel.setBounds(179, 430, 72, 14);
+		lblNameLabel.setBounds(159, 430, 92, 14);
 		add(lblNameLabel);
 		
 		timeCompletedField = new JTextField();
@@ -93,7 +93,7 @@ public class TaskLogUI extends JPanel {
 		timeCompletedField.setColumns(10);
 		
 		JLabel lblTimeLabel = new JLabel("Time Completed");
-		lblTimeLabel.setBounds(179, 476, 85, 14);
+		lblTimeLabel.setBounds(159, 476, 105, 14);
 		add(lblTimeLabel);
 		
 		JTextArea addCommentsField = new JTextArea();
@@ -103,61 +103,61 @@ public class TaskLogUI extends JPanel {
 		add(addCommentsField);
 		
 		JLabel lblNewLabel = new JLabel("Additional Comments");
-		lblNewLabel.setBounds(513, 430, 118, 14);
+		lblNewLabel.setBounds(493, 430, 138, 14);
 		add(lblNewLabel);
 		
-		JButton sortByCaretakerButton = new JButton("Sort By Caretaker");
+		JButton sortByCaretakerButton = new JButton("<html><center>Sort By<br>Caretaker</center></html>");
 		sortByCaretakerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//sort db by caretaker here
 			}
 		});
-		sortByCaretakerButton.setBounds(78, 553, 125, 37);
+		sortByCaretakerButton.setBounds(78, 553, 125, 54);
 		add(sortByCaretakerButton);
 		
-		JButton sortByDeadlineButton = new JButton("Sort By Deadline");
+		JButton sortByDeadlineButton = new JButton("<html><center>Sort By<br>Deadline</center></html>");
 		sortByDeadlineButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//sort db by deadline here
 			}
 		});
-		sortByDeadlineButton.setBounds(213, 553, 132, 37);
+		sortByDeadlineButton.setBounds(213, 553, 132, 54);
 		add(sortByDeadlineButton);
 		
-		JButton editCompletedButton = new JButton("Edit Completed Task");
+		JButton editCompletedButton = new JButton("<html><center>Edit<br>Completed Task</center></html>");
 		editCompletedButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//detects a selected task to edit here
 			}
 		});
-		editCompletedButton.setBounds(355, 553, 133, 37);
+		editCompletedButton.setBounds(355, 553, 133, 54);
 		add(editCompletedButton);
 		
-		JButton logTaskButton = new JButton("Log Task");
+		JButton logTaskButton = new JButton("<html><center>Log<br>Task</center></html>");
 		logTaskButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//logs the task
 			}
 		});
-		logTaskButton.setBounds(498, 553, 118, 37);
+		logTaskButton.setBounds(498, 553, 118, 54);
 		add(logTaskButton);
 		
-		JButton undoLoggedTaskButton = new JButton("Undo Changes");
+		JButton undoLoggedTaskButton = new JButton("<html><center>Undo<br>Changes</center></html>");
 		undoLoggedTaskButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//undo functionality (optional)
 			}
 		});
-		undoLoggedTaskButton.setBounds(626, 553, 124, 37);
+		undoLoggedTaskButton.setBounds(626, 553, 124, 54);
 		add(undoLoggedTaskButton);
 		
-		JButton createReportButton = new JButton("Create Report");
+		JButton createReportButton = new JButton("<html><center>Create<br>Report</center></html>");
 		createReportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//generates the report
 			}
 		});
-		createReportButton.setBounds(760, 553, 128, 37);
+		createReportButton.setBounds(760, 553, 128, 54);
 		add(createReportButton);
 	}
 }
