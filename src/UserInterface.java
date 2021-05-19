@@ -12,6 +12,7 @@ public class UserInterface extends JFrame {
     private JPanel contentPane;
     private JPanel mainPane;
     private JButton usersBtn;
+    private JButton logTaskBtn;
     private CardLayout cardLayout;
     
     public UserInterface(database db, UserManagement newUser, LogTasks loggingTask) {
@@ -22,7 +23,7 @@ public class UserInterface extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
         JButton loginBtn = new JButton("Login/Update Password");
-        loginBtn.setBounds(50, 100, 125, 50);
+        loginBtn.setBounds(6, 100, 125, 50);
         loginBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 displayLogin();
@@ -30,13 +31,21 @@ public class UserInterface extends JFrame {
         });
         contentPane.add(loginBtn);
         usersBtn = new JButton("Manage Users");
-        usersBtn.setBounds(225, 100, 125, 50);
+        usersBtn.setBounds(137, 100, 125, 50);
         usersBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 displayUsers();
             }
         });
         contentPane.add(usersBtn);
+        logTaskBtn = new JButton("Log Tasks");
+        logTaskBtn.setBounds(268, 100, 125, 50);
+        logTaskBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                displayLogTasks();
+            }
+        });
+        contentPane.add(logTaskBtn);
 
         //collect all JPanels together
         mainPane.add(contentPane, "Main Menu");
