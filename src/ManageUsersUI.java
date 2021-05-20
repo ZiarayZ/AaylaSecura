@@ -20,21 +20,6 @@ public class ManageUsersUI extends JPanel {
 	private database userDB;
 	private UserManagement User;
 	private UserInterface window;
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ManageUsersUI frame = new ManageUsersUI(null, new database());
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	/**
 	 * Create the frame.

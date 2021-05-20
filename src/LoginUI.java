@@ -22,24 +22,9 @@ public class LoginUI extends JPanel {
 	private JPasswordField passwordField;
 	private JPasswordField changePasswordField;
 	private UserManagement User;
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LoginUI frame = new LoginUI(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	/**
-	 * Create the frame.
+	 * Create the Pane.
 	 */
 	public LoginUI(UserInterface UI, UserManagement verifyUser) {
 		User = verifyUser;
@@ -104,6 +89,7 @@ public class LoginUI extends JPanel {
 				//Do Nothing
 			}
 			public void keyPressed(KeyEvent event) {
+				//Press Enter
 				int key = event.getKeyCode();
 				if (key == KeyEvent.VK_ENTER) {
 					attemptPassChange();
@@ -202,16 +188,16 @@ public class LoginUI extends JPanel {
 			} catch (SQLException e) {
 				//handle sql exception
 				//handle failed Password Update
-					window.displayError("Password Update Failed!", "Database Error!");
+				window.displayError("Password Update Failed!", "Database Error!");
 			} catch (NullPointerException e) {
 				//handle null result from sql error
 				//handle failed Password Update
-					window.displayError("Password Update Failed!", "Not Connected to Database.");
+				window.displayError("Password Update Failed!", "Not Connected to Database.");
 			}
 		} else {
-				//handle final password update fails
-				//this should theoretically never happen, as you are forcefully logged out when this pane is opened
-				window.displayError("Password Update Failed!", "Not Logged In.");
+			//handle final password update fails
+			//this should theoretically never happen, as you are forcefully logged out when this pane is opened
+			window.displayError("Password Update Failed!", "Not Logged In.");
 		}
 	}
 }

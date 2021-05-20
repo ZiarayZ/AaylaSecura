@@ -1,9 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
 import java.awt.Color;
@@ -21,8 +19,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.CaretListener;
-import javax.swing.table.TableColumnModel;
 import javax.swing.event.CaretEvent;
+import javax.swing.table.TableColumnModel;
 
 public class TaskLogUI extends JPanel {
 
@@ -32,26 +30,11 @@ public class TaskLogUI extends JPanel {
 	private JTextField caretakerNameField;
 	private JTextField timeCompletedField;
 	private LogTasks taskLog;
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TaskLogUI frame = new TaskLogUI(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	/**
 	 * Create the panel.
 	 */
-	public TaskLogUI(UserInterface UI, LogTasks loggingTask, database DB) {//, UserManagement User, database db) {
+	public TaskLogUI(UserInterface UI, LogTasks loggingTask, database DB) {//, UserManagement User) {
 		taskLog = loggingTask;
 		taskDB = DB;
 		//sets window to have this contentPane
