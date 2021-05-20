@@ -18,7 +18,6 @@ public class database {
 		myDB.Connect("src\\groupDatabase.db");
 	}
 	
-	
 	private boolean checkValidDateTime(final String dateTime) { //returns true if given date time is valid
         boolean valid = false;
         try {

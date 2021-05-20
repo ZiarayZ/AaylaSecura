@@ -16,7 +16,6 @@ public class CreateReports {
     public CreateReports(database db) {
         tasksDB = db;
         dbConnect = new dbConnection();
-        dbConnect.Connect("src\\groupDatabase.db");
     }
 
     public void createTaskStatusReport() throws IOException {

@@ -5,10 +5,10 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 
 public class dbConnection {
-	private Connection conn;
+	private static Connection conn;
 	
 	public dbConnection() {
-		conn=null;
+		
 	}
 	
 	public boolean Connect(String filename) {
