@@ -38,7 +38,7 @@ public class CreateReports {
     	}
     	pwrite.close();
     	
-    	//display text file on click (could go here or in code for UI with filepath in .open)
+    	//display text file on click
     	Desktop desktop = Desktop.getDesktop(); 
     	desktop.open(statusFile);
     } //end of task status report
@@ -54,7 +54,7 @@ public class CreateReports {
     	
     	try {
     		while (caretakerPerformance.next()) {
-    			pwrite.println("Caretaker name: " + caretakerPerformance.getString(1)+" "+ " No. of Logged Tasks: "+ caretakerPerformance.getString(2));
+    			pwrite.println("Caretaker name: " + caretakerPerformance.getString(1)+" "+ " No. of Logged Tasks: "+ caretakerPerformance.getInt(2));
     		}
     	} catch (SQLException e) {
     		System.out.println("Failed to connect "+ e);
@@ -75,10 +75,9 @@ public class CreateReports {
     	
     	try {
     		while (taskCompletionLevel.next()) {
-    			//will likely change this
-    			pwrite.println(taskCompletionLevel.getString(1) + " " + taskCompletionLevel.getString(2) + taskCompletionLevel.getString(3) 
-    							+ " " + taskCompletionLevel.getString(4) + " " + taskCompletionLevel.getString(5) + " " + taskCompletionLevel.getString(6)
-    							+ " " + taskCompletionLevel.getString(7) + " " + taskCompletionLevel.getString(8));
+    			//print only relevant columns
+    			pwrite.println(taskCompletionLevel.getString(3) + " with an ID no. of " + taskCompletionLevel.getInt(2) + " was completed by " + 
+    							taskCompletionLevel.getString(5) + " on " + taskCompletionLevel.getString(8));
     		}
     	} catch (SQLException e) {
     		System.out.println("Failed to connect " + e);
