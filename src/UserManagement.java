@@ -53,6 +53,9 @@ public class UserManagement {
     public String getName() {
         return name;
     }
+    public int getJobID() {
+        return job_id;
+    }
     public String getJob() {
         return job;
     }
@@ -79,15 +82,6 @@ public class UserManagement {
         }
     }
 
-    //edit name
-    public String editName(String user_name) throws SQLException {
-        if (user_name.equals(null) || user_name.equals("")) {
-            return "empty/null";
-        } else {
-            //i would add more validation but names can be ANYTHING
-            return userDB.editUser(user_id, "user_name", user_name);
-        }
-    }
     //edit password
     public String editPassword(char[] password) throws SQLException {
         if (password.equals(null) || password.length == 0) {
@@ -104,60 +98,6 @@ public class UserManagement {
                 return "InvalidKeySpecException";
             }
         }
-    }
-    //edit gender
-    public String editGender(String gen) throws SQLException {
-        if (gen.equals(null) || gen.equals("")) {
-            return "empty/null";
-        } else if (gen.matches("[MmFf]")) {
-            return userDB.editUser(user_id, "M_F", gen.toUpperCase());
-        } else {
-            return "failed verification";
-        }
-    }
-
-    //add user to database if manager/admin+
-    public boolean addUser(String new_name, String new_username, int new_job, char[] password, String new_notes, String new_gender) throws SQLException {
-        if (perms.containsKey("MU") && perms.get("MU") >= 2) {
-            String newPass = "";
-            try {
-                newPass = genPassHash(password);
-            } catch (NoSuchAlgorithmException e) {
-                System.out.println(e);//replace with error prompt in UI
-                return false;
-            } catch (InvalidKeySpecException e) {
-                System.out.println(e);//replace with error prompt in UI
-                return false;
-            }
-            if (!newPass.equals("")) {
-                String problem = userDB.addNewUser(new_name, new_username, new_job, newPass, new_notes, new_gender);
-                if (problem.equals("")) {
-                    return true;
-                } else {
-                    System.out.println(problem);
-                    return false;
-                }
-            } else {
-                //just incase somehow
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-    //edit user in database if manager/admin+
-    public boolean editUser() {//if the targetted user is beneath this user in "rank"
-        if (perms.containsKey("MU") && perms.get("MU") >= 1) {
-            return true;
-        }
-        return false;
-    }
-    //delete user in database if manager/admin+
-    public boolean deleteUser() {
-        if (perms.containsKey("MU") && perms.get("MU") >= 3) {
-            return true;
-        }
-        return false;
     }
 
     //log in method
