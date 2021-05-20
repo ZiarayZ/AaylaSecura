@@ -1,5 +1,8 @@
 import java.awt.Color;
 import java.awt.CardLayout;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import java.awt.LayoutManager;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionListener;
@@ -7,6 +10,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
@@ -20,10 +24,17 @@ public class UserInterface extends JFrame {
     private JButton loginBtn;
     private JButton usersBtn;
     private JButton logTaskBtn;
+    private JFrame errorFrame = new JFrame("Error!");
+    private JPanel errorPane = new JPanel();
     private CardLayout cardLayout;
     
     public UserInterface(database db, UserManagement newUser, LogTasks loggingTask) {
         user = newUser;
+        //setup errorPane
+        LayoutManager layout = new FlowLayout();
+        errorPane.setLayout(layout);
+        errorFrame.getContentPane().add(errorPane, BorderLayout.CENTER);
+
         //create master pane and main menu pane
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -101,6 +112,10 @@ public class UserInterface extends JFrame {
         //make sure main menu is displayed first (may change to login menu)
         displayMain();
         displayLogin();
+    }
+
+    public void displayError(String title, String message) {
+        JOptionPane.showMessageDialog(errorFrame, message, title, JOptionPane.ERROR_MESSAGE);
     }
 
     public void displayLogin() {

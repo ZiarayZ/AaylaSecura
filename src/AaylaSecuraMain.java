@@ -15,12 +15,12 @@ public class AaylaSecuraMain {
 		//clear and repopulate database
 		//dbReset.reset();
 		//initialise classes
-		//logged_tasks = new LogTasks(db);
-		//user = new UserManagement(db);
-		//reportCreation = new CreateReports(db);
-		//window = new UserInterface(db, user, logged_tasks);
+		logged_tasks = new LogTasks(db);
+		user = new UserManagement(db);
+		reportCreation = new CreateReports(db);
+		window = new UserInterface(db, user, logged_tasks);
 		//set window frame visible
-		//window.setVisible(true);
+		window.setVisible(true);
 
 		
 		//testing

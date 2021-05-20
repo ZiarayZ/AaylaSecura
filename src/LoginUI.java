@@ -169,19 +169,18 @@ public class LoginUI extends JPanel {
 				passwordField.setText("");
 				nameField.setText("");
 				window.displayMain();
-				System.out.println("Login success.");
 			} else {
 				//handle failed login
-				System.out.println("Login fail: Invalid Username or Password.");
+				window.displayError("Login Failed!", "Invalid Username or Password.");
 			}
 		} catch (SQLException e) {
 			//handle sql exception
 			//handle failed login
-			System.out.println("Login fail: SQLException.");
+			window.displayError("Login Failed!", "Database Error!");
 		} catch (NullPointerException e) {
 			//handle null result from sql error
 			//handle failed login
-			System.out.println("Login fail: NullPointerException.");
+			window.displayError("Login Failed!", "Not Connected to Database.");
 		}
 	}
 	private void attemptPassChange() {
@@ -195,23 +194,24 @@ public class LoginUI extends JPanel {
 					passwordField.setText("");
 					nameField.setText("");
 					window.displayMain();
-					System.out.println("Password Update success.");
+					window.displayError("Password Updated!", "Password update successful!");
 				} else {
 					//handle login fail
-					System.out.println("Password Update fail: Failed Login.");
+					window.displayError("Password Update Failed!", "Login Failed.");
 				}
 			} catch (SQLException e) {
 				//handle sql exception
 				//handle failed Password Update
-				System.out.println("Password Update fail: SQLException.");
+					window.displayError("Password Update Failed!", "Database Error!");
 			} catch (NullPointerException e) {
 				//handle null result from sql error
 				//handle failed Password Update
-				System.out.println("Password Update fail: NullPointerException.");
+					window.displayError("Password Update Failed!", "Not Connected to Database.");
 			}
 		} else {
 				//handle final password update fails
-				System.out.println("Password Update fail: Not Logged in.");
+				//this should theoretically never happen, as you are forcefully logged out when this pane is opened
+				window.displayError("Password Update Failed!", "Not Logged In.");
 		}
 	}
 }
