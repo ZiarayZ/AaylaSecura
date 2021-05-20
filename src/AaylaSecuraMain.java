@@ -1,6 +1,4 @@
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.io.IOException;
 public class AaylaSecuraMain {
 	
 	static database db = new database();
