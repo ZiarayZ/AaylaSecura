@@ -290,12 +290,12 @@ public class UserManagement {
             return false;
         }
         //make sure password is of valid strength
-        if (passwordStrength(password)<60) {
+        if (passwordStrength(password)<40) {
             return false;
         }
         return true;
     }
-    private static float passwordStrength(char[] password) {
+    public static float passwordStrength(char[] password) {
         float score = 0;
 
         //if no password return 0

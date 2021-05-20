@@ -1,10 +1,17 @@
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.Window.Type;
 import javax.swing.border.EtchedBorder;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JProgressBar;
+import javax.swing.JPasswordField;
+import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+import java.awt.Color;
+import java.awt.Font;
 import java.sql.SQLException;
 
 public class LoginUI extends JPanel {
@@ -53,7 +60,7 @@ public class LoginUI extends JPanel {
 		nameField = new JTextField();
 		nameField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//i see no reason for this
+				//i see no reason for this to exist
 			}
 		});
 		nameField.setBackground(new Color(119, 136, 153));
@@ -70,7 +77,7 @@ public class LoginUI extends JPanel {
 		passwordField = new JPasswordField();
 		passwordField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//i see no reason for this
+				//i see no reason for this to exist
 			}
 		});
 		passwordField.setBackground(new Color(119, 136, 153));
@@ -82,10 +89,37 @@ public class LoginUI extends JPanel {
 		lblPasswordLabel.setBounds(311, 313, 90, 14);
 		add(lblPasswordLabel);
 
+		//creating a Progress Bar to display New Password's strength, 40 is a pass, 60 is a strong
+		JProgressBar passStrength = new JProgressBar(0, 100);
+		passStrength.setValue(0);
+		passStrength.setBackground(new Color(140, 255, 251));
+		passStrength.setForeground(new Color(236, 28, 36));
+		passStrength.setBounds(311, 455, 375, 25);
+
 		changePasswordField = new JPasswordField();
-		changePasswordField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				//i see no reason for this
+		changePasswordField.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent event) {
+				//Do Nothing
+			}
+			public void keyPressed(KeyEvent event) {
+				//Do Nothing
+			}
+			//once a key is pressed then released will test the password's strength
+			public void keyReleased(KeyEvent event) {
+				int strength = (int)UserManagement.passwordStrength(changePasswordField.getPassword());
+				if (strength >= 100) {
+					passStrength.setValue(100);
+					passStrength.setForeground(new Color(94, 186, 125));
+				} else if (strength >= 60) {
+					passStrength.setValue(strength);
+					passStrength.setForeground(new Color(94, 186, 125));
+				} else if (strength >= 40) {
+					passStrength.setValue(strength);
+					passStrength.setForeground(new Color(248, 152, 29));
+				} else if (strength < 40) {
+					passStrength.setValue(strength);
+					passStrength.setForeground(new Color(236, 28, 36));
+				}
 			}
 		});
 		changePasswordField.setBackground(new Color(119, 136, 153));
@@ -166,5 +200,6 @@ public class LoginUI extends JPanel {
 		});
 		btnUpdatePasswordButton.setBounds(521, 398, 157, 37);
 		add(btnUpdatePasswordButton);
+		add(passStrength);
 	}
 }
