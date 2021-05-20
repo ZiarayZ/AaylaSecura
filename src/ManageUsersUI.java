@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.table.TableColumnModel;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
@@ -40,7 +41,7 @@ public class ManageUsersUI extends JPanel {
 		userDB = db;
 		window = UI;
 		setBackground(new Color(255, 255, 255));
-		setBorder(new EmptyBorder(5, 5, 5, 5));
+		setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
 		setLayout(null);
 		
 		JButton btnAddUserButton = new JButton("Add User");
@@ -49,7 +50,7 @@ public class ManageUsersUI extends JPanel {
 				//create or show form to add user
 			}
 		});
-		btnAddUserButton.setBounds(99, 400, 134, 44);
+		btnAddUserButton.setBounds(201, 482, 134, 44);
 		add(btnAddUserButton);
 		
 		JButton btnRemoveUserButton = new JButton("Remove User");
@@ -59,7 +60,7 @@ public class ManageUsersUI extends JPanel {
 			}
 		});
 		btnRemoveUserButton.setEnabled(false);
-		btnRemoveUserButton.setBounds(327, 400, 134, 44);
+		btnRemoveUserButton.setBounds(429, 482, 134, 44);
 		add(btnRemoveUserButton);
 		
 		JButton btnEditUserButton = new JButton("Edit User");
@@ -69,7 +70,7 @@ public class ManageUsersUI extends JPanel {
 			}
 		});
 		btnEditUserButton.setEnabled(false);
-		btnEditUserButton.setBounds(561, 400, 124, 44);
+		btnEditUserButton.setBounds(663, 482, 124, 44);
 		add(btnEditUserButton);
 		
 		String[] colHeaders = {"ID", "Name", "Username", "Role", "Gender"};
@@ -81,7 +82,7 @@ public class ManageUsersUI extends JPanel {
 		//import table into a scroll pane so that the table headers are visible and other things
 		JScrollPane scrollPane = new JScrollPane(userTable);
 		scrollPane.setBackground(new Color(192, 192, 192));
-		scrollPane.setBounds(35, 34, 685, 337);
+		scrollPane.setBounds(137, 116, 685, 337);
 		add(scrollPane);
 	}
 

@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -56,7 +57,7 @@ public class TaskLogUI extends JPanel {
 		//sets window to have this contentPane
 		window = UI;
 		setBackground(new Color(255, 255, 255));
-		setBorder(new EmptyBorder(5, 5, 5, 5));
+		setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
 		setLayout(null);
 		
 		JLabel lblHeadingLabel = new JLabel("Please Log a Completed Task");

@@ -47,7 +47,7 @@ public class LoginUI extends JPanel {
 		lblHeadingLabel.setFont(new Font("Verdana", Font.PLAIN, 28));
 		lblHeadingLabel.setForeground(new Color(105, 105, 105));
 		lblHeadingLabel.setBackground(new Color(224, 255, 255));
-		lblHeadingLabel.setBounds(126, 11, 267, 37);
+		lblHeadingLabel.setBounds(347, 173, 267, 37);
 		add(lblHeadingLabel);
 		
 		nameField = new JTextField();
@@ -57,14 +57,14 @@ public class LoginUI extends JPanel {
 			}
 		});
 		nameField.setBackground(new Color(119, 136, 153));
-		nameField.setBounds(191, 98, 203, 20);
+		nameField.setBounds(412, 260, 203, 20);
 		add(nameField);
 		nameField.setColumns(10);
 		
 		JLabel lblUsernameLabel = new JLabel("Username");
 		lblUsernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsernameLabel.setLabelFor(nameField);
-		lblUsernameLabel.setBounds(90, 101, 90, 14);
+		lblUsernameLabel.setBounds(311, 263, 90, 14);
 		add(lblUsernameLabel);
 		
 		passwordField = new JPasswordField();
@@ -74,12 +74,12 @@ public class LoginUI extends JPanel {
 			}
 		});
 		passwordField.setBackground(new Color(119, 136, 153));
-		passwordField.setBounds(191, 148, 202, 20);
+		passwordField.setBounds(412, 310, 202, 20);
 		add(passwordField);
 		
 		JLabel lblPasswordLabel = new JLabel("Password");
 		lblPasswordLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPasswordLabel.setBounds(90, 151, 90, 14);
+		lblPasswordLabel.setBounds(311, 313, 90, 14);
 		add(lblPasswordLabel);
 
 		changePasswordField = new JPasswordField();
@@ -89,12 +89,12 @@ public class LoginUI extends JPanel {
 			}
 		});
 		changePasswordField.setBackground(new Color(119, 136, 153));
-		changePasswordField.setBounds(191, 198, 202, 20);
+		changePasswordField.setBounds(412, 360, 202, 20);
 		add(changePasswordField);
 		
 		JLabel lblChangePasswordLabel = new JLabel("New Password");
 		lblChangePasswordLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblChangePasswordLabel.setBounds(90, 201, 90, 14);
+		lblChangePasswordLabel.setBounds(311, 363, 90, 14);
 		add(lblChangePasswordLabel);
 		
 		JButton btnLoginButton = new JButton("Login");
@@ -128,7 +128,7 @@ public class LoginUI extends JPanel {
 				}
 			}
 		});
-		btnLoginButton.setBounds(98, 236, 117, 37);
+		btnLoginButton.setBounds(319, 398, 117, 37);
 		add(btnLoginButton);
 		
 		JButton btnUpdatePasswordButton = new JButton("Update Password");
@@ -164,7 +164,7 @@ public class LoginUI extends JPanel {
 				}
 			}
 		});
-		btnUpdatePasswordButton.setBounds(300, 236, 157, 37);
+		btnUpdatePasswordButton.setBounds(521, 398, 157, 37);
 		add(btnUpdatePasswordButton);
 	}
 }
