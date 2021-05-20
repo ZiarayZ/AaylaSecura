@@ -103,6 +103,9 @@ public class UserInterface extends JFrame {
     public void displayLogin() {
         if (user.getLogin()) {
             user.logout();
+            usersBtn.setEnabled(false);
+            logTaskBtn.setEnabled(false);
+            loginBtn.setText("Login");
         }
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
