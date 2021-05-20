@@ -114,6 +114,7 @@ public class UserInterface extends JFrame {
         displayLogin();
     }
 
+    //title of error box, message of error box
     public void displayError(String title, String message) {
         JOptionPane.showMessageDialog(errorFrame, message, title, JOptionPane.ERROR_MESSAGE);
     }
