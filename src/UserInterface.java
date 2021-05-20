@@ -2,8 +2,11 @@ import java.awt.Color;
 import java.awt.CardLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 

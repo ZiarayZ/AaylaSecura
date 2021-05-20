@@ -5,7 +5,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.JPanel;
-import javax.swing.JDialog;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 public class ManageUsersUI extends JPanel {
 
 	private JTable userTable;
-	private JDialog enterInfo;
 	private database userDB;
 	private UserManagement User;
 	private UserInterface window;
