@@ -60,7 +60,8 @@ public class LoginUI extends JPanel {
 		nameField = new JTextField();
 		nameField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//i see no reason for this to exist
+				//press enter
+				attemptLogin();
 			}
 		});
 		nameField.setBackground(new Color(238, 238, 238));
@@ -77,7 +78,8 @@ public class LoginUI extends JPanel {
 		passwordField = new JPasswordField();
 		passwordField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//i see no reason for this to exist
+				//press enter
+				attemptLogin();
 			}
 		});
 		passwordField.setBackground(new Color(238, 238, 238));
@@ -102,7 +104,10 @@ public class LoginUI extends JPanel {
 				//Do Nothing
 			}
 			public void keyPressed(KeyEvent event) {
-				//Do Nothing
+				int key = event.getKeyCode();
+				if (key == KeyEvent.VK_ENTER) {
+					attemptPassChange();
+				}
 			}
 			//once a key is pressed then released will test the password's strength
 			public void keyReleased(KeyEvent event) {
@@ -134,32 +139,7 @@ public class LoginUI extends JPanel {
 		JButton btnLoginButton = new JButton("Login");
 		btnLoginButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//verify login with UserManagement
-				try {
-					//add grabbed username and password
-					if (User.login(nameField.getText(), passwordField.getPassword())) {
-						changePasswordField.setText("");
-						passwordField.setText("");
-						nameField.setText("");
-						//handle successful login
-						changePasswordField.setText("");
-						passwordField.setText("");
-						nameField.setText("");
-						window.displayMain();
-						System.out.println("Login success.");
-					} else {
-						//handle failed login
-						System.out.println("Login fail: Invalid Username or Password.");
-					}
-				} catch (SQLException e) {
-					//handle sql exception
-					//handle failed login
-					System.out.println("Login fail: SQLException.");
-				} catch (NullPointerException e) {
-					//handle null result from sql error
-					//handle failed login
-					System.out.println("Login fail: NullPointerException.");
-				}
+				attemptLogin();
 			}
 		});
 		btnLoginButton.setBounds(319, 398, 117, 37);
@@ -168,38 +148,70 @@ public class LoginUI extends JPanel {
 		JButton btnUpdatePasswordButton = new JButton("Update Password");
 		btnUpdatePasswordButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				String username = nameField.getText();
-				//verify password here
-				if (!username.equals(null) && !username.equals("")) {
-					try {
-						if (User.login(username, passwordField.getPassword())) {
-							User.editPassword(changePasswordField.getPassword());
-							changePasswordField.setText("");
-							passwordField.setText("");
-							nameField.setText("");
-							window.displayMain();
-							System.out.println("Password Update success.");
-						} else {
-							//handle login fail
-							System.out.println("Password Update fail: Failed Login.");
-						}
-					} catch (SQLException e) {
-						//handle sql exception
-						//handle failed Password Update
-						System.out.println("Password Update fail: SQLException.");
-					} catch (NullPointerException e) {
-						//handle null result from sql error
-						//handle failed Password Update
-						System.out.println("Password Update fail: NullPointerException.");
-					}
-				} else {
-						//handle final password update fails
-						System.out.println("Password Update fail: Not Logged in.");
-				}
+				attemptPassChange();
 			}
 		});
 		btnUpdatePasswordButton.setBounds(521, 398, 157, 37);
 		add(btnUpdatePasswordButton);
 		add(passStrength);
+	}
+
+	private void attemptLogin() {
+		//verify login with UserManagement
+		try {
+			//add grabbed username and password
+			if (User.login(nameField.getText(), passwordField.getPassword())) {
+				changePasswordField.setText("");
+				passwordField.setText("");
+				nameField.setText("");
+				//handle successful login
+				changePasswordField.setText("");
+				passwordField.setText("");
+				nameField.setText("");
+				window.displayMain();
+				System.out.println("Login success.");
+			} else {
+				//handle failed login
+				System.out.println("Login fail: Invalid Username or Password.");
+			}
+		} catch (SQLException e) {
+			//handle sql exception
+			//handle failed login
+			System.out.println("Login fail: SQLException.");
+		} catch (NullPointerException e) {
+			//handle null result from sql error
+			//handle failed login
+			System.out.println("Login fail: NullPointerException.");
+		}
+	}
+	private void attemptPassChange() {
+		String username = nameField.getText();
+		//verify password here
+		if (!username.equals(null) && !username.equals("")) {
+			try {
+				if (User.login(username, passwordField.getPassword())) {
+					User.editPassword(changePasswordField.getPassword());
+					changePasswordField.setText("");
+					passwordField.setText("");
+					nameField.setText("");
+					window.displayMain();
+					System.out.println("Password Update success.");
+				} else {
+					//handle login fail
+					System.out.println("Password Update fail: Failed Login.");
+				}
+			} catch (SQLException e) {
+				//handle sql exception
+				//handle failed Password Update
+				System.out.println("Password Update fail: SQLException.");
+			} catch (NullPointerException e) {
+				//handle null result from sql error
+				//handle failed Password Update
+				System.out.println("Password Update fail: NullPointerException.");
+			}
+		} else {
+				//handle final password update fails
+				System.out.println("Password Update fail: Not Logged in.");
+		}
 	}
 }
