@@ -6,7 +6,7 @@ public class databaseReset {
 	private database db;
 	public databaseReset(database db) {
 		this.db=db;
-	};
+	}
 	
 	
 	public void reset() {

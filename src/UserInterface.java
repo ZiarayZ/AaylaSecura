@@ -18,17 +18,19 @@ public class UserInterface extends JFrame {
     private LoginUI loginWindow;
     private ManageUsersUI usersWindow;
     private TaskLogUI logTasksWindow;
+    private TaskEntryUI enterTasksWindow;
     private UserManagement user;
     private JPanel contentPane;
     private JPanel mainPane;
     private JButton loginBtn;
     private JButton usersBtn;
+    private JButton taskBtn;
     private JButton logTaskBtn;
     private JFrame errorFrame = new JFrame("Error!");
     private JPanel errorPane = new JPanel();
     private CardLayout cardLayout;
     
-    public UserInterface(database db, UserManagement newUser, LogTasks loggingTask) {
+    public UserInterface(database db, UserManagement newUser, LogTasks loggingTask, taskEntry myTE) {
         user = newUser;
         //setup errorPane
         LayoutManager layout = new FlowLayout();
@@ -55,6 +57,7 @@ public class UserInterface extends JFrame {
             }
         });
         contentPane.add(loginBtn);
+        
         usersBtn = new JButton("Manage Users");
         usersBtn.setBounds(0, 100, 125, 50);
         usersBtn.addActionListener(new ActionListener() {
@@ -63,6 +66,7 @@ public class UserInterface extends JFrame {
             }
         });
         contentPane.add(usersBtn);
+        
         logTaskBtn = new JButton("Log Tasks");
         logTaskBtn.setBounds(0, 50, 125, 50);
         logTaskBtn.addActionListener(new ActionListener() {
@@ -71,7 +75,16 @@ public class UserInterface extends JFrame {
             }
         });
         contentPane.add(logTaskBtn);
-
+        
+        taskBtn = new JButton("Edit Tasks");
+        taskBtn.setBounds(0, 150, 125, 50);
+        taskBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                displayEditTasks();
+            }
+        });
+        contentPane.add(taskBtn);
+        
         //collect all JPanels together
         //empty card
         JPanel empty = new JPanel();
@@ -83,10 +96,12 @@ public class UserInterface extends JFrame {
         loginWindow = new LoginUI(this, user);
         usersWindow = new ManageUsersUI(this, user, db);
         logTasksWindow = new TaskLogUI(this, loggingTask, db);
+        enterTasksWindow = new TaskEntryUI(this, myTE, db);
         //add all other JPanels to main CardLayout JPanel
 		mainPane.add(loginWindow, "Login");
 		mainPane.add(usersWindow, "Users");
 		mainPane.add(logTasksWindow, "LogTasks");
+		mainPane.add(enterTasksWindow, "EditTasks");
         //assign to master Pane
         //set constraints of GridBagLayout
         gbc.fill = GridBagConstraints.BOTH;
@@ -124,6 +139,7 @@ public class UserInterface extends JFrame {
             user.logout();
             usersBtn.setEnabled(false);
             logTaskBtn.setEnabled(false);
+            taskBtn.setEnabled(false);
             loginBtn.setText("Login");
         }
 		setTitle("Login");
@@ -140,16 +156,23 @@ public class UserInterface extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		cardLayout.show(mainPane, "LogTasks");
     }
+    public void displayEditTasks() {
+		setTitle("Edit Tasks");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		cardLayout.show(mainPane, "EditTasks");
+    }
     public void displayMain() {
         setTitle("Main Menu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         if (user.getLogin()) {
             usersBtn.setEnabled(true);
             logTaskBtn.setEnabled(true);
+            taskBtn.setEnabled(true);
             loginBtn.setText("Logout");
         } else {
             usersBtn.setEnabled(false);
             logTaskBtn.setEnabled(false);
+            taskBtn.setEnabled(false);
             loginBtn.setText("Login");
         }
 		cardLayout.show(mainPane, "Main Menu");
