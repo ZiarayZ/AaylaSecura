@@ -86,7 +86,7 @@ public class UserManagement {
     public String editPassword(char[] password) throws SQLException {
         if (password.equals(null) || password.length == 0) {
             return "empty/null";
-        } else {
+        } else if (verifyPassword(password)) {
             try {
                 String result = genPassHash(password);
                 return userDB.editUser(user_id, "hash_password", result);
@@ -97,6 +97,8 @@ public class UserManagement {
                 System.out.println(e);
                 return "InvalidKeySpecException";
             }
+        } else {
+            return "failed verification";
         }
     }
 
@@ -272,7 +274,7 @@ public class UserManagement {
 	}
 
     //password verification
-    public static boolean verifyPassword(char[] password) {
+    private static boolean verifyPassword(char[] password) {
         //doesn't contain a single upper case: "(?=.*[A-Z]).*"
         if (!Pattern.matches("(?=.*[A-Z]).*", CharBuffer.wrap(password))) {
             return false;
