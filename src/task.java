@@ -15,7 +15,8 @@ public class task {
 	public task(int id, String name, int type, int duration, int priority,	int frequency, int need_logging, String date_created, int completed, int extra_sign_off) { //create a task without a caretaker
 		this.id = id;
 		this.name = name;
-		this.type = duration;
+		this.type = type;
+		this.duration = duration;
 		this.priority = priority;
 		this.frequency = frequency;
 		this.need_logging = need_logging;
@@ -27,7 +28,8 @@ public class task {
 	public task(int id, String name, int type, int duration, int priority,	int frequency, int need_logging, String date_created, int completed, int extra_sign_off, int assigned_caretaker) { //create a task with a caretaker
 		this.id = id;
 		this.name = name;
-		this.type = duration;
+		this.type = type;
+		this.duration = duration;
 		this.priority = priority;
 		this.frequency = frequency;
 		this.need_logging = need_logging;

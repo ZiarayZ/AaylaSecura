@@ -65,7 +65,7 @@ public class database {
 		if(!checkValidBoolean(need_logging)) {result+="Non-valid need_logging";}
 		if(!checkValidDateTime(date_created)){result+="Non-valid date created";}
 		if(!checkValidBoolean(completed)) {result+="Non-valid completed";}
-		if(!checkValidBoolean(extra_sign_off)) {result+="Non-valid extra_sign_off";}
+		if(extra_sign_off<0) {result+="Non-valid extra_sign_off";}
 		
 		return result;
 	}//end taskValidate()

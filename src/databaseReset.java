@@ -40,7 +40,7 @@ public class databaseReset {
 			//task - [type 1 is one off, type 0 is recurring, duration is in minutes,frequency is in days, datetime in format yyyy-mm-dd hh:mm:ss,]
 			db.addNewTask("Fix front door hinge room 7", 1, 15, 3, 0, 1, "2021-02-21 12:07:26", 0, 0);
 			db.addNewTask("take out bins on floor 1", 0, 20, 1, 7, 1, "2020-05-14 09:24:50", 0, 0);
-			db.addNewTask("replace fire alarm in room 26", 1, 10, 2, 0, 1, "2021-04-27 17:56:31", 0, 2);
+			System.out.println(db.addNewTask("replace fire alarm in room 26", 1, 10, 2, 0, 1, "2021-04-27 17:56:31", 0, 2));
 			//logged task
 			
 		} catch (SQLException e) {

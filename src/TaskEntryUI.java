@@ -115,7 +115,7 @@ public class TaskEntryUI extends JPanel {
 		 * lblNewLabel.setBounds(493, 430, 138, 14); add(lblNewLabel);
 		 */
 		
-		JButton sortByCaretakerButton = new JButton("<html><center>Sort By<br>Caretaker</center></html>");
+		JButton sortByCaretakerButton = new JButton("<html><center>Sort By<br>Date created</center></html>");
 		sortByCaretakerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//sort db by caretaker here
@@ -124,7 +124,7 @@ public class TaskEntryUI extends JPanel {
 		sortByCaretakerButton.setBounds(78, 553, 125, 54);
 		add(sortByCaretakerButton);
 		
-		JButton sortByDeadlineButton = new JButton("<html><center>Sort By<br>Deadline</center></html>");
+		JButton sortByDeadlineButton = new JButton("<html><center>Sort By<br>Priority</center></html>");
 		sortByDeadlineButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//sort db by deadline here
@@ -179,7 +179,8 @@ public class TaskEntryUI extends JPanel {
 		try {
 			for(int a=0;a<tasks.size();a++) {
 				tempTask = tasks.get(a);
-				Object[] dataPoint = {tempTask.getID(), tempTask.getName(),tempTask.getType(), tempTask.getDuration(), tempTask.getPriority(), tempTask.getFrequency(), tempTask.getNeedLogging(),tempTask.getDateCreated(),tempTask.getExtraSignOff()};
+				System.out.println(tempTask.getDuration());
+				Object[] dataPoint = {tempTask.getID(), tempTask.getName(), tempTask.getType(), tempTask.getDuration(), tempTask.getPriority(), tempTask.getFrequency(), tempTask.getNeedLogging(),tempTask.getDateCreated(),tempTask.getExtraSignOff()};
 				tempData.add(dataPoint);
 			}
 			Object[][] data = new Object[tempData.size()][8];
