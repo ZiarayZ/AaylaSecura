@@ -175,12 +175,15 @@ public class LoginUI extends JPanel {
 		if (!username.equals(null) && !username.equals("")) {
 			try {
 				if (User.login(username, passwordField.getPassword())) {
-					User.editPassword(changePasswordField.getPassword());
-					changePasswordField.setText("");
-					passwordField.setText("");
-					nameField.setText("");
-					window.displayMain();
-					window.displayError("Password Updated!", "Password update successful!");
+					String attempt = User.editPassword(changePasswordField.getPassword());
+					if (attempt.equals("")) {
+						changePasswordField.setText("");
+						passwordField.setText("");
+						nameField.setText("");
+						window.displayError("Password Updated!", "Password update successful!");
+					} else {
+						window.displayError("Password Update Failed!", attempt);
+					}
 				} else {
 					//handle login fail
 					window.displayError("Password Update Failed!", "Login Failed.");

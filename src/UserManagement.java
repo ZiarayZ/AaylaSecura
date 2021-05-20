@@ -85,20 +85,19 @@ public class UserManagement {
     //edit password
     public String editPassword(char[] password) throws SQLException {
         if (password.equals(null) || password.length == 0) {
-            return "empty/null";
+            return "Password is empty or 'null'.";
         } else if (verifyPassword(password)) {
             try {
                 String result = genPassHash(password);
                 return userDB.editUser(user_id, "hash_password", result);
             } catch (NoSuchAlgorithmException e) {
-                System.out.println(e);
-                return "NoSuchAlgorithmException";
+                return e.toString();
             } catch (InvalidKeySpecException e) {
                 System.out.println(e);
-                return "InvalidKeySpecException";
+                return e.toString();
             }
         } else {
-            return "failed verification";
+            return "Failed Verification. Make sure the password is of valid strength (Orange/Green, Not Red). Make sure the password contains at least 1 upper and lower case letter, a number and a symbol. Valid symbols: ~!@#$%^&*()_-";
         }
     }
 
