@@ -63,7 +63,7 @@ public class LoginUI extends JPanel {
 				//i see no reason for this to exist
 			}
 		});
-		nameField.setBackground(new Color(195, 195, 195));
+		nameField.setBackground(new Color(238, 238, 238));
 		nameField.setBounds(412, 260, 203, 20);
 		add(nameField);
 		nameField.setColumns(10);
@@ -80,7 +80,7 @@ public class LoginUI extends JPanel {
 				//i see no reason for this to exist
 			}
 		});
-		passwordField.setBackground(new Color(195, 195, 195));
+		passwordField.setBackground(new Color(238, 238, 238));
 		passwordField.setBounds(412, 310, 202, 20);
 		add(passwordField);
 		
@@ -122,7 +122,7 @@ public class LoginUI extends JPanel {
 				}
 			}
 		});
-		changePasswordField.setBackground(new Color(195, 195, 195));
+		changePasswordField.setBackground(new Color(238, 238, 238));
 		changePasswordField.setBounds(412, 360, 202, 20);
 		add(changePasswordField);
 		

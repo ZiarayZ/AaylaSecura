@@ -80,7 +80,7 @@ public class TaskLogUI extends JPanel {
 		tcm.removeColumn(tcm.getColumn(2));//Second User ID -3
 		//import table into a scroll pane so that the table headers are visible and other things
 		JScrollPane scrollPane = new JScrollPane(taskListTable);
-		scrollPane.setBackground(new Color(192, 192, 192));
+		scrollPane.setBackground(new Color(238, 238, 238));
 		scrollPane.setBounds(68, 150, 820, 232);
 		add(scrollPane);
 		
@@ -90,7 +90,7 @@ public class TaskLogUI extends JPanel {
 				//record caretaker name here
 			}
 		});
-		caretakerNameField.setBackground(new Color(112, 128, 144));
+		caretakerNameField.setBackground(new Color(238, 238, 238));
 		caretakerNameField.setBounds(261, 427, 118, 20);
 		add(caretakerNameField);
 		caretakerNameField.setColumns(10);
@@ -105,7 +105,7 @@ public class TaskLogUI extends JPanel {
 				//record when the task was completed
 			}
 		});
-		timeCompletedField.setBackground(new Color(112, 128, 144));
+		timeCompletedField.setBackground(new Color(238, 238, 238));
 		timeCompletedField.setBounds(261, 473, 118, 20);
 		add(timeCompletedField);
 		timeCompletedField.setColumns(10);
@@ -116,7 +116,7 @@ public class TaskLogUI extends JPanel {
 		
 		JTextArea addCommentsField = new JTextArea();
 		//need to find out how to handle input in a text area
-		addCommentsField.setBackground(new Color(112, 128, 144));
+		addCommentsField.setBackground(new Color(238, 238, 238));
 		addCommentsField.setBounds(641, 425, 213, 68);
 		add(addCommentsField);
 		

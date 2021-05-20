@@ -1,13 +1,18 @@
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.JPanel;
+import javax.swing.JDialog;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ManageUsersUI extends JPanel {
@@ -15,7 +20,7 @@ public class ManageUsersUI extends JPanel {
 	private JTable userTable;
 	private JDialog enterInfo;
 	private database userDB;
-	private UserManagement userModify;
+	private UserManagement User;
 	private UserInterface window;
 	/**
 	 * Launch the application.
@@ -37,7 +42,7 @@ public class ManageUsersUI extends JPanel {
 	 * Create the frame.
 	 */
 	public ManageUsersUI(UserInterface UI, UserManagement modifyUser, database db) {
-		userModify = modifyUser;
+		User = modifyUser;
 		userDB = db;
 		window = UI;
 		setBackground(new Color(255, 255, 255));
@@ -76,6 +81,22 @@ public class ManageUsersUI extends JPanel {
 		String[] colHeaders = {"ID", "Name", "Username", "Role", "Gender"};
 		Object[][] data = populateTable();
 		userTable = new JTable(data,colHeaders);
+		userTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		ListSelectionModel selectionModel = userTable.getSelectionModel();
+		selectionModel.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				//grabbing selected row index in JTable
+				if (userTable.getSelectedRow() != -1) {
+					btnEditUserButton.setEnabled(true);
+					btnRemoveUserButton.setEnabled(true);
+				} else {
+					btnEditUserButton.setEnabled(false);
+					btnRemoveUserButton.setEnabled(false);
+				}
+			}
+		});
+
 		//this removes the id column, but you should be able to call 'userTable.getModel().getValueAt(row, 0)' to get the id
 		TableColumnModel tcm = userTable.getColumnModel();
 		tcm.removeColumn(tcm.getColumn(0));
