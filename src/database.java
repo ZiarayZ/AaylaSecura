@@ -62,14 +62,14 @@ public class database {
 		String result="";
 		
 		if(name.replaceAll("\\s+", "").equals("")) {result+="Name is empty\n";}//Check name isn't empty even once whitespace is removed
-		if(checkValidBoolean(type)) {result+="Non-valid Type";}
-		if(duration>=0) {result+="Non-valid Duration";}
+		if(!checkValidBoolean(type)) {result+="Non-valid Type";}
+		if(duration<=0) {result+="Non-valid Duration";}
 		if(priority<=0||priority>3) {result+="Non-valid Priority";}
 		if(frequency<0) {result+="Non-valid Frequency";}
-		if(checkValidBoolean(need_logging)) {result+="Non-valid need_logging";}
-		if(checkValidDateTime(date_created)){result+="Non-valid date created";}
-		if(checkValidBoolean(completed)) {result+="Non-valid completed";}
-		if(checkValidBoolean(extra_sign_off)) {result+="Non-valid extra_sign_off";}
+		if(!checkValidBoolean(need_logging)) {result+="Non-valid need_logging";}
+		if(!checkValidDateTime(date_created)){result+="Non-valid date created";}
+		if(!checkValidBoolean(completed)) {result+="Non-valid completed";}
+		if(!checkValidBoolean(extra_sign_off)) {result+="Non-valid extra_sign_off";}
 		
 		return result;
 	}//end taskValidate()
