@@ -187,16 +187,16 @@ public class LoginUI extends JPanel {
 		//change password labels
 		upperLbl = new JLabel("Upper case: A-Z");
 		upperLbl.setForeground(red);
-		upperLbl.setBounds(465, 101, 90, 14);
+		upperLbl.setBounds(465, 101, 100, 14);
 		lowerLbl = new JLabel("Lower case: a-z");
 		lowerLbl.setForeground(red);
-		lowerLbl.setBounds(465, 151, 90, 14);
+		lowerLbl.setBounds(465, 151, 100, 14);
 		numberLbl = new JLabel("Numbers: 0-9");
 		numberLbl.setForeground(red);
-		numberLbl.setBounds(465, 201, 90, 14);
-		nonAlphanumericLbl = new JLabel("Symbols: ~!@#$%^&*()_-");
+		numberLbl.setBounds(465, 201, 100, 14);
+		nonAlphanumericLbl = new JLabel("Symbols: ~!@#$");
 		nonAlphanumericLbl.setForeground(red);
-		nonAlphanumericLbl.setBounds(465, 251, 90, 14);
+		nonAlphanumericLbl.setBounds(465, 251, 100, 14);
 		fixedPane.add(upperLbl);
 		fixedPane.add(lowerLbl);
 		fixedPane.add(numberLbl);
