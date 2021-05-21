@@ -97,7 +97,7 @@ public class UserManagement {
                 return e.toString();
             }
         } else {
-            return "Failed Verification. Make sure the password is of valid strength (Orange/Green, Not Red). Make sure the password contains at least 1 upper and lower case letter, a number and a symbol. Valid symbols: ~!@#$%^&*()_-";
+            return "Failed Verification. Make sure the password is of valid strength (Orange/Green, Not Red). Make sure the new password contains the characters listed to the side.";
         }
     }
 
@@ -272,22 +272,30 @@ public class UserManagement {
         }
 	}
 
-    //password verification
-    private static boolean verifyPassword(char[] password) {
+    public static String checkPassword(char[] password) {
+        String result = "";
         //doesn't contain a single upper case: "(?=.*[A-Z]).*"
         if (!Pattern.matches("(?=.*[A-Z]).*", CharBuffer.wrap(password))) {
-            return false;
+            result = "U";
         }
         //doesn't contain a single lower case: "(?=.*[a-z]).*"
         if (!Pattern.matches("(?=.*[a-z]).*", CharBuffer.wrap(password))) {
-            return false;
+            result += "L";
         }
         //doesn't contain a single number: "(?=.*[0-9]).*"
         if (!Pattern.matches("(?=.*[0-9]).*", CharBuffer.wrap(password))) {
-            return false;
+            result += "D";
         }
         //doesn't contain a single symbol: "(?=.*\\W).*"
         if (!Pattern.matches("(?=.*\\W).*", CharBuffer.wrap(password))) {
+            result += "N";
+        }
+        return result;
+    }
+
+    //password verification
+    private static boolean verifyPassword(char[] password) {
+        if (!checkPassword(password).equals("")) {
             return false;
         }
         //make sure password is of valid strength
