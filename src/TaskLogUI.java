@@ -167,10 +167,21 @@ public class TaskLogUI extends JPanel {
 		ArrayList<Object[]> tempData = new ArrayList<Object[]>();
 
 		//call for all logged tasks info
-		ResultSet sql = taskDB.getAllLoggedTasks(" ORDER BY tasks.task_name");
 		try {
-			while (sql.next()) {
-				Object[] dataPoint = {sql.getInt(1), sql.getInt(2), sql.getString(3), sql.getInt(4), sql.getString(5), sql.getInt(6), sql.getString(7), sql.getString(8)};
+			taskLog.reloadLoggedTasks(taskDB.getAllLoggedTasks(" ORDER BY tasks.task_name"));
+			LoggedTask task;
+			for(int i = 0; i < taskLog.getLogged_Tasks().size(); i++) {
+				task = taskLog.getTask(i);
+				Object[] dataPoint = {
+					task.getLogID(),
+					task.getTaskID(),
+					task.getTaskName(),
+					task.getUser1ID(),
+					task.getUser1Name(),
+					task.getUser2ID(),
+					task.getUser2Name(),
+					task.getDateCompleted()
+				};
 				tempData.add(dataPoint);
 			}
 			Object[][] data = new Object[tempData.size()][8];
