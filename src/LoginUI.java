@@ -19,7 +19,6 @@ import java.sql.SQLException;
 public class LoginUI extends JPanel {
 
 	private UserInterface window;
-	private JLabel lblHeadingLabel;
 	private JTextField nameField;
 	private JPasswordField passwordField;
 	private JPasswordField changePasswordField;
@@ -38,7 +37,7 @@ public class LoginUI extends JPanel {
 		fixedPane.setLayout(null);
 		fixedPane.setBackground(new Color(255, 255, 255));
 		
-		lblHeadingLabel = new JLabel("Please Login");
+		JLabel lblHeadingLabel = new JLabel("Please Login");
 		lblHeadingLabel.setOpaque(true);
 		lblHeadingLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHeadingLabel.setFont(new Font("Verdana", Font.PLAIN, 28));
