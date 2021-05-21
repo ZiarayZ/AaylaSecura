@@ -38,6 +38,7 @@ public class UserInterface extends JFrame {
         ManageUsersUI usersWindow;
         TaskLogUI logTasksWindow;
         TaskEntryUI enterTasksWindow;
+        //TaskAssignUI assignTasksWindow;
 
         //setup errorPane
         LayoutManager layout = new FlowLayout();
@@ -136,12 +137,14 @@ public class UserInterface extends JFrame {
         usersWindow = new ManageUsersUI(this, user, db);
         logTasksWindow = new TaskLogUI(this, loggingTask, db);
         enterTasksWindow = new TaskEntryUI(this, myTE, db);
+        //allocateTasksWindow = new AllocateTaskUI(this, myTA, db);
 
         //add all other JPanels to main CardLayout JPanel
 		mainPane.add(loginWindow, "Login");
 		mainPane.add(usersWindow, "Users");
 		mainPane.add(logTasksWindow, "LogTasks");
 		mainPane.add(enterTasksWindow, "EditTasks");
+        //mainPane.add(allocateTasksWindow, "AllocateTasks");
 
         //set constraints of GridBagLayout
         gbc.fill = GridBagConstraints.BOTH;
@@ -185,6 +188,7 @@ public class UserInterface extends JFrame {
             usersBtn.setEnabled(false);
             logTaskBtn.setEnabled(false);
             taskBtn.setEnabled(false);
+            editTaskBtn.setEnabled(false);
             loginBtn.setText("Login");
         }
 		setTitle("Login");
@@ -213,7 +217,7 @@ public class UserInterface extends JFrame {
         setTitle("Allocate Tasks");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         if (user.getLogin()) {
-		    cardLayout.show(mainPane, "Main Menu");//replace with allocate tasks, or smthn
+		    cardLayout.show(mainPane, "Main Menu");//Dummy button "AssignTasks"
         } else {
             cardLayout.show(mainPane, "Access");
         }
