@@ -21,6 +21,12 @@ public class LogTasks {
     public ArrayList<LoggedTask> getLogged_Tasks() {
         return logged_tasks; //plan to iterate through ResultSet and create a table here later
     }
+    public LoggedTask getTask(int index) {
+        return logged_tasks.get(index);
+    }
+    public void setCurrentTask(int index) {
+        current = logged_tasks.get(index);
+    }
     public LoggedTask getCurrentTask() {
         return current;
     }
@@ -39,7 +45,7 @@ public class LogTasks {
         String desc = orderBy(descending);
         reloadLoggedTasks(taskLogDB.getAllLoggedTasks(" ORDER BY logged_tasks.date_completed "+desc));
     }
-    private void reloadLoggedTasks(ResultSet taskLogQuery) throws SQLException {
+    public void reloadLoggedTasks(ResultSet taskLogQuery) throws SQLException {
         logged_tasks = new ArrayList<LoggedTask>();
         while (taskLogQuery.next()) {
             logged_tasks.add(new LoggedTask(taskLogQuery.getInt(1),//logged_id
