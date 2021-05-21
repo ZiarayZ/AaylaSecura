@@ -1,14 +1,18 @@
 import java.awt.Color;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.BorderLayout;
 import java.awt.LayoutManager;
+import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
@@ -36,6 +40,15 @@ public class UserInterface extends JFrame {
         LayoutManager layout = new FlowLayout();
         errorPane.setLayout(layout);
         errorFrame.getContentPane().add(errorPane, BorderLayout.CENTER);
+        JPanel accessPane = new JPanel();
+        accessPane.setLayout(new GridLayout());
+        JLabel accessMessage = new JLabel("You are not permitted to access this.");
+        accessMessage.setForeground(new Color(105, 105, 105));
+	    accessMessage.setOpaque(true);
+		accessMessage.setFont(new Font("Verdana", Font.PLAIN, 28));
+		accessMessage.setHorizontalAlignment(SwingConstants.CENTER);
+		accessMessage.setBackground(new Color(224, 255, 255));
+        accessPane.add(accessMessage);
 
         //create master pane and main menu pane
         GridBagLayout gbl = new GridBagLayout();
@@ -92,6 +105,7 @@ public class UserInterface extends JFrame {
 		empty.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
 		empty.setLayout(null);
         mainPane.add(empty, "Main Menu");
+        mainPane.add(accessPane, "Access");
         //create other JPanels
         loginWindow = new LoginUI(this, user);
         usersWindow = new ManageUsersUI(this, user, db);
@@ -149,7 +163,11 @@ public class UserInterface extends JFrame {
     public void displayUsers() {
 		setTitle("Manage Users");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		cardLayout.show(mainPane, "Users");
+        if (user.accessLevel("MU") > 0) {
+		    cardLayout.show(mainPane, "Users");
+        } else {
+            cardLayout.show(mainPane, "Access");
+        }
     }
     public void displayLogTasks() {
 		setTitle("Log Tasks");

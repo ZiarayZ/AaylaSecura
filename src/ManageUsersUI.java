@@ -18,14 +18,14 @@ public class ManageUsersUI extends JPanel {
 
 	private JTable userTable;
 	private database userDB;
-	private UserManagement User;
+	private UserManagement user;
 	private UserInterface window;
 
 	/**
 	 * Create the frame.
 	 */
 	public ManageUsersUI(UserInterface UI, UserManagement modifyUser, database db) {
-		User = modifyUser;
+		user = modifyUser;
 		userDB = db;
 		window = UI;
 		setBackground(new Color(255, 255, 255));
