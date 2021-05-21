@@ -9,7 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.GridBagLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,7 +32,10 @@ public class ManageUsersUI extends JPanel {
 		window = UI;
 		setBackground(new Color(255, 255, 255));
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
-		setLayout(null);
+		setLayout(new GridBagLayout());
+		JPanel fixedPane = new JPanel();
+		fixedPane.setLayout(null);
+		fixedPane.setBackground(new Color(255, 255, 255));
 		
 		JButton btnAddUserButton = new JButton("Add User");
 		btnAddUserButton.addActionListener(new ActionListener() {
@@ -38,8 +43,8 @@ public class ManageUsersUI extends JPanel {
 				//create or show form to add user
 			}
 		});
-		btnAddUserButton.setBounds(201, 482, 134, 44);
-		add(btnAddUserButton);
+		btnAddUserButton.setBounds(99, 400, 134, 44);
+		fixedPane.add(btnAddUserButton);
 		
 		JButton btnRemoveUserButton = new JButton("Remove User");
 		btnRemoveUserButton.addActionListener(new ActionListener() {
@@ -48,8 +53,8 @@ public class ManageUsersUI extends JPanel {
 			}
 		});
 		btnRemoveUserButton.setEnabled(false);
-		btnRemoveUserButton.setBounds(429, 482, 134, 44);
-		add(btnRemoveUserButton);
+		btnRemoveUserButton.setBounds(327, 400, 134, 44);
+		fixedPane.add(btnRemoveUserButton);
 		
 		JButton btnEditUserButton = new JButton("Edit User");
 		btnEditUserButton.addActionListener(new ActionListener() {
@@ -58,8 +63,8 @@ public class ManageUsersUI extends JPanel {
 			}
 		});
 		btnEditUserButton.setEnabled(false);
-		btnEditUserButton.setBounds(663, 482, 124, 44);
-		add(btnEditUserButton);
+		btnEditUserButton.setBounds(561, 400, 124, 44);
+		fixedPane.add(btnEditUserButton);
 		
 		String[] colHeaders = {"ID", "Name", "Username", "Role", "Gender"};
 		Object[][] data = populateTable();
@@ -86,8 +91,10 @@ public class ManageUsersUI extends JPanel {
 		//import table into a scroll pane so that the table headers are visible and other things
 		JScrollPane scrollPane = new JScrollPane(userTable);
 		scrollPane.setBackground(new Color(192, 192, 192));
-		scrollPane.setBounds(137, 116, 685, 337);
-		add(scrollPane);
+		scrollPane.setBounds(35, 34, 685, 337);
+		fixedPane.add(scrollPane);
+		fixedPane.setPreferredSize(new Dimension(755,512));
+		add(fixedPane);
 	}
 
 	public Object[][] populateTable() {

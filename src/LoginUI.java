@@ -10,7 +10,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
+import java.awt.GridBagLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.sql.SQLException;
 
@@ -31,7 +33,10 @@ public class LoginUI extends JPanel {
 		window = UI;
 		setBackground(new Color(255, 255, 255));
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
-		setLayout(null);
+		setLayout(new GridBagLayout());
+		JPanel fixedPane = new JPanel();
+		fixedPane.setLayout(null);
+		fixedPane.setBackground(new Color(255, 255, 255));
 		
 		lblHeadingLabel = new JLabel("Please Login");
 		lblHeadingLabel.setOpaque(true);
@@ -39,8 +44,8 @@ public class LoginUI extends JPanel {
 		lblHeadingLabel.setFont(new Font("Verdana", Font.PLAIN, 28));
 		lblHeadingLabel.setForeground(new Color(105, 105, 105));
 		lblHeadingLabel.setBackground(new Color(224, 255, 255));
-		lblHeadingLabel.setBounds(347, 173, 267, 37);
-		add(lblHeadingLabel);
+		lblHeadingLabel.setBounds(126, 11, 267, 37);
+		fixedPane.add(lblHeadingLabel);
 		
 		nameField = new JTextField();
 		nameField.addActionListener(new ActionListener() {
@@ -50,15 +55,15 @@ public class LoginUI extends JPanel {
 			}
 		});
 		nameField.setBackground(new Color(238, 238, 238));
-		nameField.setBounds(412, 260, 203, 20);
-		add(nameField);
+		nameField.setBounds(191, 98, 203, 20);
+		fixedPane.add(nameField);
 		nameField.setColumns(10);
 		
 		JLabel lblUsernameLabel = new JLabel("Username");
 		lblUsernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsernameLabel.setLabelFor(nameField);
-		lblUsernameLabel.setBounds(311, 263, 90, 14);
-		add(lblUsernameLabel);
+		lblUsernameLabel.setBounds(90, 101, 90, 14);
+		fixedPane.add(lblUsernameLabel);
 		
 		passwordField = new JPasswordField();
 		passwordField.addActionListener(new ActionListener() {
@@ -68,20 +73,20 @@ public class LoginUI extends JPanel {
 			}
 		});
 		passwordField.setBackground(new Color(238, 238, 238));
-		passwordField.setBounds(412, 310, 202, 20);
-		add(passwordField);
+		passwordField.setBounds(191, 148, 202, 20);
+		fixedPane.add(passwordField);
 		
 		JLabel lblPasswordLabel = new JLabel("Password");
 		lblPasswordLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPasswordLabel.setBounds(311, 313, 90, 14);
-		add(lblPasswordLabel);
+		lblPasswordLabel.setBounds(90, 151, 90, 14);
+		fixedPane.add(lblPasswordLabel);
 
 		//creating a Progress Bar to display New Password's strength, 40 is a pass, 60 is a strong
 		JProgressBar passStrength = new JProgressBar(0, 100);
 		passStrength.setValue(0);
 		passStrength.setBackground(new Color(140, 255, 251));
 		passStrength.setForeground(new Color(236, 28, 36));
-		passStrength.setBounds(311, 455, 375, 25);
+		passStrength.setBounds(90, 293, 375, 25);
 
 		changePasswordField = new JPasswordField();
 		changePasswordField.addKeyListener(new KeyListener() {
@@ -114,13 +119,13 @@ public class LoginUI extends JPanel {
 			}
 		});
 		changePasswordField.setBackground(new Color(238, 238, 238));
-		changePasswordField.setBounds(412, 360, 202, 20);
-		add(changePasswordField);
+		changePasswordField.setBounds(191, 198, 202, 20);
+		fixedPane.add(changePasswordField);
 		
 		JLabel lblChangePasswordLabel = new JLabel("New Password");
 		lblChangePasswordLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblChangePasswordLabel.setBounds(311, 363, 90, 14);
-		add(lblChangePasswordLabel);
+		lblChangePasswordLabel.setBounds(90, 201, 90, 14);
+		fixedPane.add(lblChangePasswordLabel);
 		
 		JButton btnLoginButton = new JButton("Login");
 		btnLoginButton.addActionListener(new ActionListener() {
@@ -128,8 +133,8 @@ public class LoginUI extends JPanel {
 				attemptLogin();
 			}
 		});
-		btnLoginButton.setBounds(319, 398, 117, 37);
-		add(btnLoginButton);
+		btnLoginButton.setBounds(98, 236, 117, 37);
+		fixedPane.add(btnLoginButton);
 		
 		JButton btnUpdatePasswordButton = new JButton("Update Password");
 		btnUpdatePasswordButton.addActionListener(new ActionListener() {
@@ -137,9 +142,11 @@ public class LoginUI extends JPanel {
 				attemptPassChange();
 			}
 		});
-		btnUpdatePasswordButton.setBounds(521, 398, 157, 37);
-		add(btnUpdatePasswordButton);
-		add(passStrength);
+		btnUpdatePasswordButton.setBounds(300, 236, 157, 37);
+		fixedPane.add(btnUpdatePasswordButton);
+		fixedPane.add(passStrength);
+		fixedPane.setPreferredSize(new Dimension(555, 329));
+		add(fixedPane);
 	}
 
 	private void attemptLogin() {

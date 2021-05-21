@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -40,6 +41,8 @@ public class UserInterface extends JFrame {
         LayoutManager layout = new FlowLayout();
         errorPane.setLayout(layout);
         errorFrame.getContentPane().add(errorPane, BorderLayout.CENTER);
+
+        //setup accessPane
         JPanel accessPane = new JPanel();
         accessPane.setLayout(new GridLayout());
         JLabel accessMessage = new JLabel("You are not permitted to access this.");
@@ -54,12 +57,16 @@ public class UserInterface extends JFrame {
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
         setLayout(gbl);
-		setBounds(100, 100, 1100, 686);
+		setBounds(100, 100, 1150, 775);
+        setMinimumSize(new Dimension(1150, 775));
 		mainPane = new JPanel(new CardLayout());
 		contentPane = new JPanel();
         contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setSize(125, 686);
+        contentPane.setPreferredSize(new Dimension(125, 686));
+        contentPane.setMinimumSize(new Dimension(125, 686));
+        contentPane.setMaximumSize(new Dimension(125, 686));
 		contentPane.setLayout(null);
         //add buttons to access cards
         loginBtn = new JButton("Login");
@@ -119,20 +126,19 @@ public class UserInterface extends JFrame {
         //assign to master Pane
         //set constraints of GridBagLayout
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weighty = 1;
-        gbc.weightx = 0.11;
-        gbc.gridwidth = 5;
         gbc.gridheight = 1;
+        gbc.gridwidth = 1;
+        gbc.weighty = 1;
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbl.setConstraints(contentPane, gbc);
         add(contentPane);
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weighty = 1;
-        gbc.weightx = 0.89;
-        gbc.gridwidth = 39;
         gbc.gridheight = 1;
-        gbc.gridx = 5;
+        gbc.gridwidth = 1;
+        gbc.weighty = 1;
+        gbc.weightx = 1;
+        gbc.gridx = 1;
         gbc.gridy = 0;
         gbl.setConstraints(mainPane, gbc);
         add(mainPane);

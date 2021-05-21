@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -43,7 +45,10 @@ public class TaskEntryUI extends JPanel {
 		window = UI;
 		setBackground(new Color(255, 255, 255));
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
-		setLayout(null);
+		setLayout(new GridBagLayout());
+		JPanel fixedPane = new JPanel();
+		fixedPane.setLayout(null);
+		fixedPane.setBackground(new Color(255, 255, 255));
 		
 		JLabel lblHeadingLabel = new JLabel("Please enter, edit or delete a task");
 		lblHeadingLabel.setForeground(new Color(105, 105, 105));
@@ -52,7 +57,7 @@ public class TaskEntryUI extends JPanel {
 		lblHeadingLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHeadingLabel.setBackground(new Color(224, 255, 255));
 		lblHeadingLabel.setBounds(256, 55, 444, 67);
-		add(lblHeadingLabel);
+		fixedPane.add(lblHeadingLabel);
 		
 		String[] colHeaders = {"Task ID", "Task Name", "Task Type", "Task Duration", "Task Priority", "Task Frequency", "need logging", "Date Created", "completed", "extra sign off"};
 		Object[][] data = populateTable();
@@ -68,7 +73,7 @@ public class TaskEntryUI extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(taskListTable);
 		scrollPane.setBackground(new Color(238, 238, 238));
 		scrollPane.setBounds(68, 150, 820, 232);
-		add(scrollPane);
+		fixedPane.add(scrollPane);
 		
 		/*
 		 * caretakerNameField = new JTextField();
@@ -107,7 +112,7 @@ public class TaskEntryUI extends JPanel {
 			}
 		});
 		sortByCaretakerButton.setBounds(78, 553, 125, 54);
-		add(sortByCaretakerButton);
+		fixedPane.add(sortByCaretakerButton);
 		
 		JButton sortByDeadlineButton = new JButton("<html><center>Sort By<br>Priority</center></html>");
 		sortByDeadlineButton.addActionListener(new ActionListener() {
@@ -116,7 +121,7 @@ public class TaskEntryUI extends JPanel {
 			}
 		});
 		sortByDeadlineButton.setBounds(213, 553, 132, 54);
-		add(sortByDeadlineButton);
+		fixedPane.add(sortByDeadlineButton);
 		
 		JButton editCompletedButton = new JButton("<html><center>Edit<br>Completed Task</center></html>");
 		editCompletedButton.addActionListener(new ActionListener() {
@@ -125,7 +130,7 @@ public class TaskEntryUI extends JPanel {
 			}
 		});
 		editCompletedButton.setBounds(355, 553, 133, 54);
-		add(editCompletedButton);
+		fixedPane.add(editCompletedButton);
 		
 		JButton logTaskButton = new JButton("<html><center>Log<br>Task</center></html>");
 		logTaskButton.addActionListener(new ActionListener() {
@@ -134,7 +139,7 @@ public class TaskEntryUI extends JPanel {
 			}
 		});
 		logTaskButton.setBounds(498, 553, 118, 54);
-		add(logTaskButton);
+		fixedPane.add(logTaskButton);
 		
 		JButton undoLoggedTaskButton = new JButton("<html><center>Undo<br>Changes</center></html>");
 		undoLoggedTaskButton.addActionListener(new ActionListener() {
@@ -143,7 +148,7 @@ public class TaskEntryUI extends JPanel {
 			}
 		});
 		undoLoggedTaskButton.setBounds(626, 553, 124, 54);
-		add(undoLoggedTaskButton);
+		fixedPane.add(undoLoggedTaskButton);
 		
 		JButton createReportButton = new JButton("<html><center>Create<br>Report</center></html>");
 		createReportButton.addActionListener(new ActionListener() {
@@ -152,7 +157,9 @@ public class TaskEntryUI extends JPanel {
 			}
 		});
 		createReportButton.setBounds(760, 553, 128, 54);
-		add(createReportButton);
+		fixedPane.add(createReportButton);
+		fixedPane.setPreferredSize(new Dimension(956,717));
+		add(fixedPane);
 	}
 	
 	public Object[][] populateTable() {

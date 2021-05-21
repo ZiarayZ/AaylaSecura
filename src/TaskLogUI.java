@@ -10,6 +10,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.TableColumnModel;
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
@@ -35,7 +37,10 @@ public class TaskLogUI extends JPanel {
 		window = UI;
 		setBackground(new Color(255, 255, 255));
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
-		setLayout(null);
+		setLayout(new GridBagLayout());
+		JPanel fixedPane = new JPanel();
+		fixedPane.setLayout(null);
+		fixedPane.setBackground(new Color(255, 255, 255));
 		
 		JLabel lblHeadingLabel = new JLabel("Please Log a Completed Task");
 		lblHeadingLabel.setForeground(new Color(105, 105, 105));
@@ -44,7 +49,7 @@ public class TaskLogUI extends JPanel {
 		lblHeadingLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHeadingLabel.setBackground(new Color(224, 255, 255));
 		lblHeadingLabel.setBounds(256, 55, 444, 67);
-		add(lblHeadingLabel);
+		fixedPane.add(lblHeadingLabel);
 		
 		String[] colHeaders = {"Logged Task ID", "Task ID", "Task Name", "First User ID", "First User", "Second User ID", "Second User", "Date Completed"};
 		Object[][] data = populateTable();
@@ -59,7 +64,7 @@ public class TaskLogUI extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(taskListTable);
 		scrollPane.setBackground(new Color(238, 238, 238));
 		scrollPane.setBounds(68, 150, 820, 232);
-		add(scrollPane);
+		fixedPane.add(scrollPane);
 		
 		caretakerNameField = new JTextField();
 		caretakerNameField.addActionListener(new ActionListener() {
@@ -69,12 +74,12 @@ public class TaskLogUI extends JPanel {
 		});
 		caretakerNameField.setBackground(new Color(238, 238, 238));
 		caretakerNameField.setBounds(261, 427, 118, 20);
-		add(caretakerNameField);
+		fixedPane.add(caretakerNameField);
 		caretakerNameField.setColumns(10);
 		
 		JLabel lblNameLabel = new JLabel("Completed By");
 		lblNameLabel.setBounds(159, 430, 92, 14);
-		add(lblNameLabel);
+		fixedPane.add(lblNameLabel);
 		
 		timeCompletedField = new JTextField();
 		timeCompletedField.addActionListener(new ActionListener() {
@@ -84,22 +89,22 @@ public class TaskLogUI extends JPanel {
 		});
 		timeCompletedField.setBackground(new Color(238, 238, 238));
 		timeCompletedField.setBounds(261, 473, 118, 20);
-		add(timeCompletedField);
+		fixedPane.add(timeCompletedField);
 		timeCompletedField.setColumns(10);
 		
 		JLabel lblTimeLabel = new JLabel("Time Completed");
 		lblTimeLabel.setBounds(159, 476, 105, 14);
-		add(lblTimeLabel);
+		fixedPane.add(lblTimeLabel);
 		
 		JTextArea addCommentsField = new JTextArea();
 		//need to find out how to handle input in a text area
 		addCommentsField.setBackground(new Color(238, 238, 238));
 		addCommentsField.setBounds(641, 425, 213, 68);
-		add(addCommentsField);
+		fixedPane.add(addCommentsField);
 		
 		JLabel lblNewLabel = new JLabel("Additional Comments");
 		lblNewLabel.setBounds(493, 430, 138, 14);
-		add(lblNewLabel);
+		fixedPane.add(lblNewLabel);
 		
 		JButton sortByCaretakerButton = new JButton("<html><center>Sort By<br>Caretaker</center></html>");
 		sortByCaretakerButton.addActionListener(new ActionListener() {
@@ -108,7 +113,7 @@ public class TaskLogUI extends JPanel {
 			}
 		});
 		sortByCaretakerButton.setBounds(78, 553, 125, 54);
-		add(sortByCaretakerButton);
+		fixedPane.add(sortByCaretakerButton);
 		
 		JButton sortByDeadlineButton = new JButton("<html><center>Sort By<br>Deadline</center></html>");
 		sortByDeadlineButton.addActionListener(new ActionListener() {
@@ -117,7 +122,7 @@ public class TaskLogUI extends JPanel {
 			}
 		});
 		sortByDeadlineButton.setBounds(213, 553, 132, 54);
-		add(sortByDeadlineButton);
+		fixedPane.add(sortByDeadlineButton);
 		
 		JButton editCompletedButton = new JButton("<html><center>Edit<br>Completed Task</center></html>");
 		editCompletedButton.addActionListener(new ActionListener() {
@@ -126,7 +131,7 @@ public class TaskLogUI extends JPanel {
 			}
 		});
 		editCompletedButton.setBounds(355, 553, 133, 54);
-		add(editCompletedButton);
+		fixedPane.add(editCompletedButton);
 		
 		JButton logTaskButton = new JButton("<html><center>Log<br>Task</center></html>");
 		logTaskButton.addActionListener(new ActionListener() {
@@ -135,7 +140,7 @@ public class TaskLogUI extends JPanel {
 			}
 		});
 		logTaskButton.setBounds(498, 553, 118, 54);
-		add(logTaskButton);
+		fixedPane.add(logTaskButton);
 		
 		JButton undoLoggedTaskButton = new JButton("<html><center>Undo<br>Changes</center></html>");
 		undoLoggedTaskButton.addActionListener(new ActionListener() {
@@ -144,7 +149,7 @@ public class TaskLogUI extends JPanel {
 			}
 		});
 		undoLoggedTaskButton.setBounds(626, 553, 124, 54);
-		add(undoLoggedTaskButton);
+		fixedPane.add(undoLoggedTaskButton);
 		
 		JButton createReportButton = new JButton("<html><center>Create<br>Report</center></html>");
 		createReportButton.addActionListener(new ActionListener() {
@@ -153,7 +158,9 @@ public class TaskLogUI extends JPanel {
 			}
 		});
 		createReportButton.setBounds(760, 553, 128, 54);
-		add(createReportButton);
+		fixedPane.add(createReportButton);
+		fixedPane.setPreferredSize(new Dimension(956,717));
+		add(fixedPane);
 	}
 	
 	public Object[][] populateTable() {
