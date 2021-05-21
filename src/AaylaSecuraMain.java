@@ -18,7 +18,7 @@ public class AaylaSecuraMain {
 		logged_tasks = new LogTasks(db);
 		user = new UserManagement(db);
 		reportCreation = new CreateReports(db);
-		window = new UserInterface(db, user, logged_tasks,myTE);
+		window = new UserInterface(db, user, logged_tasks, myTE);
 		
 		//set window frame visible
 		window.setVisible(true);
