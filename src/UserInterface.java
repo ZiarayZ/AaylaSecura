@@ -146,8 +146,6 @@ public class UserInterface extends JFrame {
         cardLayout = (CardLayout) mainPane.getLayout();
         //make sure main menu is displayed first (may change to login menu)
         displayMain();
-        displayLogin();
-        setVisible(true);
     }
 
     //title of error box, message of error box
