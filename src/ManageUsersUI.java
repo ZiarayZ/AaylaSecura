@@ -110,9 +110,9 @@ public class ManageUsersUI extends JPanel {
 			Object[][] data = new Object[tempData.size()][5];
 			return tempData.toArray(data);
 		} catch (SQLException e) {
-			System.out.println(e);//need to display error window instead
+			window.displayError("Table Error!", e.toString());
 		} catch (NullPointerException e) {
-			System.out.println(e);//need to display error window instead
+			window.displayError("Table Error!", e.toString());
 		}
 
 		Object[][] data = {{}};

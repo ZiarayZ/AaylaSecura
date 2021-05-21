@@ -159,7 +159,7 @@ public class TaskLogUI extends JPanel {
 	public Object[][] populateTable() {
 		ArrayList<Object[]> tempData = new ArrayList<Object[]>();
 
-		//call for all users info
+		//call for all logged tasks info
 		ResultSet sql = taskDB.getAllLoggedTasks(" ORDER BY tasks.task_name");
 		try {
 			while (sql.next()) {
@@ -169,9 +169,9 @@ public class TaskLogUI extends JPanel {
 			Object[][] data = new Object[tempData.size()][8];
 			return tempData.toArray(data);
 		} catch (SQLException e) {
-			System.out.println(e);//need to display error window instead
+			window.displayError("Table Error!", e.toString());
 		} catch (NullPointerException e) {
-			System.out.println(e);//need to display error window instead
+			window.displayError("Table Error!", e.toString());
 		}
 
 		Object[][] data = {{}};

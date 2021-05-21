@@ -32,21 +32,6 @@ public class TaskEntryUI extends JPanel {
 	private JTextField caretakerNameField;
 	private JTextField timeCompletedField;
 	private taskEntry myTE;
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TaskLogUI frame = new TaskLogUI(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	/**
 	 * Create the panel.
@@ -173,7 +158,7 @@ public class TaskEntryUI extends JPanel {
 	public Object[][] populateTable() {
 		ArrayList<Object[]> tempData = new ArrayList<Object[]>();
 
-		//call for all users info
+		//call for all tasks info
 		ArrayList<task> tasks = myTE.getUndoneTasks();
 		task tempTask;
 		try {
@@ -186,7 +171,7 @@ public class TaskEntryUI extends JPanel {
 			Object[][] data = new Object[tempData.size()][8];
 			return tempData.toArray(data);
 		} catch (NullPointerException e) {
-			System.out.println(e);//need to display error window instead
+			window.displayError("Table Error!", e.toString());
 		}
 
 		Object[][] data = {{}};

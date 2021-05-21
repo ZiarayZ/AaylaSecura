@@ -162,11 +162,11 @@ public class LoginUI extends JPanel {
 		} catch (SQLException e) {
 			//handle sql exception
 			//handle failed login
-			window.displayError("Login Failed!", "Database Error!");
+			window.displayError("Login Failed!", e.toString());
 		} catch (NullPointerException e) {
 			//handle null result from sql error
 			//handle failed login
-			window.displayError("Login Failed!", "Not Connected to Database.");
+			window.displayError("Login Failed!", e.toString());
 		}
 	}
 	private void attemptPassChange() {
@@ -191,11 +191,11 @@ public class LoginUI extends JPanel {
 			} catch (SQLException e) {
 				//handle sql exception
 				//handle failed Password Update
-				window.displayError("Password Update Failed!", "Database Error!");
+				window.displayError("Password Update Failed!", e.toString());
 			} catch (NullPointerException e) {
 				//handle null result from sql error
 				//handle failed Password Update
-				window.displayError("Password Update Failed!", "Not Connected to Database.");
+				window.displayError("Password Update Failed!", e.toString());
 			}
 		} else {
 			//handle final password update fails
