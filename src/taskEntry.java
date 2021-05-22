@@ -102,7 +102,41 @@ public class taskEntry {
 		return false;
 	}
 	
+		public ArrayList<task> sortUndoneTasksByPriority() {
+		ArrayList<task> unsorted = getUndoneTasks();
+		ArrayList<task> sorted = new ArrayList<task>();
+		
+		for(int maxPriority=3;maxPriority>0;maxPriority--) {//this orders it with a priority range of 1-3 with 3 being the highest priority
+			for(int a=0;a<unsorted.size();a++) {
+				if(unsorted.get(a).getPriority()==maxPriority) {
+					sorted.add(unsorted.get(a));
+					unsorted.remove(a);
+				}
+			}
+		}
+		return sorted;
+	}
+		
+	public ArrayList<task> filterToOneOffTasks (ArrayList<task> input){
+		ArrayList<task> output = new ArrayList<task>();
+		for(int a=0;a<input.size();a++) {
+			if(input.get(a).getType()==1) {
+				output.add(input.get(a));
+			}
+		}
+		
+		return output;
+	}
 	
-	
+	public ArrayList<task> filterToRepeatTasks (ArrayList<task> input){
+		ArrayList<task> output = new ArrayList<task>();
+		for(int a=0;a<input.size();a++) {
+			if(input.get(a).getType()==0) {
+				output.add(input.get(a));
+			}
+		}
+		
+		return output;
+	}
 	
 }
