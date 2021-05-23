@@ -111,7 +111,7 @@ public class UserInterface extends JFrame {
         contentPane.add(taskBtn);
 
         //Edit Tasks
-        editTaskBtn = new JButton("Edit Tasks");
+        editTaskBtn = new JButton("Task List");
         editTaskBtn.setBounds(0, 100, 125, 50);
         editTaskBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -229,7 +229,7 @@ public class UserInterface extends JFrame {
         }
     }
     public void displayEditTasks() {
-		setTitle("Edit Tasks");
+		setTitle("Task List");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         if (user.getLogin()) {
 		    cardLayout.show(mainPane, "EditTasks");
