@@ -87,7 +87,7 @@ public class ManageUsersUI extends JPanel {
 		editPanel.setBackground(new Color(255, 255, 255));
 		editPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
 		editPanel.setLayout(new GridBagLayout());
-		GridLayout editPanelLayout = new GridLayout(0, 2); //2 columns, infinite rows
+		GridLayout editPanelLayout = new GridLayout(0, 2, 100, 25); //2 columns, infinite rows
 		fixedEditPanel.setLayout(editPanelLayout);
 		fixedEditPanel.setBackground(new Color(255, 255, 255));
 
@@ -96,10 +96,6 @@ public class ManageUsersUI extends JPanel {
 		fixedEditPanel.add(new JLabel("User's Name:"));
 		JTextField editName = new JTextField();
 		fixedEditPanel.add(editName);
-		//user's username
-		fixedEditPanel.add(new JLabel("Username:"));
-		JTextField editUsername = new JTextField();
-		fixedEditPanel.add(editUsername);
 		//user's job
 		fixedEditPanel.add(new JLabel("User's Role:"));
 		JComboBox<Job> editJob = new JComboBox<Job>();
