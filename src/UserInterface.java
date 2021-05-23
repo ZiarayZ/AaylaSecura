@@ -135,7 +135,7 @@ public class UserInterface extends JFrame {
         //create other JPanels
         loginWindow = new LoginUI(this, user);
         usersWindow = new ManageUsersUI(this, user, db);
-        logTasksWindow = new TaskLogUI(this, loggingTask, db);
+        logTasksWindow = new TaskLogUI(this, loggingTask, db, user);
         enterTasksWindow = new TaskEntryUI(this, myTE, db);
         //allocateTasksWindow = new AllocateTaskUI(this, myTA, db);
 

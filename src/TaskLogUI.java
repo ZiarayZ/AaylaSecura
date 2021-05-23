@@ -25,20 +25,25 @@ public class TaskLogUI extends JPanel {
 
 	private UserInterface window;
 	private database taskDB;
+	private UserManagement user;
 	private JTable taskListTable;
 	private JTextField caretakerNameField;
 	private JTextField timeCompletedField;
 	private LogTasks taskLog;
 	private JPanel reportPanel;
 	private CreateReports reportCreation;
+	private JButton reportButt1;
+	private JButton reportButt2;
+	private JButton reportButt3;
 
 	/**
 	 * Create the panel.
 	 */
-	public TaskLogUI(UserInterface UI, LogTasks loggingTask, database DB) {//, UserManagement User) {
+	public TaskLogUI(UserInterface UI, LogTasks loggingTask, database DB, UserManagement User) {
 		taskLog = loggingTask;
 		taskDB = DB;
 		reportCreation = new CreateReports(DB);
+		user = User;
 		//sets window to have this contentPane
 		window = UI;
 		setBackground(new Color(255, 255, 255));
@@ -161,6 +166,20 @@ public class TaskLogUI extends JPanel {
 		JButton createReportButton = new JButton("<html><center>Create<br>Report</center></html>");
 		createReportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//restrict report buttons to report access level
+				if (user.accessLevel("CR") >= 2 || user.accessLevel("AP") == 1) {
+					reportButt1.setEnabled(true);
+					reportButt1.setEnabled(true);
+					reportButt1.setEnabled(true);
+				} else if (user.accessLevel("CR") == 1) {
+					reportButt1.setEnabled(true);
+					reportButt2.setEnabled(true);
+					reportButt3.setEnabled(false);
+				} else {
+					reportButt1.setEnabled(false);
+					reportButt2.setEnabled(false);
+					reportButt3.setEnabled(false);
+				}
 				JOptionPane.showConfirmDialog(null, reportPanel, "Create Report",
 				JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			}
@@ -222,8 +241,8 @@ public class TaskLogUI extends JPanel {
 		gbl.setConstraints(message, gbc);
 		reportPanel.add(message);
 		//button creation
-		JButton butt1 = new JButton("Create Task Status Report");
-		butt1.addActionListener(new ActionListener() {
+		reportButt1 = new JButton("Create Task Status Report");
+		reportButt1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				try {
 					reportCreation.createTaskStatusReport();
@@ -232,21 +251,21 @@ public class TaskLogUI extends JPanel {
 				}
 			}
 		});
-		JButton butt2 = new JButton("Create Caretaker Report");
-		butt2.addActionListener(new ActionListener() {
+		reportButt2 = new JButton("Create Completed Task Report");
+		reportButt2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				try {
-					reportCreation.createCaretakerReport();
+					reportCreation.createCompletedTaskReport();
 				} catch (IOException e) {
 					window.displayError("Report Error!", e.toString());
 				}
 			}
 		});
-		JButton butt3 = new JButton("Create Completed Task Report");
-		butt3.addActionListener(new ActionListener() {
+		reportButt3 = new JButton("Create Caretaker Report");
+		reportButt3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				try {
-					reportCreation.createCompletedTaskReport();
+					reportCreation.createCaretakerReport();
 				} catch (IOException e) {
 					window.displayError("Report Error!", e.toString());
 				}
@@ -259,13 +278,13 @@ public class TaskLogUI extends JPanel {
 		gbc.weightx = 1;
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbl.setConstraints(butt1, gbc);
-		reportPanel.add(butt1);
+		gbl.setConstraints(reportButt1, gbc);
+		reportPanel.add(reportButt1);
 		gbc.gridx = 1;
-		gbl.setConstraints(butt2, gbc);
-		reportPanel.add(butt2);
+		gbl.setConstraints(reportButt2, gbc);
+		reportPanel.add(reportButt2);
 		gbc.gridx = 2;
-		gbl.setConstraints(butt3, gbc);
-		reportPanel.add(butt3);
+		gbl.setConstraints(reportButt3, gbc);
+		reportPanel.add(reportButt3);
 	}
 }
