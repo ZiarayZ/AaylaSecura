@@ -176,15 +176,20 @@ public class ManageUsersUI extends JPanel {
 				if (user.accessLevel("MU") >= 2 || user.accessLevel("AP") == 1) {
 					if (Integer.parseInt(editID.getText()) != -1) {
 						try {
-							user.editUser(
+							String result = user.editUser(
 								Integer.parseInt(editID.getText()),//get ID stored
 								editName.getText(),
 								((Job) editJob.getSelectedItem()).getID(),
 								editNotes.getText(),
 								Character.toString((char) ((Job) editGender.getSelectedItem()).getID())
 							);
-							window.displayError("User Edit Success.", "Edited User: " + editName.getText());
-							refreshTable();
+							if (result.equals("")) {
+								refreshTable();
+								window.displayUsers();
+								window.displayError("User Edit Success.", "Edited User: " + editName.getText());
+							} else {
+								window.displayError("Edit Error!", "Mistake: " + result);
+							}
 						} catch (SQLException e) {
 							window.displayError("Database Error!", e.toString());
 						}
