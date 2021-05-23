@@ -126,6 +126,18 @@ public class ManageUsersUI extends JPanel {
 		//add hidden user's ID
 		fixedEditPanel.add(editID);
 		editID.setVisible(false);
+		//reset details
+		JButton resetEditBtn = new JButton("Reset to Default");
+		resetEditBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				editID.setText(tempUser.getID());
+				editName.setText(tempUser.getName());
+				editJob.setSelectedItem(tempUser.getJob());
+				editGender.setSelectedItem(tempUser.getGender());
+				editNotes.setText(tempUser.getNotes());
+			}
+		});
+		fixedEditPanel.add(resetEditBtn);
 
 		//accept edit
 		JButton acceptEdit = new JButton("Edit");
@@ -149,6 +161,14 @@ public class ManageUsersUI extends JPanel {
 			}
 		});
 		fixedEditPanel.add(acceptEdit);
+
+		//cancel edit
+		JButton rejectEdit = new JButton("Cancel");
+		rejectEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				window.show("Users");
+			}
+		});
 
 		//finish panel creation
 		fixedEditPanel.setPreferredSize(new Dimension(555, 329));
