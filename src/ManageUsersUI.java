@@ -3,6 +3,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -295,6 +296,8 @@ public class ManageUsersUI extends JPanel {
 		Object[][] data = populateTable();
 		TableModel tableModel = new DefaultTableModel(colHeaders, 0);
 		userTable = new JTable(tableModel);
+		TableRowSorter<TableModel> tableSorter = new TableRowSorter<TableModel>(userTable.getModel());
+		userTable.setRowSorter(tableSorter);
 		DefaultTableModel DTM = (DefaultTableModel) userTable.getModel();
 		for (int i = 0; i < data.length; i++) {
 			DTM.addRow(data[i]);

@@ -5,12 +5,16 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskLogUI extends JPanel {
 
@@ -74,6 +79,8 @@ public class TaskLogUI extends JPanel {
 		Object[][] data = populateTable();
 		TableModel tableModel = new DefaultTableModel(colHeaders, 0);
 		taskListTable = new JTable(tableModel);
+		TableRowSorter<TableModel> tableSorter = new TableRowSorter<TableModel>(taskListTable.getModel());
+		taskListTable.setRowSorter(tableSorter);
 		DefaultTableModel DTM = (DefaultTableModel) taskListTable.getModel();
 		for (int i = 0; i < data.length; i++) {
 			DTM.addRow(data[i]);
@@ -149,7 +156,12 @@ public class TaskLogUI extends JPanel {
 		JButton sortByCaretakerButton = new JButton("<html><center>Sort By<br>Caretaker</center></html>");
 		sortByCaretakerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//sort db by caretaker here
+				refreshTable();
+				List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+				sortKeys.add(new RowSorter.SortKey(4, SortOrder.ASCENDING));
+				sortKeys.add(new RowSorter.SortKey(6, SortOrder.ASCENDING));
+				sortKeys.add(new RowSorter.SortKey(7, SortOrder.ASCENDING));
+				tableSorter.setSortKeys(sortKeys);
 			}
 		});
 		sortByCaretakerButton.setBounds(78, 553, 125, 54);
@@ -158,7 +170,11 @@ public class TaskLogUI extends JPanel {
 		JButton sortByDeadlineButton = new JButton("<html><center>Sort By<br>Deadline</center></html>");
 		sortByDeadlineButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//sort db by deadline here
+				refreshTable();
+				List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
+				sortKeys.add(new RowSorter.SortKey(7, SortOrder.ASCENDING));
+				sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING));
+				tableSorter.setSortKeys(sortKeys);
 			}
 		});
 		sortByDeadlineButton.setBounds(213, 553, 132, 54);
