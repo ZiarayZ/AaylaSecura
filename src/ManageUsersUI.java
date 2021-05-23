@@ -117,7 +117,7 @@ public class ManageUsersUI extends JPanel {
 		fixedEditPanel.add(editGender);
 
 		//finish panel creation
-		fixedEditPanel.setPreferredSize(new Dimension(755, 512));
+		fixedEditPanel.setPreferredSize(new Dimension(555, 329));
 		editPanel.add(fixedEditPanel);
 		window.addCard(editPanel, "EditUser");
 		
