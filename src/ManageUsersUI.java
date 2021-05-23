@@ -29,7 +29,6 @@ import java.util.ArrayList;
 public class ManageUsersUI extends JPanel {
 
 	private JTable userTable;
-	private database userDB;
 	private UserManagement user;
 	private UserInterface window;
 
@@ -38,7 +37,6 @@ public class ManageUsersUI extends JPanel {
 	 */
 	public ManageUsersUI(UserInterface UI, UserManagement modifyUser, database db) {
 		user = modifyUser;
-		userDB = db;
 		window = UI;
 		setBackground(new Color(255, 255, 255));
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
@@ -71,7 +69,8 @@ public class ManageUsersUI extends JPanel {
 					int result = JOptionPane.showConfirmDialog(null, panel, "Delete User",
 					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 					if (result == JOptionPane.OK_OPTION) {
-						window.displayError("Delete User", "User Deleted: " + userDB.deleteUser(userID));
+						boolean sqlResult = user.deleteUser(userID);
+						window.displayError("Delete User", "User Deleted: " + sqlResult);
 					}
 				} else {
 					window.displayError("Delete User", "You do not have access to this feature.");
@@ -105,7 +104,7 @@ public class ManageUsersUI extends JPanel {
 		fixedEditPanel.add(new JLabel("User's Role:"));
 		JComboBox<Job> editJob = new JComboBox<Job>();
 		try {
-			ResultSet jobs = userDB.getAllJobs();
+			ResultSet jobs = user.getJobs();
 			while (jobs.next()) {
 				editJob.addItem(new Job(jobs.getInt(1), jobs.getString(2)));
 			}
@@ -215,9 +214,9 @@ public class ManageUsersUI extends JPanel {
 		ArrayList<Object[]> tempData = new ArrayList<Object[]>();
 
 		//call for all users info
-		ResultSet sql = userDB.getAllUsers();
-		String gender;
 		try {
+			ResultSet sql = user.getUsers();
+			String gender;
 			while (sql.next()) {
 				gender = sql.getString(6);
 				if (gender.equals("M")) {
@@ -243,7 +242,7 @@ public class ManageUsersUI extends JPanel {
 	//add new user form
 	private void createAddUser() {
 		try {
-			ResultSet jobs = userDB.getAllJobs();
+			ResultSet jobs = user.getJobs();
 			JComboBox<Job> jobCombo = new JComboBox<Job>();
 			while (jobs.next()) {
 				jobCombo.addItem(new Job(jobs.getInt(1), jobs.getString(2)));
@@ -276,7 +275,7 @@ public class ManageUsersUI extends JPanel {
 				String addUsername = username.getText();
 				if (password.getPassword().length >= 8 && !(addName.length() == 0 || addUsername.length() == 0)) {
 					try {
-						String newResult = userDB.addNewUser(
+						String newResult = user.addUser(
 							addName,
 							addUsername,
 							((Job) jobCombo.getSelectedItem()).getID(),

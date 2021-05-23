@@ -62,6 +62,9 @@ public class UserManagement {
     public boolean getLogin() {
         return logged_in;
     }
+    public database getDB() {
+        return userDB;
+    }
     public void logout() {
         logged_in = false;
         //zero out all information held
@@ -80,6 +83,21 @@ public class UserManagement {
         } else {
             return Character.toString(gender);
         }
+    }
+    public boolean deleteUser(int ID) {
+        return userDB.deleteUser(ID);
+    }
+    public String addUser(String NAME, String USERNAME, int JOB, String PASSWORD, String NOTES, String GENDER) throws SQLException {
+        return userDB.addNewUser(NAME, USERNAME, JOB, PASSWORD, NOTES, GENDER);
+    }
+    public String editUser(int ID, String NAME, int JOB, String NOTES, String GENDER) throws SQLException {
+        return userDB.updateUser(ID, NAME, JOB, NOTES, GENDER);
+    }
+    public ResultSet getJobs() throws SQLException {
+        return userDB.getAllJobs();
+    }
+    public ResultSet getUsers() throws SQLException {
+        return userDB.getAllUsers();
     }
 
     //edit password
