@@ -173,7 +173,7 @@ public class ManageUsersUI extends JPanel {
 			int result = JOptionPane.showConfirmDialog(null, addUserPanel, "Add User",
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if (result == JOptionPane.OK_OPTION) {
-				if (password.getPassword().length >= 8) {
+				if (password.getPassword().length >= 8 && !(name.getText().length() == 0 || username.getText().length() == 0)) {
 					try {
 						String newResult = userDB.addNewUser(
 							name.getText(),
@@ -193,8 +193,10 @@ public class ManageUsersUI extends JPanel {
 					} catch (InvalidKeySpecException e) {
 						window.displayError("Add New User Failed", e.toString());
 					}
-				} else {
+				} else if (password.getPassword().length < 8) {
 					window.displayError("Add New User Failed", "Error: Password is too short. Must be at least 8 characters.");
+				} else {
+					window.displayError("Add New User Failed", "Error: User's Name or Username fields are empty.");
 				}
 			}
 		} catch (SQLException e) {
