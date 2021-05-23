@@ -232,9 +232,11 @@ public class TaskLogUI extends JPanel {
 				//when selecting a row in the logging task table
 				if (taskListTable.getSelectedRow() != -1) {
 					if (user.accessLevel("LT") >= 1 || user.accessLevel("AP") == 1) {
+						logTaskButton.setEnabled(true);
 						editCompletedButton.setEnabled(true);
 					} else {
 						editCompletedButton.setEnabled(false);
+						logTaskButton.setEnabled(false);
 					}
 				} else {
 					if (user.accessLevel("LT") >= 1 || user.accessLevel("AP") == 1) {
