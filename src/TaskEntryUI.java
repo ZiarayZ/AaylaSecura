@@ -149,10 +149,11 @@ public class TaskEntryUI extends JPanel {
 		
 		
 		
-		setAddTaskPanel();
+		
 		JButton addTaskButton = new JButton("<html><center>Add New<br>Task</center></html>");
 		addTaskButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setAddTaskPanel(sort,filter);
 				addButton1.setEnabled(true);
 				JOptionPane.showConfirmDialog(null, addTaskPanel, "Create Report", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			}
@@ -164,7 +165,7 @@ public class TaskEntryUI extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int row = taskListTable.getSelectedRow();
 				int task_id = (int)taskListTable.getModel().getValueAt(row, 0);
-				setEditTaskPanel(task_id);
+				setEditTaskPanel(task_id,sort,filter);
 				editButton1.setEnabled(true);
 				JOptionPane.showConfirmDialog(null, editTaskPanel, "Create Report", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			}
@@ -244,7 +245,7 @@ public class TaskEntryUI extends JPanel {
 		return scrollPane;
 	}
 	
-	private void setAddTaskPanel() {
+	private void setAddTaskPanel(int sort, int filter) {
 		addTaskPanel = new JPanel();
 		JLabel message = new JLabel("<html><br>Enter Details:<br><br></html>");
 		message.setHorizontalAlignment(SwingConstants.CENTER);
@@ -324,9 +325,10 @@ public class TaskEntryUI extends JPanel {
 		});
 		
 		addTaskPanel.add(addButton1);
+		refreshTable(sort,filter);
 	}
 	
-	private void setEditTaskPanel(int task_id) {
+	private void setEditTaskPanel(int task_id,int sort,int filter) {
 		task currentTask = myTE.getTask(task_id);
 		
 		editTaskPanel = new JPanel();
@@ -418,6 +420,7 @@ public class TaskEntryUI extends JPanel {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
+				refreshTable(sort,filter);
 			}
 		});
 		
@@ -426,11 +429,7 @@ public class TaskEntryUI extends JPanel {
 		editButton2 = new JButton("Delete");
 		editButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-								try {
-					System.out.println(myTE.deleteTask(task_id));
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				System.out.println(myTE.deleteTask(task_id));
 			}
 		});
 		
