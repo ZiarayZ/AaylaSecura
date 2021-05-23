@@ -86,6 +86,5 @@ public class task {
 		int min = Integer.parseInt(date_created.substring(14, 16));
 		int sec = Integer.parseInt(date_created.substring(17, 19));
 		concDateTime = (year*10000000000L)+(month*100000000)+(day*1000000)+(hour*10000)+(min*100)+sec;
-		System.out.println(concDateTime);
 	}
 }
