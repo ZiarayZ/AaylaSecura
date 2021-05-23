@@ -34,6 +34,8 @@ public class TaskEntryUI extends JPanel {
 	private JTextField caretakerNameField;
 	private JTextField timeCompletedField;
 	private taskEntry myTE;
+	private int sort;
+	private int filter;
 
 	/**
 	 * Create the panel.
@@ -41,7 +43,8 @@ public class TaskEntryUI extends JPanel {
 	public TaskEntryUI(UserInterface UI, taskEntry myTE, database db) {//, UserManagement User, database db) {
 		this.myTE = myTE;
 		this.db = db;
-		int sort = 0;
+		sort = 0;
+		filter = 2;
 		//sets window to have this contentPane
 		window = UI;
 		setBackground(new Color(255, 255, 255));
@@ -61,7 +64,7 @@ public class TaskEntryUI extends JPanel {
 		fixedPane.add(lblHeadingLabel);
 		
 		String[] colHeaders = {"Task ID", "Task Name", "Task Type", "Task Duration", "Task Priority", "Task Frequency", "need logging", "Date Created", "completed", "extra sign off"};
-		Object[][] data = populateTable(sort);
+		Object[][] data = populateTable(sort,filter);
 		taskListTable = new JTable(data,colHeaders);
 		//this removes the id column, but you should be able to call 'userTable.getModel().getValueAt(row, 0)' to get the id
 		TableColumnModel tcm = taskListTable.getColumnModel();
@@ -109,7 +112,8 @@ public class TaskEntryUI extends JPanel {
 		JButton sortByCaretakerButton = new JButton("<html><center>Sort By<br>Date created</center></html>");
 		sortByCaretakerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JScrollPane scrollPane = updateTable(0);
+				sort = 0;
+				JScrollPane scrollPane = updateTable(sort, filter);
 				fixedPane.add(scrollPane);
 			}
 		});
@@ -119,42 +123,48 @@ public class TaskEntryUI extends JPanel {
 		JButton sortByDeadlineButton = new JButton("<html><center>Sort By<br>Priority</center></html>");
 		sortByDeadlineButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JScrollPane scrollPane = updateTable(1);
+				sort = 1;
+				JScrollPane scrollPane = updateTable(sort, filter);
 				fixedPane.add(scrollPane);
 			}
 		});
 		sortByDeadlineButton.setBounds(213, 553, 132, 54);
 		fixedPane.add(sortByDeadlineButton);
 		
-		JButton editCompletedButton = new JButton("<html><center>Edit<br>One Off</center></html>");
+		JButton editCompletedButton = new JButton("<html><center>One Off<br>Tasks</center></html>");
 		editCompletedButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JScrollPane scrollPane = updateTable(2);
+				filter = 1;
+				JScrollPane scrollPane = updateTable(sort, filter);
 				fixedPane.add(scrollPane);
 			}
 		});
 		editCompletedButton.setBounds(355, 553, 133, 54);
 		fixedPane.add(editCompletedButton);
 		
-		JButton logTaskButton = new JButton("<html><center>Log<br>Task</center></html>");
+		JButton logTaskButton = new JButton("<html><center>Repeat<br>Tasks</center></html>");
 		logTaskButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//logs the task
+				filter = 0;
+				JScrollPane scrollPane = updateTable(sort, filter);
+				fixedPane.add(scrollPane);
 			}
 		});
 		logTaskButton.setBounds(498, 553, 118, 54);
 		fixedPane.add(logTaskButton);
 		
-		JButton undoLoggedTaskButton = new JButton("<html><center>Undo<br>Changes</center></html>");
+		JButton undoLoggedTaskButton = new JButton("<html><center>One Off and<br>Repeat Tasks</center></html>");
 		undoLoggedTaskButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//undo functionality (optional)
+				filter = 2;
+				JScrollPane scrollPane = updateTable(sort, filter);
+				fixedPane.add(scrollPane);
 			}
 		});
 		undoLoggedTaskButton.setBounds(626, 553, 124, 54);
 		fixedPane.add(undoLoggedTaskButton);
 		
-		JButton createReportButton = new JButton("<html><center>Create<br>Report</center></html>");
+		JButton createReportButton = new JButton("<html><center>Add New<br>Task</center></html>");
 		createReportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//generates the report
@@ -166,7 +176,7 @@ public class TaskEntryUI extends JPanel {
 		add(fixedPane);
 	}
 	
-	public Object[][] populateTable(int sort) {
+	public Object[][] populateTable(int sort, int filter) {
 		ArrayList<Object[]> tempData = new ArrayList<Object[]>();
 
 		//call for all tasks info
@@ -174,8 +184,15 @@ public class TaskEntryUI extends JPanel {
 		switch(sort) {
 		case 0:tasks = myTE.getUndoneTasks(); break;
 		case 1:tasks = myTE.sortUndoneTasksByPriority(); break;
-		case 2:tasks = myTE.filterToOneOffTasks(myTE.getUndoneTasks()); break;
 		}
+		switch(filter) {
+		case 0:tasks = myTE.filterToRepeatTasks(tasks);break;
+		case 1:tasks = myTE.filterToOneOffTasks(tasks);break;
+		case 2:;break;
+		}
+		
+		
+		
 		task tempTask;
 		try {
 			for(int a=0;a<tasks.size();a++) {
@@ -193,9 +210,9 @@ public class TaskEntryUI extends JPanel {
 		return data;
 	}
 	
-	private JScrollPane updateTable(int sort) {
+	private JScrollPane updateTable(int sort, int filter) {
 		String[] colHeaders = {"Task ID", "Task Name", "Task Type", "Task Duration", "Task Priority", "Task Frequency", "need logging", "Date Created", "completed", "extra sign off"};
-		Object[][] data = populateTable(sort);
+		Object[][] data = populateTable(sort,filter);
 		taskListTable = new JTable(data,colHeaders);
 		//this removes the id column, but you should be able to call 'userTable.getModel().getValueAt(row, 0)' to get the id
 		TableColumnModel tcm = taskListTable.getColumnModel();
