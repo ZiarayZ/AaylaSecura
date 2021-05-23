@@ -22,9 +22,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 
-public class TaskLogUI extends JPanel {//datetime check: uuuu-MM-dd HH:mm:ss
+public class TaskLogUI extends JPanel {
 
 	private UserInterface window;
 	private UserManagement user;
@@ -76,10 +80,10 @@ public class TaskLogUI extends JPanel {//datetime check: uuuu-MM-dd HH:mm:ss
 		}
 		//this removes the id column, but you should be able to call 'userTable.getModel().getValueAt(row, 0)' to get the id
 		TableColumnModel tcm = taskListTable.getColumnModel();
-		tcm.removeColumn(tcm.getColumn(0));//Logged Task ID
-		tcm.removeColumn(tcm.getColumn(0));//Task ID -1
-		tcm.removeColumn(tcm.getColumn(1));//First User ID -2
-		tcm.removeColumn(tcm.getColumn(2));//Second User ID -3
+		tcm.removeColumn(tcm.getColumn(0));//Logged Task ID: 0
+		tcm.removeColumn(tcm.getColumn(0));//Task ID: 1
+		tcm.removeColumn(tcm.getColumn(1));//First User ID: 3
+		tcm.removeColumn(tcm.getColumn(2));//Second User ID: 5
 		//import table into a scroll pane so that the table headers are visible and other things
 		JScrollPane scrollPane = new JScrollPane(taskListTable);
 		scrollPane.setBackground(new Color(238, 238, 238));
@@ -95,7 +99,9 @@ public class TaskLogUI extends JPanel {//datetime check: uuuu-MM-dd HH:mm:ss
 		JLabel lblNameLabel = new JLabel("Completed By");
 		lblNameLabel.setBounds(159, 430, 92, 14);
 		fixedPane.add(lblNameLabel);
-		
+		JLabel lblExample = new JLabel("Example Format: YYYY-MM-dd HH:mm:ss");
+		lblExample.setBounds(261, 453, 118, 20);
+		fixedPane.add(lblExample);
 		timeCompletedField = new JTextField();
 		timeCompletedField.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent event) {
@@ -106,8 +112,15 @@ public class TaskLogUI extends JPanel {//datetime check: uuuu-MM-dd HH:mm:ss
 			}
 			//once a key is pressed then released will test the password's strength
 			public void keyReleased(KeyEvent event) {
-				//borrowing a DB method
-				if (DB.checkValidDateTime(timeCompletedField.getText())) {
+				//validate date time from DB method
+				boolean valid = false;
+				try {
+					LocalDate.parse(timeCompletedField.getText(), DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT));
+					valid = true;
+				} catch (DateTimeParseException e) {
+					valid = false;
+				}
+				if (valid) {
 					timeCompletedField.setForeground(green);
 				} else {
 					timeCompletedField.setForeground(red);
