@@ -15,9 +15,9 @@ public class databaseReset {
 			db.clearAllDatabase();
 			//job
 			database.addNewJob("Caretaker");//code for caretaker 1
-			db.editJobPerms(1, "{Rank:3,CR:1}");
+			db.editJobPerms(1, "{Rank:3,CR:1,LT:1}");
 			database.addNewJob("Manager");//code for manager 2
-			db.editJobPerms(2, "{Rank:2,MU:2,CR:2}");
+			db.editJobPerms(2, "{Rank:2,MU:2,CR:2,LT:1}");
 			database.addNewJob("Admin");//code for admin 3
 			db.editJobPerms(3, "{Rank:1,AP:1,MU:3}");
 
@@ -26,6 +26,7 @@ public class databaseReset {
 			db.addNewPerms("AP", "Administrator Permissions");//0 admin perms or 1 all admin perms
 			db.addNewPerms("MU", "Manage Users");//0 no perms, higher number, higher perms
 			db.addNewPerms("CR", "Create Reports");//0 no perms, higher number, higher perms
+			db.addNewPerms("LT", "Log Tasks");//0 no perms, higher number, higher perms
 
 			//user
 			//name, username, job_id, hashed_password, notes, M_F(gender)

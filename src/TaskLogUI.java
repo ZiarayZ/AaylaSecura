@@ -5,11 +5,14 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
@@ -74,7 +77,8 @@ public class TaskLogUI extends JPanel {
 		lblHeadingLabel.setBackground(new Color(224, 255, 255));
 		lblHeadingLabel.setBounds(256, 55, 444, 67);
 		fixedPane.add(lblHeadingLabel);
-		
+
+		//create table
 		String[] colHeaders = {"Logged Task ID", "Task ID", "Task Name", "First User ID", "First User", "Second User ID", "Second User", "Date Completed"};
 		Object[][] data = populateTable();
 		TableModel tableModel = new DefaultTableModel(colHeaders, 0);
@@ -85,18 +89,7 @@ public class TaskLogUI extends JPanel {
 		for (int i = 0; i < data.length; i++) {
 			DTM.addRow(data[i]);
 		}
-		//this removes the id column, but you should be able to call 'userTable.getModel().getValueAt(row, 0)' to get the id
-		TableColumnModel tcm = taskListTable.getColumnModel();
-		tcm.removeColumn(tcm.getColumn(0));//Logged Task ID: 0
-		tcm.removeColumn(tcm.getColumn(0));//Task ID: 1
-		tcm.removeColumn(tcm.getColumn(1));//First User ID: 3
-		tcm.removeColumn(tcm.getColumn(2));//Second User ID: 5
-		//import table into a scroll pane so that the table headers are visible and other things
-		JScrollPane scrollPane = new JScrollPane(taskListTable);
-		scrollPane.setBackground(new Color(238, 238, 238));
-		scrollPane.setBounds(68, 150, 820, 232);
-		fixedPane.add(scrollPane);
-		
+
 		caretakerNameField = new JTextField();
 		caretakerNameField.setBackground(new Color(238, 238, 238));
 		caretakerNameField.setBounds(261, 427, 118, 20);
@@ -158,9 +151,9 @@ public class TaskLogUI extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				refreshTable();
 				List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
-				sortKeys.add(new RowSorter.SortKey(4, SortOrder.ASCENDING));
-				sortKeys.add(new RowSorter.SortKey(6, SortOrder.ASCENDING));
-				sortKeys.add(new RowSorter.SortKey(7, SortOrder.ASCENDING));
+				sortKeys.add(new RowSorter.SortKey(4, SortOrder.ASCENDING));//sort by user 1
+				sortKeys.add(new RowSorter.SortKey(6, SortOrder.ASCENDING));//sort by user 2 after user 1
+				sortKeys.add(new RowSorter.SortKey(7, SortOrder.ASCENDING));//sort by date completed after user 2 after user 1
 				tableSorter.setSortKeys(sortKeys);
 			}
 		});
@@ -231,6 +224,39 @@ public class TaskLogUI extends JPanel {
 		});
 		createReportButton.setBounds(760, 553, 128, 54);
 		fixedPane.add(createReportButton);
+
+		//set table listener
+		ListSelectionModel selectionModel = taskListTable.getSelectionModel();
+		selectionModel.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				//when selecting a row in the logging task table
+				if (taskListTable.getSelectedRow() != -1) {
+					if (user.accessLevel("LT") >= 1 || user.accessLevel("AP") == 1) {
+						editCompletedButton.setEnabled(true);
+						logTaskButton.setEnabled(true);
+					} else {
+						editCompletedButton.setEnabled(false);
+						logTaskButton.setEnabled(false);
+					}
+				} else {
+					editCompletedButton.setEnabled(false);
+					logTaskButton.setEnabled(false);
+				}
+			}
+		});
+		//this removes the id column, but you should be able to call 'userTable.getModel().getValueAt(row, 0)' to get the id
+		TableColumnModel tcm = taskListTable.getColumnModel();
+		tcm.removeColumn(tcm.getColumn(0));//Logged Task ID: 0
+		tcm.removeColumn(tcm.getColumn(0));//Task ID: 1
+		tcm.removeColumn(tcm.getColumn(1));//First User ID: 3
+		tcm.removeColumn(tcm.getColumn(2));//Second User ID: 5
+		//import table into a scroll pane so that the table headers are visible and other things
+		JScrollPane scrollPane = new JScrollPane(taskListTable);
+		scrollPane.setBackground(new Color(238, 238, 238));
+		scrollPane.setBounds(68, 150, 820, 232);
+		fixedPane.add(scrollPane);
+
+		//set pane size and add to main pane
 		fixedPane.setPreferredSize(new Dimension(956,717));
 		add(fixedPane);
 	}
