@@ -17,6 +17,8 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -43,6 +45,9 @@ public class TaskLogUI extends JPanel {//datetime check: uuuu-MM-dd HH:mm:ss
 		taskLog = loggingTask;
 		reportCreation = new CreateReports(DB);
 		user = User;
+		//define colors
+		final Color red = new Color(236, 28, 36);
+		final Color green = new Color(94, 186, 125);
 		//sets window to have this contentPane
 		window = UI;
 		setBackground(new Color(255, 255, 255));
@@ -92,9 +97,21 @@ public class TaskLogUI extends JPanel {//datetime check: uuuu-MM-dd HH:mm:ss
 		fixedPane.add(lblNameLabel);
 		
 		timeCompletedField = new JTextField();
-		timeCompletedField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//check date time format
+		timeCompletedField.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent event) {
+				//Required method
+			}
+			public void keyPressed(KeyEvent event) {
+				//Required method
+			}
+			//once a key is pressed then released will test the password's strength
+			public void keyReleased(KeyEvent event) {
+				//borrowing a DB method
+				if (DB.checkValidDateTime(timeCompletedField.getText())) {
+					timeCompletedField.setForeground(green);
+				} else {
+					timeCompletedField.setForeground(red);
+				}
 			}
 		});
 		timeCompletedField.setBackground(new Color(238, 238, 238));
