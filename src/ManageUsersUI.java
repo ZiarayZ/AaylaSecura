@@ -5,6 +5,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JPanel;
@@ -92,6 +93,8 @@ public class ManageUsersUI extends JPanel {
 		fixedEditPanel.setBackground(new Color(255, 255, 255));
 
 		//add content to panel
+		//user's ID
+		int editID = -1;
 		//user's name
 		fixedEditPanel.add(new JLabel("User's Name:"));
 		JTextField editName = new JTextField();
@@ -110,11 +113,38 @@ public class ManageUsersUI extends JPanel {
 			window.displayError("Database Error!", e.toString());
 		}
 		fixedEditPanel.add(editJob);
+		//user's notes
+		fixedEditPanel.add(new JLabel("User's Notes:"));
+		JTextArea editNotes = new JTextArea();
+		fixedEditPanel.add(editNotes);
 		//user's gender
 		fixedEditPanel.add(new JLabel("User's Gender:"));
 		Job[] genders = {new Job('M', "Male"), new Job('F', "Female")};
 		JComboBox<Job> editGender = new JComboBox<Job>(genders);
 		fixedEditPanel.add(editGender);
+
+		//accept edit
+		JButton acceptEdit = new JButton("Edit");
+		acceptEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				if (editID != -1) {
+					try {
+						user.editUser(
+							editID,//get ID stored
+							editName.getText(),
+							((Job) editJob.getSelectedItem()).getID(),
+							editNotes.getText(),
+							Character.toString((char) ((Job) editGender.getSelectedItem()).getID())
+						);
+					} catch (SQLException e) {
+						window.displayError("Database Error!", e.toString());
+					}
+				} else {
+					window.displayError("Edit Error!", "No user Selected.");
+				}
+			}
+		});
+		fixedEditPanel.add(acceptEdit);
 
 		//finish panel creation
 		fixedEditPanel.setPreferredSize(new Dimension(555, 329));
@@ -124,6 +154,7 @@ public class ManageUsersUI extends JPanel {
 		JButton btnEditUserButton = new JButton("Edit User");
 		btnEditUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				window.show("EditUser");
 			}
 		});
