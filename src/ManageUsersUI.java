@@ -145,11 +145,10 @@ public class ManageUsersUI extends JPanel {
 	private void createAddUser() {
 		try {
 			ResultSet jobs = userDB.getAllJobs();
-			ArrayList<Job> items = new ArrayList<Job>();
+			JComboBox<Job> jobCombo = new JComboBox<Job>();
 			while (jobs.next()) {
-				items.add(new Job(jobs.getInt(1), jobs.getString(2)));
+				jobCombo.addItem(new Job(jobs.getInt(1), jobs.getString(2)));
 			}
-			JComboBox<Job> jobCombo = new JComboBox<Job>((Job[]) items.toArray());
 			Job[] genders = {new Job('M', "Male"), new Job('F', "Female")};
 			JComboBox<Job> genderCombo = new JComboBox<Job>(genders);
 			JTextField name = new JTextField();
