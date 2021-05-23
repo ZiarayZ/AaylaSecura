@@ -365,7 +365,7 @@ public class database {
 	}//end getPassFromUsername()
 
 	public ResultSet getAllUsers() {
-		String getSQL = "SELECT user_id, user_name, username, job.job_desc, M_F FROM users INNER JOIN job ON users.job_id=job.job_id ORDER BY user_name";
+		String getSQL = "SELECT user_id, user_name, username, job.job_id, job.job_desc, M_F FROM users INNER JOIN job ON users.job_id=job.job_id ORDER BY user_name";
 		ResultSet result = myDB.RunSQLQuery(getSQL);
 		return result;
 	}
