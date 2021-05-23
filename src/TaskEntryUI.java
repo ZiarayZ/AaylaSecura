@@ -182,7 +182,7 @@ public class TaskEntryUI extends JPanel {
 		//call for all tasks info
 		ArrayList<task> tasks = new ArrayList<task>();
 		switch(sort) {
-		case 0:tasks = myTE.getUndoneTasks(); break;
+		case 0:tasks = myTE.sortUndoneTasksByDate(); break;
 		case 1:tasks = myTE.sortUndoneTasksByPriority(); break;
 		}
 		switch(filter) {

@@ -102,7 +102,7 @@ public class taskEntry {
 		return false;
 	}
 	
-		public ArrayList<task> sortUndoneTasksByPriority() {
+	public ArrayList<task> sortUndoneTasksByPriority() {
 		ArrayList<task> unsorted = getUndoneTasks();
 		ArrayList<task> sorted = new ArrayList<task>();
 		
@@ -116,7 +116,27 @@ public class taskEntry {
 		}
 		return sorted;
 	}
-		
+	
+	public ArrayList<task> sortUndoneTasksByDate(){
+		ArrayList<task> taskList = getUndoneTasks();
+		int sortedPoint=0;
+		task task1;
+		task task2;
+		while(sortedPoint<taskList.size()) {
+			task1=taskList.get(sortedPoint);
+			task2=taskList.get(sortedPoint+1);
+			if(task1.getConcDateTime()>task2.getConcDateTime()) {
+				sortedPoint = 0;
+				taskList.set(sortedPoint,task2);
+				taskList.set(sortedPoint+1,task1);
+			}
+			else {sortedPoint++;}
+			
+		}
+		return taskList;
+	}
+	
+	
 	public ArrayList<task> filterToOneOffTasks (ArrayList<task> input){
 		ArrayList<task> output = new ArrayList<task>();
 		for(int a=0;a<input.size();a++) {
@@ -124,7 +144,6 @@ public class taskEntry {
 				output.add(input.get(a));
 			}
 		}
-		
 		return output;
 	}
 	
@@ -135,7 +154,6 @@ public class taskEntry {
 				output.add(input.get(a));
 			}
 		}
-		
 		return output;
 	}
 	
