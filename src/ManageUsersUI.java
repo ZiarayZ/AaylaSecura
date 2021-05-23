@@ -236,6 +236,16 @@ public class ManageUsersUI extends JPanel {
 									if (user.accessLevel("Rank") < Integer.parseInt(permLevel[1])) {
 										editID.setText(tempUser.getID());
 										editName.setText(tempUser.getName());
+										editJob.removeAllItems();
+										ResultSet jobs = user.getJobs();
+										boolean valid = true;
+										while (jobs.next() && valid) {
+											if (jobs.getString(2).equals(user.getJob())) {
+												valid = false;
+											} else {
+												editJob.addItem(new Job(jobs.getInt(1), jobs.getString(2)));
+											}
+										}
 										for (int j = 0; j < editJob.getItemCount(); j++) {
 											Object item = editJob.getItemAt(j);
 											if (item.toString().equals(tempUser.getJob())) {
