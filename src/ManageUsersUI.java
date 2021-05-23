@@ -197,6 +197,7 @@ public class ManageUsersUI extends JPanel {
 					try {
 						ResultSet editUser = user.getUserFromID((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0));
 						if (editUser.next()) {
+							//global entity
 							tempUser = new EditUser(Integer.toString(
 								editUser.getInt(1)),
 								editUser.getString(2),
