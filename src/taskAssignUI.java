@@ -34,14 +34,14 @@ import javax.swing.event.CaretListener;
 import javax.swing.table.TableColumnModel;
 import javax.swing.event.CaretEvent;
 
-public class TaskEntryUI extends JPanel {
+public class taskAssignUI extends JPanel {
 
 	private UserInterface window;
 	private database db;
 	private JTable taskListTable;
 	private JTextField taskNameField;
 	private JTextField timeCompletedField;
-	private taskEntry myTE;
+	private taskAssign myTA;
 	private int sort;
 	private int filter;
 	private JPanel addTaskPanel;
@@ -59,8 +59,8 @@ public class TaskEntryUI extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public TaskEntryUI(UserInterface UI, taskEntry myTE, database db) {// , UserManagement User, database db) {
-		this.myTE = myTE;
+	public taskAssignUI(UserInterface UI, taskAssign myTA, database db) {// , UserManagement User, database db) {
+		this.myTA = myTA;
 		this.db = db;
 		sort = 0;
 		filter = 2;
@@ -73,7 +73,7 @@ public class TaskEntryUI extends JPanel {
 		fixedPane.setLayout(null);
 		fixedPane.setBackground(new Color(255, 255, 255));
 
-		JLabel lblHeadingLabel = new JLabel("Task Entry");
+		JLabel lblHeadingLabel = new JLabel("Task Allocation");
 		lblHeadingLabel.setForeground(new Color(105, 105, 105));
 		lblHeadingLabel.setOpaque(true);
 		lblHeadingLabel.setFont(new Font("Verdana", Font.PLAIN, 28));
@@ -191,18 +191,18 @@ public class TaskEntryUI extends JPanel {
 		ArrayList<task> tasks = new ArrayList<task>();
 		switch (sort) {
 		case 0:
-			tasks = myTE.sortUndoneTasksByDate();
+			//tasks = myTA.sortUndoneTasksByDate();
 			break;
 		case 1:
-			tasks = myTE.sortUndoneTasksByPriority();
+			tasks = myTA.sortUndoneTasksByPriority();
 			break;
 		}
 		switch (filter) {
 		case 0:
-			tasks = myTE.filterToRepeatTasks(tasks);
+			tasks = myTA.filterToRepeatTasks(tasks);
 			break;
 		case 1:
-			tasks = myTE.filterToOneOffTasks(tasks);
+			tasks = myTA.filterToOneOffTasks(tasks);
 			break;
 		case 2:
 			;
@@ -315,11 +315,11 @@ public class TaskEntryUI extends JPanel {
 				String date_created = "1999-03-27 15:07:43";//get date
 				int completed = 0;
 				int extra_sign_off = Integer.parseInt(extraSignoffInput.getText());
-				try {
-					System.out.println(myTE.addTask(name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off));
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				//try {
+					//System.out.println(myTA.addTask(name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off));
+				//} catch (SQLException e) {
+				//	e.printStackTrace();
+				//}
 			}
 		});
 		
@@ -327,7 +327,7 @@ public class TaskEntryUI extends JPanel {
 	}
 	
 	private void setEditTaskPanel(int task_id) {
-		task currentTask = myTE.getTask(task_id);
+		task currentTask = myTA.getTask(task_id);
 		
 		editTaskPanel = new JPanel();
 		JLabel message = new JLabel("<html><br>Enter Details:<br><br></html>");
@@ -405,11 +405,11 @@ public class TaskEntryUI extends JPanel {
 				String date_created = currentTask.getDateCreated();//get date
 				int completed = 0;
 				int extra_sign_off = Integer.parseInt(extraSignoffInput.getText());
-				try {
-					System.out.println(myTE.editTask(task_id, name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off));
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				//try {
+				//	System.out.println(myTA.editTask(task_id, name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off));
+				//} catch (SQLException e) {
+				//	e.printStackTrace();
+				//}
 			}
 		});
 		
