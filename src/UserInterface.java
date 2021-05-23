@@ -71,6 +71,22 @@ public class UserInterface extends JFrame {
         contentPane.setMinimumSize(new Dimension(125, 686));
         contentPane.setMaximumSize(new Dimension(125, 686));
 		contentPane.setLayout(null);
+        
+        //collect all JPanels together
+        //empty card
+        JPanel empty = new JPanel();
+        empty.setBackground(new Color(255, 255, 255));
+		empty.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
+		empty.setLayout(null);
+        mainPane.add(empty, "Main Menu");
+        mainPane.add(accessPane, "Access");
+
+        //create other JPanels
+        loginWindow = new LoginUI(this, user);
+        usersWindow = new ManageUsersUI(this, user, db);
+        logTasksWindow = new TaskLogUI(this, loggingTask, db, user);
+        enterTasksWindow = new TaskEntryUI(this, myTE, db);
+        //allocateTasksWindow = new AllocateTaskUI(this, myTA, db);
 
         //add buttons to access cards
         //Login
@@ -118,26 +134,11 @@ public class UserInterface extends JFrame {
         usersBtn.setBounds(0, 200, 125, 50);
         usersBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                usersWindow.refreshTable();
                 displayUsers();
             }
         });
         contentPane.add(usersBtn);
-        
-        //collect all JPanels together
-        //empty card
-        JPanel empty = new JPanel();
-        empty.setBackground(new Color(255, 255, 255));
-		empty.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
-		empty.setLayout(null);
-        mainPane.add(empty, "Main Menu");
-        mainPane.add(accessPane, "Access");
-
-        //create other JPanels
-        loginWindow = new LoginUI(this, user);
-        usersWindow = new ManageUsersUI(this, user, db);
-        logTasksWindow = new TaskLogUI(this, loggingTask, db, user);
-        enterTasksWindow = new TaskEntryUI(this, myTE, db);
-        //allocateTasksWindow = new AllocateTaskUI(this, myTA, db);
 
         //add all other JPanels to main CardLayout JPanel
 		mainPane.add(loginWindow, "Login");
