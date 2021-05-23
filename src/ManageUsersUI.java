@@ -153,20 +153,24 @@ public class ManageUsersUI extends JPanel {
 		JButton acceptEdit = new JButton("Edit");
 		acceptEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				if (Integer.parseInt(editID.getText()) != -1) {
-					try {
-						user.editUser(
-							Integer.parseInt(editID.getText()),//get ID stored
-							editName.getText(),
-							((Job) editJob.getSelectedItem()).getID(),
-							editNotes.getText(),
-							Character.toString((char) ((Job) editGender.getSelectedItem()).getID())
-						);
-					} catch (SQLException e) {
-						window.displayError("Database Error!", e.toString());
+				if (user.accessLevel("MU") >= 2 || user.accessLevel("AP") == 1) {
+					if (Integer.parseInt(editID.getText()) != -1) {
+						try {
+							user.editUser(
+								Integer.parseInt(editID.getText()),//get ID stored
+								editName.getText(),
+								((Job) editJob.getSelectedItem()).getID(),
+								editNotes.getText(),
+								Character.toString((char) ((Job) editGender.getSelectedItem()).getID())
+							);
+						} catch (SQLException e) {
+							window.displayError("Database Error!", e.toString());
+						}
+					} else {
+						window.displayError("Edit Error!", "No user Selected.");
 					}
 				} else {
-					window.displayError("Edit Error!", "No user Selected.");
+					window.displayError("No Access!", "You do not have permission to access this feature.");
 				}
 			}
 		});
