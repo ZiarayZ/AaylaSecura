@@ -5,7 +5,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JPanel;
@@ -167,7 +166,7 @@ public class ManageUsersUI extends JPanel {
 			JTextField name = new JTextField();
 			JTextField username = new JTextField();
 			JPasswordField password = new JPasswordField();
-			JTextArea notes = new JTextArea();
+			JTextField notes = new JTextField();
 			JPanel addUserPanel = new JPanel(new GridLayout(0, 1));
 			addUserPanel.add(new JLabel("User's Name:"));
 			addUserPanel.add(name);
