@@ -190,10 +190,15 @@ public class TaskEntryUI extends JPanel {
 		JButton addTaskButton = new JButton("<html><center>Add New<br>Task</center></html>");
 		addTaskButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+<<<<<<< Updated upstream
 				addButton1.setEnabled(true);
 				addButton2.setEnabled(true);
 				JOptionPane.showConfirmDialog(null, addTaskPanel, "Create Report",
 				JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+=======
+				JPanel panel = addTask();
+				fixedPane.add(panel);
+>>>>>>> Stashed changes
 			}
 		});
 		addTaskButton.setBounds(355, 607, 133, 54);
@@ -326,6 +331,7 @@ public class TaskEntryUI extends JPanel {
 		panel.setBounds(68, 150, 820, 232);
 		return panel;
 	}
+<<<<<<< Updated upstream
 	
 	private void setAddTaskPanel() {
 		addTaskPanel = new JPanel();
@@ -389,4 +395,6 @@ public class TaskEntryUI extends JPanel {
 		addTaskPanel.add(addButton1);
 		//saddTaskPanel.add(addButton2);
 	}
+=======
+>>>>>>> Stashed changes
 }
