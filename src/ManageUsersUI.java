@@ -94,7 +94,7 @@ public class ManageUsersUI extends JPanel {
 
 		//add content to panel
 		//user's ID
-		int editID = -1;
+		JTextField editID = new JTextField("-1");
 		//user's name
 		fixedEditPanel.add(new JLabel("User's Name:"));
 		JTextField editName = new JTextField();
@@ -122,15 +122,18 @@ public class ManageUsersUI extends JPanel {
 		Job[] genders = {new Job('M', "Male"), new Job('F', "Female")};
 		JComboBox<Job> editGender = new JComboBox<Job>(genders);
 		fixedEditPanel.add(editGender);
+		//add hidden user's ID
+		fixedEditPanel.add(editID);
+		editID.setVisible(false);
 
 		//accept edit
 		JButton acceptEdit = new JButton("Edit");
 		acceptEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				if (editID != -1) {
+				if (Integer.parseInt(editID.getText()) != -1) {
 					try {
 						user.editUser(
-							editID,//get ID stored
+							Integer.parseInt(editID.getText()),//get ID stored
 							editName.getText(),
 							((Job) editJob.getSelectedItem()).getID(),
 							editNotes.getText(),
@@ -153,8 +156,25 @@ public class ManageUsersUI extends JPanel {
 		
 		JButton btnEditUserButton = new JButton("Edit User");
 		btnEditUserButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent event) {
+				try {
+					ResultSet editUser = user.getUserFromID((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0));
+					while (editUser.next()) {
+						//to code
+					}
+				} catch (SQLException e) {
+					window.displayError("Database Error!", e.toString());
+					editID.setText(Integer.toString((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0)));
+					editName.setText(userTable.getModel().getValueAt(userTable.getSelectedRow(), 1).toString());
+					editJob.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 3).toString());
+					editGender.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 4).toString());
+				} catch (NullPointerException e) {
+					window.displayError("Database Error!", e.toString());
+					editID.setText(Integer.toString((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0)));
+					editName.setText(userTable.getModel().getValueAt(userTable.getSelectedRow(), 1).toString());
+					editJob.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 3).toString());
+					editGender.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 4).toString());
+				}
 				window.show("EditUser");
 			}
 		});
