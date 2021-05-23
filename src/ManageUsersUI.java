@@ -432,7 +432,11 @@ class EditUser {
 		ID = newID;
 		name = newName;
 		job = newJob;
-		gender = newGender;
+		if (newGender.equals("M")) {
+			gender = "Male";
+		} else if (newGender.equals("F")) {
+			gender = "Female";
+		}
 		notes = newNotes;
 	}
 	public String getID() {
