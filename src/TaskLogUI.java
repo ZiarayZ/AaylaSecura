@@ -20,7 +20,6 @@ import java.awt.GridBagConstraints;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
