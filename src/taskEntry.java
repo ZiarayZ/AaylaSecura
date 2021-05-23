@@ -122,16 +122,16 @@ public class taskEntry {
 		int sortedPoint=0;
 		task task1;
 		task task2;
-		while(sortedPoint<taskList.size()) {
+		while(sortedPoint<taskList.size()-1) {
 			task1=taskList.get(sortedPoint);
 			task2=taskList.get(sortedPoint+1);
-			if(task1.getConcDateTime()>task2.getConcDateTime()) {
-				sortedPoint = 0;
+			if(task1.getConcDateTime()<task2.getConcDateTime()) {
 				taskList.set(sortedPoint,task2);
 				taskList.set(sortedPoint+1,task1);
+				sortedPoint = 0;
+				//System.out.println("switched");
 			}
 			else {sortedPoint++;}
-			
 		}
 		return taskList;
 	}
