@@ -66,35 +66,56 @@ public class taskAssign {
 		return sorted;
 	}
 	
-	private String getYear(String dateTime) {
-		String result = dateTime.substring(0, 4);
-		return result;
-	}
 	
-	private String getMonth(String dateTime) {
-		String result = dateTime.substring(5, 7);
-		return result;
-	}
-	
-	private String getDay(String dateTime) {
-		String result = dateTime.substring(8, 10);
+	public task getTask(int id) {
+		task result = null;
+		ArrayList<task> taskList = getAllTasks();
+		for(int a=0;a<taskList.size();a++) {
+			if(taskList.get(a).getID()==id) {
+				result = taskList.get(a);
+			}
+		}
 		return result;
 	}
 	
 	public ArrayList<task> sortUndoneTasksByDate(){
-		ArrayList<task> unsorted = getUndoneTasks();
-		ArrayList<task> sorted = new ArrayList<task>();
-		
-		
-		
-	    
-	    
-		
-		return sorted;
+		ArrayList<task> taskList = getUndoneTasks();
+		int sortedPoint=0;
+		task task1;
+		task task2;
+		while(sortedPoint<taskList.size()-1) {
+			task1=taskList.get(sortedPoint);
+			task2=taskList.get(sortedPoint+1);
+			if(task1.getConcDateTime()<task2.getConcDateTime()) {
+				taskList.set(sortedPoint,task2);
+				taskList.set(sortedPoint+1,task1);
+				sortedPoint = 0;
+				//System.out.println("switched");
+			}
+			else {sortedPoint++;}
+		}
+		return taskList;
 	}
 	
+	public ArrayList<task> filterToOneOffTasks (ArrayList<task> input){
+		ArrayList<task> output = new ArrayList<task>();
+		for(int a=0;a<input.size();a++) {
+			if(input.get(a).getType()==1) {
+				output.add(input.get(a));
+			}
+		}
+		return output;
+	}
 	
-	
+	public ArrayList<task> filterToRepeatTasks (ArrayList<task> input){
+		ArrayList<task> output = new ArrayList<task>();
+		for(int a=0;a<input.size();a++) {
+			if(input.get(a).getType()==0) {
+				output.add(input.get(a));
+			}
+		}
+		return output;
+	}
 	
 	
 	

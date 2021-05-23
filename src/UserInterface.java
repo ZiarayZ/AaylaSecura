@@ -31,13 +31,14 @@ public class UserInterface extends JFrame {
     private JPanel errorPane = new JPanel();
     private CardLayout cardLayout;
     
-    public UserInterface(database db, UserManagement newUser, LogTasks loggingTask, taskEntry myTE) {
+    public UserInterface(database db, UserManagement newUser, LogTasks loggingTask, taskEntry myTE, taskAssign myTA) {
         user = newUser;
         //define inside here, not used elsewhere
         LoginUI loginWindow;
         ManageUsersUI usersWindow;
         TaskLogUI logTasksWindow;
         TaskEntryUI enterTasksWindow;
+        taskAssignUI assignTasksWindow;
         //TaskAssignUI assignTasksWindow;
 
         //setup errorPane
@@ -86,7 +87,7 @@ public class UserInterface extends JFrame {
         usersWindow = new ManageUsersUI(this, user, db);
         logTasksWindow = new TaskLogUI(this, loggingTask, db, user);
         enterTasksWindow = new TaskEntryUI(this, myTE, db);
-        //allocateTasksWindow = new AllocateTaskUI(this, myTA, db);
+        assignTasksWindow = new taskAssignUI(this, myTA, db);
 
         //add buttons to access cards
         //Login
@@ -146,7 +147,7 @@ public class UserInterface extends JFrame {
 		mainPane.add(usersWindow, "Users");
 		mainPane.add(logTasksWindow, "LogTasks");
 		mainPane.add(enterTasksWindow, "EditTasks");
-        //mainPane.add(allocateTasksWindow, "AllocateTasks");
+        mainPane.add(assignTasksWindow, "AllocateTasks");
 
         //set constraints of GridBagLayout
         gbc.fill = GridBagConstraints.BOTH;
@@ -219,7 +220,7 @@ public class UserInterface extends JFrame {
         setTitle("Allocate Tasks");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         if (user.getLogin()) {
-		    cardLayout.show(mainPane, "Main Menu");//Dummy button "AssignTasks"
+		    cardLayout.show(mainPane, "AllocateTasks");//Dummy button "AssignTasks"
         } else {
             cardLayout.show(mainPane, "Access");
         }

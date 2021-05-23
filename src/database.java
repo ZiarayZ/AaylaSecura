@@ -139,7 +139,7 @@ public class database {
 		if(validID) {
 			result=taskValidate(name,type,duration,priority,frequency,need_logging,date_created,completed,extra_sign_off);
 			if(result.equals("")){
-				String updateTaskSQL = "UPDATE tasks SET task_name='"+name+"',type='"+type+"',duration='"+duration+"',priority='"+priority+"',frequency='"+frequency+"',need_logging='"+need_logging+"',date_created'"+date_created+"',completed='"+completed+"', extra_sign_off='"+extra_sign_off+"' WHERE task_ID='"+task_ID+"'";
+				String updateTaskSQL = "UPDATE tasks SET task_name='"+name+"',type='"+type+"',duration='"+duration+"',priority='"+priority+"',frequency='"+frequency+"',need_logging='"+need_logging+"',date_created='"+date_created+"',completed='"+completed+"', extra_sign_off='"+extra_sign_off+"' WHERE task_ID='"+task_ID+"'";
 				boolean updateResult = myDB.RunSQL(updateTaskSQL);
 				if (!updateResult) {
 					result = "Update failed.";

@@ -15,7 +15,7 @@ public class taskEntry {
 	public String addTask(String name, int type, int duration, int priority, int frequency, int need_logging, String date_created, int completed, int extra_sign_off) throws SQLException {
 		String result;
 		boolean boolResult = checkExistingTask(name, date_created);
-		if(boolResult) {
+		if(!boolResult) {
 			result = db.addNewTask(name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off);
 		}else {result="Task Already Exists";}
 		return result;
@@ -40,7 +40,18 @@ public class taskEntry {
 		}
 		return myTasks;
 	}
-		
+	
+	public task getTask(int id) {
+		task result = null;
+		ArrayList<task> taskList = getAllTasks();
+		for(int a=0;a<taskList.size();a++) {
+			if(taskList.get(a).getID()==id) {
+				result = taskList.get(a);
+			}
+		}
+		return result;
+	}
+	
 	//get all undone tasks
 	public ArrayList<task> getUndoneTasks(){
 		ArrayList<task> allTasks = getAllTasks();
