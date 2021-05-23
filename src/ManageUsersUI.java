@@ -121,14 +121,14 @@ public class ManageUsersUI extends JPanel {
 		fixedEditPanel.add(editGender);
 
 		//finish panel creation
-		fixedEditPanel.setPreferredSize(new Dimension(755,512));
+		fixedEditPanel.setPreferredSize(new Dimension(755, 512));
 		editPanel.add(fixedEditPanel);
 		window.addCard(editPanel, "EditUser");
 		
 		JButton btnEditUserButton = new JButton("Edit User");
 		btnEditUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//create or show form to edit user
+				window.show("EditUser");
 			}
 		});
 		btnEditUserButton.setEnabled(false);
@@ -198,7 +198,7 @@ public class ManageUsersUI extends JPanel {
 		scrollPane.setBackground(new Color(192, 192, 192));
 		scrollPane.setBounds(35, 34, 685, 337);
 		fixedPane.add(scrollPane);
-		fixedPane.setPreferredSize(new Dimension(755,512));
+		fixedPane.setPreferredSize(new Dimension(755, 512));
 		add(fixedPane);
 	}
 
