@@ -109,60 +109,60 @@ public class TaskEntryUI extends JPanel {
 		 * lblNewLabel.setBounds(493, 430, 138, 14); add(lblNewLabel);
 		 */
 		
-		JButton sortByCaretakerButton = new JButton("<html><center>Sort By<br>Date created</center></html>");
-		sortByCaretakerButton.addActionListener(new ActionListener() {
+		JButton sortByDateButton = new JButton("<html><center>Sort By<br>Date created</center></html>");
+		sortByDateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort = 0;
 				JScrollPane scrollPane = updateTable(sort, filter);
 				fixedPane.add(scrollPane);
 			}
 		});
-		sortByCaretakerButton.setBounds(78, 553, 125, 54);
-		fixedPane.add(sortByCaretakerButton);
+		sortByDateButton.setBounds(78, 553, 125, 54);
+		fixedPane.add(sortByDateButton);
 		
-		JButton sortByDeadlineButton = new JButton("<html><center>Sort By<br>Priority</center></html>");
-		sortByDeadlineButton.addActionListener(new ActionListener() {
+		JButton sortByPriorityButton = new JButton("<html><center>Sort By<br>Priority</center></html>");
+		sortByPriorityButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort = 1;
 				JScrollPane scrollPane = updateTable(sort, filter);
 				fixedPane.add(scrollPane);
 			}
 		});
-		sortByDeadlineButton.setBounds(213, 553, 132, 54);
-		fixedPane.add(sortByDeadlineButton);
+		sortByPriorityButton.setBounds(213, 553, 132, 54);
+		fixedPane.add(sortByPriorityButton);
 		
-		JButton editCompletedButton = new JButton("<html><center>One Off<br>Tasks</center></html>");
-		editCompletedButton.addActionListener(new ActionListener() {
+		JButton filterOneOffButton = new JButton("<html><center>One Off<br>Tasks</center></html>");
+		filterOneOffButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filter = 1;
 				JScrollPane scrollPane = updateTable(sort, filter);
 				fixedPane.add(scrollPane);
 			}
 		});
-		editCompletedButton.setBounds(355, 553, 133, 54);
-		fixedPane.add(editCompletedButton);
+		filterOneOffButton.setBounds(355, 553, 133, 54);
+		fixedPane.add(filterOneOffButton);
 		
-		JButton logTaskButton = new JButton("<html><center>Repeat<br>Tasks</center></html>");
-		logTaskButton.addActionListener(new ActionListener() {
+		JButton filterRepeatButton = new JButton("<html><center>Repeat<br>Tasks</center></html>");
+		filterRepeatButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filter = 0;
 				JScrollPane scrollPane = updateTable(sort, filter);
 				fixedPane.add(scrollPane);
 			}
 		});
-		logTaskButton.setBounds(498, 553, 118, 54);
-		fixedPane.add(logTaskButton);
+		filterRepeatButton.setBounds(498, 553, 118, 54);
+		fixedPane.add(filterRepeatButton);
 		
-		JButton undoLoggedTaskButton = new JButton("<html><center>One Off and<br>Repeat Tasks</center></html>");
-		undoLoggedTaskButton.addActionListener(new ActionListener() {
+		JButton filterBothButton = new JButton("<html><center>One Off and<br>Repeat Tasks</center></html>");
+		filterBothButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filter = 2;
 				JScrollPane scrollPane = updateTable(sort, filter);
 				fixedPane.add(scrollPane);
 			}
 		});
-		undoLoggedTaskButton.setBounds(626, 553, 124, 54);
-		fixedPane.add(undoLoggedTaskButton);
+		filterBothButton.setBounds(626, 553, 124, 54);
+		fixedPane.add(filterBothButton);
 		
 		JButton createReportButton = new JButton("<html><center>Add New<br>Task</center></html>");
 		createReportButton.addActionListener(new ActionListener() {
@@ -172,6 +172,22 @@ public class TaskEntryUI extends JPanel {
 		});
 		createReportButton.setBounds(760, 553, 128, 54);
 		fixedPane.add(createReportButton);
+		JButton addTaskButton = new JButton("<html><center>Add New<br>Task</center></html>");
+		addTaskButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//generates the report
+			}
+		});
+		addTaskButton.setBounds(355, 607, 133, 54);
+		fixedPane.add(addTaskButton);
+		JButton editTaskButton = new JButton("<html><center>Edit<br>Task</center></html>");
+		editTaskButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//generates the report
+			}
+		});
+		editTaskButton.setBounds(498, 607, 118, 54);
+		fixedPane.add(editTaskButton);
 		fixedPane.setPreferredSize(new Dimension(956,717));
 		add(fixedPane);
 	}
