@@ -31,7 +31,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import javax.swing.event.CaretEvent;
 
 public class TaskEntryUI extends JPanel {
@@ -90,8 +92,9 @@ public class TaskEntryUI extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				sort = 0;
 				fixedPane.remove(scrollPane);
-				JScrollPane scrollPane = updateTable(sort, filter);
-				fixedPane.add(scrollPane);
+				//JScrollPane scrollPane = updateTable(sort, filter);
+				//fixedPane.add(scrollPane);
+				refreshTable(sort, filter);
 			}
 		});
 		sortByDateButton.setBounds(78, 553, 125, 54);
@@ -102,8 +105,9 @@ public class TaskEntryUI extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				sort = 1;
 				fixedPane.remove(scrollPane);
-				JScrollPane scrollPane = updateTable(sort, filter);
-				fixedPane.add(scrollPane);
+				//JScrollPane scrollPane = updateTable(sort, filter);
+				//fixedPane.add(scrollPane);
+				refreshTable(sort, filter);
 			}
 		});
 		sortByPriorityButton.setBounds(213, 553, 132, 54);
@@ -114,8 +118,9 @@ public class TaskEntryUI extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				filter = 1;
 				fixedPane.remove(scrollPane);
-				JScrollPane scrollPane = updateTable(sort, filter);
-				fixedPane.add(scrollPane);
+				//JScrollPane scrollPane = updateTable(sort, filter);
+				//fixedPane.add(scrollPane);
+				refreshTable(sort, filter);
 			}
 		});
 		filterOneOffButton.setBounds(355, 553, 133, 54);
@@ -126,8 +131,9 @@ public class TaskEntryUI extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				filter = 0;
 				fixedPane.remove(scrollPane);
-				JScrollPane scrollPane = updateTable(sort, filter);
-				fixedPane.add(scrollPane);
+				//JScrollPane scrollPane = updateTable(sort, filter);
+				//fixedPane.add(scrollPane);
+				refreshTable(sort, filter);
 			}
 		});
 		filterRepeatButton.setBounds(498, 553, 118, 54);
@@ -138,23 +144,25 @@ public class TaskEntryUI extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				filter = 2;
 				fixedPane.remove(scrollPane);
-				JScrollPane scrollPane = updateTable(sort, filter);
-				fixedPane.add(scrollPane);
+				//JScrollPane scrollPane = updateTable(sort, filter);
+				//fixedPane.add(scrollPane);
+				refreshTable(sort, filter);
 			}
 		});
 		filterBothButton.setBounds(626, 553, 124, 54);
 		fixedPane.add(filterBothButton);
 
-		JButton createReportButton = new JButton("<html><center>Refresh<br>Table</center></html>");
-		createReportButton.addActionListener(new ActionListener() {
+		JButton RefreshTableButton = new JButton("<html><center>Refresh<br>Table</center></html>");
+		RefreshTableButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				fixedPane.remove(scrollPane);
-				JScrollPane scrollPane = updateTable(sort, filter);
-				fixedPane.add(scrollPane);
+				//JScrollPane scrollPane = updateTable(sort, filter);
+				//fixedPane.add(scrollPane);
+				refreshTable(sort, filter);
 			}
 		});
-		createReportButton.setBounds(760, 553, 128, 54);
-		fixedPane.add(createReportButton);
+		RefreshTableButton.setBounds(760, 553, 128, 54);
+		fixedPane.add(RefreshTableButton);
 		
 		
 		
@@ -235,7 +243,8 @@ public class TaskEntryUI extends JPanel {
 		String[] colHeaders = { "Task ID", "Task Name", "Task Type", "Task Duration", "Task Priority", "Task Frequency",
 				"need logging", "Date Created", "completed", "extra sign off" };
 		Object[][] data = populateTable(sort, filter);
-		taskListTable = new JTable(data, colHeaders);
+		TableModel tableModel = new DefaultTableModel(data, colHeaders);
+		taskListTable = new JTable(tableModel);
 		// this removes the id column, but you should be able to call
 		// 'userTable.getModel().getValueAt(row, 0)' to get the id
 		TableColumnModel tcm = taskListTable.getColumnModel();
@@ -291,11 +300,13 @@ public class TaskEntryUI extends JPanel {
 		needLoggingInput = new JCheckBox("-Need Logging");
 		addTaskPanel.add(needLoggingInput);
 		
-		//extraSignoffInput = new JTextField();
-		//addTaskPanel.add(extraSignoffInput);
-		//extraSignoffInput.setColumns(5);
-		//JLabel eSLabel = new JLabel("-Extra Signoff?");
-		//addTaskPanel.add(eSLabel);
+		String[] caretakerNames = genCNames();
+		extraSignoffInput = new JComboBox();
+		extraSignoffInput.setModel(new DefaultComboBoxModel(caretakerNames));
+		addTaskPanel.add(extraSignoffInput);
+		
+		JLabel eSLabel = new JLabel("-Extra Signoff?");
+		addTaskPanel.add(eSLabel);
 		
 		
 		//button creation
@@ -314,8 +325,13 @@ public class TaskEntryUI extends JPanel {
 				else {need_logging=0;}
 				String date_created = "1999-03-27 15:07:43";//get date
 				int completed = 0;
-				//int extra_sign_off = Integer.parseInt(extraSignoffInput.getText());
-				int extra_sign_off = 0;
+				int extra_sign_off;
+				int[] caretakerIDs = genCIDs();
+				int chosenES = extraSignoffInput.getSelectedIndex();
+				if(chosenES==0) {
+					extra_sign_off=0;
+				}
+				else {extra_sign_off=caretakerIDs[chosenES-1];}
 				try {
 					System.out.println(myTE.addTask(name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off));
 				} catch (SQLException e) {
@@ -387,7 +403,6 @@ public class TaskEntryUI extends JPanel {
 		String es;
 		if(currentTask.getExtraSignOff()==0) {es="0";}
 		else {es = myTE.getcaretakerNameFromID(currentTask.getExtraSignOff());}
-		//extraSignoffInput.setText(es);
 		JLabel eSLabel = new JLabel("-Extra Signoff?");
 		editTaskPanel.add(eSLabel);
 		
@@ -411,7 +426,7 @@ public class TaskEntryUI extends JPanel {
 				int[] caretakerIDs = genCIDs();
 				int extra_sign_off;
 				int chosenES = extraSignoffInput.getSelectedIndex();
-				if(chosenES==1) {
+				if(chosenES==0) {
 					extra_sign_off=0;
 				}
 				else {extra_sign_off=caretakerIDs[chosenES-1];}
@@ -427,11 +442,22 @@ public class TaskEntryUI extends JPanel {
 	}
 	
 	
+	public void refreshTable(int sort, int filter) {
+		DefaultTableModel DTM = (DefaultTableModel) taskListTable.getModel();
+		System.out.println("got to this point");
+		DTM.setRowCount(0);
+		Object[][] data = populateTable(sort,filter);
+		for (int i = 0; i < data.length; i++) {
+			DTM.addRow(data[i]);
+		}
+	}
+	
 	public String[] genCNames() {
 		ArrayList<String> caretakerNamesArrayList = myTE.getAllCaretakersNames();
-		String[] caretakerNames = new String[caretakerNamesArrayList.size()];
+		String[] caretakerNames = new String[caretakerNamesArrayList.size()+1];
+		caretakerNames[0]="None";
 		for(int a=0;a<caretakerNamesArrayList.size();a++) {
-			caretakerNames[a]=caretakerNamesArrayList.get(a);
+			caretakerNames[a+1]=caretakerNamesArrayList.get(a);
 		}
 		return caretakerNames;
 	}
