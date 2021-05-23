@@ -3,13 +3,24 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.awt.event.ActionEvent;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.sql.ResultSet;
@@ -40,7 +51,11 @@ public class ManageUsersUI extends JPanel {
 		JButton btnAddUserButton = new JButton("Add User");
 		btnAddUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//create or show form to add user
+				if (user.accessLevel("MU") >= 1 || user.accessLevel("AP") == 1) {
+					createAddUser();
+				} else {
+					window.displayError("Restricted Access", "You don't have access to do this.");
+				}
 			}
 		});
 		btnAddUserButton.setBounds(99, 400, 134, 44);
@@ -124,5 +139,80 @@ public class ManageUsersUI extends JPanel {
 
 		Object[][] data = {{}};
 		return data;
+	}
+
+	//add new user form
+	private void createAddUser() {
+		try {
+			ResultSet jobs = userDB.getAllJobs();
+			ArrayList<Job> items = new ArrayList<Job>();
+			while (jobs.next()) {
+				items.add(new Job(jobs.getInt(1), jobs.getString(2)));
+			}
+			JComboBox<Job> jobCombo = new JComboBox<Job>((Job[]) items.toArray());
+			Job[] genders = {new Job('M', "Male"), new Job('F', "Female")};
+			JComboBox<Job> genderCombo = new JComboBox<Job>(genders);
+			JTextField name = new JTextField();
+			JTextField username = new JTextField();
+			JPasswordField password = new JPasswordField();
+			JTextArea notes = new JTextArea();
+			JPanel addUserPanel = new JPanel(new GridLayout(0, 1));
+			addUserPanel.add(new JLabel("User's Name:"));
+			addUserPanel.add(name);
+			addUserPanel.add(new JLabel("Username:"));
+			addUserPanel.add(username);
+			addUserPanel.add(new JLabel("Job:"));
+			addUserPanel.add(jobCombo);
+			addUserPanel.add(new JLabel("Password:"));
+			addUserPanel.add(password);
+			addUserPanel.add(new JLabel("Notes:"));
+			addUserPanel.add(notes);
+			addUserPanel.add(new JLabel("Gender:"));
+			addUserPanel.add(genderCombo);
+
+			//Dialog output
+			int result = JOptionPane.showConfirmDialog(null, addUserPanel, "Add User",
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+			if (result == JOptionPane.OK_OPTION) {
+				try {
+					String newResult = userDB.addNewUser(
+						name.getText(),
+						username.getText(),
+						((Job) jobCombo.getSelectedItem()).getID(),
+						UserManagement.genPassHash(password.getPassword()),
+						notes.getText(),
+						Character.toString((char) ((Job) genderCombo.getSelectedItem()).getID())
+					);
+					if (!newResult.equals("")) {
+						window.displayError("Add New User Failed", "Error: " + newResult);
+					} else {
+						window.displayError("Add New User Success", "Successfully added new user: " + username.getText());
+					}
+				} catch (NoSuchAlgorithmException e) {
+					window.displayError("Add New User Failed", e.toString());
+				} catch (InvalidKeySpecException e) {
+					window.displayError("Add New User Failed", e.toString());
+				}
+			}
+		} catch (SQLException e) {
+			window.displayError("Database Error!", "Cannot retrieve jobs from database.");
+		}
+	}
+}
+
+//combo item
+class Job {
+	private int ID;//will be char for gender
+	private String name;
+	public Job(int jobID, String jobName) {
+		ID = jobID;
+		name = jobName;
+	}
+
+	public int getID() {
+		return ID;
+	}
+	public String toString() {
+		return name;
 	}
 }
