@@ -50,6 +50,7 @@ public class TaskEntryUI extends JPanel {
 	private JPanel editTaskPanel;
 	private JButton addButton1;
 	private JButton editButton1;
+	private JButton editButton2;
 	private JTextField nameInput;
 	private JCheckBox typeInput;
 	private JTextField durationInput;
@@ -84,16 +85,13 @@ public class TaskEntryUI extends JPanel {
 		lblHeadingLabel.setBounds(256, 55, 444, 67);
 		fixedPane.add(lblHeadingLabel);
 
-		JScrollPane scrollPane = updateTable(sort, filter);
+		JScrollPane scrollPane = createTable(sort, filter);
 		fixedPane.add(scrollPane);
 
 		JButton sortByDateButton = new JButton("<html><center>Sort By<br>Date created</center></html>");
 		sortByDateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort = 0;
-				fixedPane.remove(scrollPane);
-				//JScrollPane scrollPane = updateTable(sort, filter);
-				//fixedPane.add(scrollPane);
 				refreshTable(sort, filter);
 			}
 		});
@@ -104,9 +102,6 @@ public class TaskEntryUI extends JPanel {
 		sortByPriorityButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort = 1;
-				fixedPane.remove(scrollPane);
-				//JScrollPane scrollPane = updateTable(sort, filter);
-				//fixedPane.add(scrollPane);
 				refreshTable(sort, filter);
 			}
 		});
@@ -117,9 +112,6 @@ public class TaskEntryUI extends JPanel {
 		filterOneOffButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filter = 1;
-				fixedPane.remove(scrollPane);
-				//JScrollPane scrollPane = updateTable(sort, filter);
-				//fixedPane.add(scrollPane);
 				refreshTable(sort, filter);
 			}
 		});
@@ -130,9 +122,6 @@ public class TaskEntryUI extends JPanel {
 		filterRepeatButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filter = 0;
-				fixedPane.remove(scrollPane);
-				//JScrollPane scrollPane = updateTable(sort, filter);
-				//fixedPane.add(scrollPane);
 				refreshTable(sort, filter);
 			}
 		});
@@ -143,9 +132,6 @@ public class TaskEntryUI extends JPanel {
 		filterBothButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filter = 2;
-				fixedPane.remove(scrollPane);
-				//JScrollPane scrollPane = updateTable(sort, filter);
-				//fixedPane.add(scrollPane);
 				refreshTable(sort, filter);
 			}
 		});
@@ -155,9 +141,6 @@ public class TaskEntryUI extends JPanel {
 		JButton RefreshTableButton = new JButton("<html><center>Refresh<br>Table</center></html>");
 		RefreshTableButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				fixedPane.remove(scrollPane);
-				//JScrollPane scrollPane = updateTable(sort, filter);
-				//fixedPane.add(scrollPane);
 				refreshTable(sort, filter);
 			}
 		});
@@ -239,7 +222,7 @@ public class TaskEntryUI extends JPanel {
 		return data;
 	}
 
-	private JScrollPane updateTable(int sort, int filter) {
+	private JScrollPane createTable(int sort, int filter) {
 		String[] colHeaders = { "Task ID", "Task Name", "Task Type", "Task Duration", "Task Priority", "Task Frequency",
 				"need logging", "Date Created", "completed", "extra sign off" };
 		Object[][] data = populateTable(sort, filter);
@@ -439,12 +422,24 @@ public class TaskEntryUI extends JPanel {
 		});
 		
 		editTaskPanel.add(editButton1);
+		
+		editButton2 = new JButton("Delete");
+		editButton2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+								try {
+					System.out.println(myTE.deleteTask(task_id));
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		editTaskPanel.add(editButton2);
 	}
 	
 	
 	public void refreshTable(int sort, int filter) {
 		DefaultTableModel DTM = (DefaultTableModel) taskListTable.getModel();
-		System.out.println("got to this point");
 		DTM.setRowCount(0);
 		Object[][] data = populateTable(sort,filter);
 		for (int i = 0; i < data.length; i++) {
