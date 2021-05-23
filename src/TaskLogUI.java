@@ -53,9 +53,9 @@ public class TaskLogUI extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public TaskLogUI(UserInterface UI, LogTasks loggingTask, UserManagement User, database DB) {
+	public TaskLogUI(UserInterface UI, LogTasks loggingTask, UserManagement User, CreateReports Report) {
 		taskLog = loggingTask;
-		reportCreation = new CreateReports(DB);
+		reportCreation = Report;
 		user = User;
 		//define colors
 		final Color red = new Color(236, 28, 36);
