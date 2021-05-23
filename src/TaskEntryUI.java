@@ -6,16 +6,24 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -36,6 +44,17 @@ public class TaskEntryUI extends JPanel {
 	private taskEntry myTE;
 	private int sort;
 	private int filter;
+	private JPanel addTaskPanel;
+	private JButton addButton1;
+	private JButton addButton2;
+	private JButton addButton3;
+	private JTextField nameInput;
+	private JCheckBox typeInput;
+	private JComboBox durationInput;
+	private JComboBox priorityInput;
+	private JTextField frequncyInput;
+	private JCheckBox needLoggingInput;
+	private JTextField extraSignoffInput;//not right yet
 
 	/**
 	 * Create the panel.
@@ -164,11 +183,17 @@ public class TaskEntryUI extends JPanel {
 		});
 		createReportButton.setBounds(760, 553, 128, 54);
 		fixedPane.add(createReportButton);
+		
+		
+		
+		setAddTaskPanel();
 		JButton addTaskButton = new JButton("<html><center>Add New<br>Task</center></html>");
 		addTaskButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JPanel panel = addTask();
-				fixedPane.add(panel);
+				addButton1.setEnabled(true);
+				addButton2.setEnabled(true);
+				JOptionPane.showConfirmDialog(null, addTaskPanel, "Create Report",
+				JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		addTaskButton.setBounds(355, 607, 133, 54);
@@ -300,5 +325,68 @@ public class TaskEntryUI extends JPanel {
 		panel.setBackground(new Color(238, 238, 238));
 		panel.setBounds(68, 150, 820, 232);
 		return panel;
+	}
+	
+	private void setAddTaskPanel() {
+		addTaskPanel = new JPanel();
+		JLabel message = new JLabel("<html><br>Enter Details<br><br></html>");
+		message.setHorizontalAlignment(SwingConstants.CENTER);
+		addTaskPanel.add(message);
+		
+		//Inputcreation
+		
+		nameInput = new JTextField();
+		addTaskPanel.add(nameInput);
+		nameInput.setColumns(10);
+		JLabel nameLabel = new JLabel("-Name");
+		addTaskPanel.add(nameLabel);
+		
+		typeInput = new JCheckBox("-Reccurring");
+		addTaskPanel.add(typeInput);
+		
+		durationInput = new JComboBox();
+		durationInput.setModel(new DefaultComboBoxModel(new String[] {"5", "10", "15","20","25","30","45","60"}));
+		addTaskPanel.add(durationInput);
+		JLabel durationLabel = new JLabel("-Duration");
+		addTaskPanel.add(durationLabel);
+		
+		priorityInput = new JComboBox();
+		priorityInput.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3"}));
+		addTaskPanel.add(priorityInput);
+		JLabel priorityLabel = new JLabel("-Priority");
+		addTaskPanel.add(priorityLabel);
+		
+		
+		frequncyInput = new JTextField();
+		addTaskPanel.add(frequncyInput);
+		frequncyInput.setColumns(5);
+		JLabel freqLabel = new JLabel("-Frequency (Days)");
+		addTaskPanel.add(freqLabel);
+		
+		needLoggingInput = new JCheckBox("-Need Logging");
+		addTaskPanel.add(needLoggingInput);
+		
+		extraSignoffInput = new JTextField();
+		addTaskPanel.add(extraSignoffInput);
+		extraSignoffInput.setColumns(5);
+		JLabel eSLabel = new JLabel("-Extra Signoff?");
+		addTaskPanel.add(eSLabel);
+		
+		
+		//button creation
+		addButton1 = new JButton("Confirm");
+		addButton1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				
+			}
+		});
+		addButton2 = new JButton("Cancel");
+		addButton2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				
+			}
+		});
+		addTaskPanel.add(addButton1);
+		//saddTaskPanel.add(addButton2);
 	}
 }
