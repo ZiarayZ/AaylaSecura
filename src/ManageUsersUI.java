@@ -81,6 +81,18 @@ public class ManageUsersUI extends JPanel {
 		btnRemoveUserButton.setEnabled(false);
 		btnRemoveUserButton.setBounds(561, 400, 134, 44);
 		fixedPane.add(btnRemoveUserButton);
+
+		JPanel editPanel = new JPanel();
+		JPanel fixedEditPanel = new JPanel();
+		editPanel.setBackground(new Color(255, 255, 255));
+		editPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
+		editPanel.setLayout(new GridBagLayout());
+		GridLayout editPanelLayout = new GridLayout();
+		fixedEditPanel.setLayout(editPanelLayout);
+		fixedEditPanel.setBackground(new Color(255, 255, 255));
+		fixedEditPanel.setPreferredSize(new Dimension(755,512));
+		editPanel.add(fixedEditPanel);
+		window.addCard(editPanel, "EditUser");
 		
 		JButton btnEditUserButton = new JButton("Edit User");
 		btnEditUserButton.addActionListener(new ActionListener() {

@@ -184,6 +184,9 @@ public class UserInterface extends JFrame {
     public void show(String name) {
         cardLayout.show(mainPane, name);
     }
+    public void addCard(JPanel pane, String name) {
+        mainPane.add(pane, name);
+    }
 
     public void displayLogin() {
         if (user.getLogin()) {
