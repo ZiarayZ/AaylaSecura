@@ -48,6 +48,7 @@ public class TaskEntryUI extends JPanel {
 	private int filter;
 	private JPanel addTaskPanel;
 	private JPanel editTaskPanel;
+	private JPanel feedbackPanel;
 	private JButton addButton1;
 	private JButton editButton1;
 	private JButton editButton2;
@@ -164,10 +165,15 @@ public class TaskEntryUI extends JPanel {
 		editTaskButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = taskListTable.getSelectedRow();
-				int task_id = (int)taskListTable.getModel().getValueAt(row, 0);
-				setEditTaskPanel(task_id,sort,filter);
-				editButton1.setEnabled(true);
-				JOptionPane.showConfirmDialog(null, editTaskPanel, "Create Report", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				if(row==-1) {
+					setFeedbackPanel("Please select a task to edit");
+					JOptionPane.showConfirmDialog(null, feedbackPanel, "Message", JOptionPane.PLAIN_MESSAGE);}
+				else{
+					int task_id = (int)taskListTable.getModel().getValueAt(row, 0);
+					setEditTaskPanel(task_id,sort,filter);
+					editButton1.setEnabled(true);
+					JOptionPane.showConfirmDialog(null, editTaskPanel, "Create Report", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				}
 			}
 		});
 		editTaskButton.setBounds(498, 607, 118, 54);
@@ -297,13 +303,18 @@ public class TaskEntryUI extends JPanel {
 		addButton1 = new JButton("Confirm");
 		addButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				String errorMessages = "";
 				String name = nameInput.getText();
 				int type;
-				if(typeInput.isSelected()) {type=1;}
-				else {type=0;}
-				int duration = Integer.parseInt(durationInput.getText());
+				if(typeInput.isSelected()) {type=0;}
+				else {type=1;}
+				int duration;
+				if(durationInput.getText().equals("")) {duration = 0;}
+				else{duration = Integer.parseInt(durationInput.getText());}
 				int priority = Integer.parseInt((String)priorityInput.getSelectedItem());
-				int frequency = Integer.parseInt(frequencyInput.getText());
+				int frequency;
+				if(frequencyInput.getText().equals("")) {frequency = 0;}
+				else {frequency = Integer.parseInt(frequencyInput.getText());}
 				int need_logging;
 				if(needLoggingInput.isSelected()) {need_logging=1;}
 				else {need_logging=0;}
@@ -317,15 +328,24 @@ public class TaskEntryUI extends JPanel {
 				}
 				else {extra_sign_off=caretakerIDs[chosenES-1];}
 				try {
-					System.out.println(myTE.addTask(name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off));
+					errorMessages = myTE.addTask(name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
+				if(!errorMessages.equals("")) {
+					setFeedbackPanel(errorMessages);
+					JOptionPane.showConfirmDialog(null, feedbackPanel, "Feedback", JOptionPane.PLAIN_MESSAGE);
+				}
+				else {
+					setFeedbackPanel("Creation successful");
+					JOptionPane.showConfirmDialog(null, feedbackPanel, "Feedback", JOptionPane.PLAIN_MESSAGE);
+				}
+				refreshTable(sort,filter);
 			}
 		});
 		
 		addTaskPanel.add(addButton1);
-		refreshTable(sort,filter);
+		
 	}
 	
 	private void setEditTaskPanel(int task_id,int sort,int filter) {
@@ -396,13 +416,18 @@ public class TaskEntryUI extends JPanel {
 		editButton1 = new JButton("Confirm");
 		editButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				String errorMessages = "";
 				String name = nameInput.getText();
 				int type;
-				if(typeInput.isSelected()) {type=1;}
-				else {type=0;}
-				int duration = Integer.parseInt(durationInput.getText());
+				if(typeInput.isSelected()) {type=0;}
+				else {type=1;}
+				int duration;
+				if(durationInput.getText().equals("")) {duration = 0;}
+				else{duration = Integer.parseInt(durationInput.getText());}
 				int priority = Integer.parseInt((String)priorityInput.getSelectedItem());
-				int frequency = Integer.parseInt(frequencyInput.getText());
+				int frequency;
+				if(frequencyInput.getText().equals("")) {frequency = 0;}
+				else {frequency = Integer.parseInt(frequencyInput.getText());}
 				int need_logging;
 				if(needLoggingInput.isSelected()) {need_logging=1;}
 				else {need_logging=0;}
@@ -416,9 +441,17 @@ public class TaskEntryUI extends JPanel {
 				}
 				else {extra_sign_off=caretakerIDs[chosenES-1];}
 				try {
-					System.out.println(myTE.editTask(task_id, name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off));
+					errorMessages = myTE.editTask(task_id, name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off);
 				} catch (SQLException e) {
 					e.printStackTrace();
+				}
+				if(!errorMessages.equals("")) {
+					setFeedbackPanel(errorMessages);
+					JOptionPane.showConfirmDialog(null, feedbackPanel, "Feedback", JOptionPane.PLAIN_MESSAGE);
+				}
+				else {
+					setFeedbackPanel("Edit successful");
+					JOptionPane.showConfirmDialog(null, feedbackPanel, "Feedback", JOptionPane.PLAIN_MESSAGE);
 				}
 				refreshTable(sort,filter);
 			}
@@ -430,10 +463,19 @@ public class TaskEntryUI extends JPanel {
 		editButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				System.out.println(myTE.deleteTask(task_id));
+				refreshTable(sort,filter);
 			}
 		});
 		
 		editTaskPanel.add(editButton2);
+	}
+	
+	private void setFeedbackPanel(String feedback) {
+		feedbackPanel = new JPanel();
+		
+		JLabel feedbackLabel = new JLabel(feedback);
+		feedbackPanel.add(feedbackLabel);
+		
 	}
 	
 	
