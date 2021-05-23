@@ -391,7 +391,16 @@ public class ManageUsersUI extends JPanel {
 			ResultSet jobs = user.getJobs();
 			JComboBox<Job> jobCombo = new JComboBox<Job>();
 			while (jobs.next()) {
-				jobCombo.addItem(new Job(jobs.getInt(1), jobs.getString(2)));
+				String[] permsLevel = jobs.getString(3).replaceAll("[{}]", "").split(",");
+				String[] permLevel;
+				for (String i: permsLevel) {
+					permLevel = i.split(":");
+					if (permLevel[0].equals("Rank")) {
+						if (user.accessLevel("Rank") > Integer.parseInt(permLevel[1])) {
+							jobCombo.addItem(new Job(jobs.getInt(1), jobs.getString(2)));
+						}
+					}
+				}
 			}
 			Job[] genders = {new Job('M', "Male"), new Job('F', "Female")};
 			JComboBox<Job> genderCombo = new JComboBox<Job>(genders);
