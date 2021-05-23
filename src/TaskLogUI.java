@@ -8,7 +8,10 @@ import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -64,7 +67,12 @@ public class TaskLogUI extends JPanel {
 		
 		String[] colHeaders = {"Logged Task ID", "Task ID", "Task Name", "First User ID", "First User", "Second User ID", "Second User", "Date Completed"};
 		Object[][] data = populateTable();
-		taskListTable = new JTable(data,colHeaders);
+		TableModel tableModel = new DefaultTableModel(colHeaders, 0);
+		taskListTable = new JTable(tableModel);
+		DefaultTableModel DTM = (DefaultTableModel) taskListTable.getModel();
+		for (int i = 0; i < data.length; i++) {
+			DTM.addRow(data[i]);
+		}
 		//this removes the id column, but you should be able to call 'userTable.getModel().getValueAt(row, 0)' to get the id
 		TableColumnModel tcm = taskListTable.getColumnModel();
 		tcm.removeColumn(tcm.getColumn(0));//Logged Task ID
