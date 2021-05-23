@@ -14,7 +14,7 @@ public class database {
 		myDB.Connect("src\\groupDatabase.db");
 	}
 	
-	private boolean checkValidDateTime(final String dateTime) { //returns true if given date time is valid
+	public boolean checkValidDateTime(final String dateTime) { //returns true if given date time is valid
         boolean valid = false;
         try {
             LocalDate.parse(dateTime, DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT));
