@@ -88,11 +88,38 @@ public class ManageUsersUI extends JPanel {
 		editPanel.setBackground(new Color(255, 255, 255));
 		editPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
 		editPanel.setLayout(new GridBagLayout());
-		GridLayout editPanelLayout = new GridLayout();
+		GridLayout editPanelLayout = new GridLayout(0, 2); //2 columns, infinite rows
 		fixedEditPanel.setLayout(editPanelLayout);
 		fixedEditPanel.setBackground(new Color(255, 255, 255));
 
 		//add content to panel
+		//user's name
+		fixedEditPanel.add(new JLabel("User's Name:"));
+		JTextField editName = new JTextField();
+		fixedEditPanel.add(editName);
+		//user's username
+		fixedEditPanel.add(new JLabel("Username:"));
+		JTextField editUsername = new JTextField();
+		fixedEditPanel.add(editUsername);
+		//user's job
+		fixedEditPanel.add(new JLabel("User's Role:"));
+		JComboBox<Job> editJob = new JComboBox<Job>();
+		try {
+			ResultSet jobs = userDB.getAllJobs();
+			while (jobs.next()) {
+				editJob.addItem(new Job(jobs.getInt(1), jobs.getString(2)));
+			}
+		} catch (SQLException e) {
+			window.displayError("Database Error!", e.toString());
+		} catch (NullPointerException e) {
+			window.displayError("Database Error!", e.toString());
+		}
+		fixedEditPanel.add(editJob);
+		//user's gender
+		fixedEditPanel.add(new JLabel("User's Gender:"));
+		Job[] genders = {new Job('M', "Male"), new Job('F', "Female")};
+		JComboBox<Job> editGender = new JComboBox<Job>(genders);
+		fixedEditPanel.add(editGender);
 
 		//finish panel creation
 		fixedEditPanel.setPreferredSize(new Dimension(755,512));
@@ -245,11 +272,13 @@ public class ManageUsersUI extends JPanel {
 			int result = JOptionPane.showConfirmDialog(null, addUserPanel, "Add User",
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if (result == JOptionPane.OK_OPTION) {
-				if (password.getPassword().length >= 8 && !(name.getText().length() == 0 || username.getText().length() == 0)) {
+				String addName = name.getText();
+				String addUsername = username.getText();
+				if (password.getPassword().length >= 8 && !(addName.length() == 0 || addUsername.length() == 0)) {
 					try {
 						String newResult = userDB.addNewUser(
-							name.getText(),
-							username.getText(),
+							addName,
+							addUsername,
 							((Job) jobCombo.getSelectedItem()).getID(),
 							UserManagement.genPassHash(password.getPassword()),
 							notes.getText(),
@@ -259,7 +288,7 @@ public class ManageUsersUI extends JPanel {
 							window.displayError("Add New User Failed", "Error: " + newResult);
 						} else {
 							refreshTable();
-							window.displayError("Add New User Success", "Successfully added new user: " + username.getText());
+							window.displayError("Add New User Success", "Successfully added new user: " + addUsername);
 						}
 					} catch (NoSuchAlgorithmException e) {
 						window.displayError("Add New User Failed", e.toString());
