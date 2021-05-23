@@ -174,24 +174,28 @@ public class ManageUsersUI extends JPanel {
 			int result = JOptionPane.showConfirmDialog(null, addUserPanel, "Add User",
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			if (result == JOptionPane.OK_OPTION) {
-				try {
-					String newResult = userDB.addNewUser(
-						name.getText(),
-						username.getText(),
-						((Job) jobCombo.getSelectedItem()).getID(),
-						UserManagement.genPassHash(password.getPassword()),
-						notes.getText(),
-						Character.toString((char) ((Job) genderCombo.getSelectedItem()).getID())
-					);
-					if (!newResult.equals("")) {
-						window.displayError("Add New User Failed", "Error: " + newResult);
-					} else {
-						window.displayError("Add New User Success", "Successfully added new user: " + username.getText());
+				if (password.getPassword().length >= 8) {
+					try {
+						String newResult = userDB.addNewUser(
+							name.getText(),
+							username.getText(),
+							((Job) jobCombo.getSelectedItem()).getID(),
+							UserManagement.genPassHash(password.getPassword()),
+							notes.getText(),
+							Character.toString((char) ((Job) genderCombo.getSelectedItem()).getID())
+						);
+						if (!newResult.equals("")) {
+							window.displayError("Add New User Failed", "Error: " + newResult);
+						} else {
+							window.displayError("Add New User Success", "Successfully added new user: " + username.getText());
+						}
+					} catch (NoSuchAlgorithmException e) {
+						window.displayError("Add New User Failed", e.toString());
+					} catch (InvalidKeySpecException e) {
+						window.displayError("Add New User Failed", e.toString());
 					}
-				} catch (NoSuchAlgorithmException e) {
-					window.displayError("Add New User Failed", e.toString());
-				} catch (InvalidKeySpecException e) {
-					window.displayError("Add New User Failed", e.toString());
+				} else {
+					window.displayError("Add New User Failed", "Error: Password is too short. Must be at least 8 characters.");
 				}
 			}
 		} catch (SQLException e) {
