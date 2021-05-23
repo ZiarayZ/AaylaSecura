@@ -193,46 +193,50 @@ public class ManageUsersUI extends JPanel {
 		JButton btnEditUserButton = new JButton("Edit User");
 		btnEditUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				try {
-					ResultSet editUser = user.getUserFromID((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0));
-					if (editUser.next()) {
-						tempUser = new EditUser(Integer.toString(
-							editUser.getInt(1)),
-							editUser.getString(2),
-							editUser.getString(4),
-							editUser.getString(6),
-							editUser.getString(5)
-						);
-						editID.setText(tempUser.getID());
-						editName.setText(tempUser.getName());
-						for (int i = 0; i < editJob.getItemCount(); i++) {
-							Object item = editJob.getItemAt(i);
-							if (item.toString().equals(tempUser.getJob())) {
-								editJob.setSelectedItem(item);
+				if (user.accessLevel("MU") >= 2 || user.accessLevel("AP") == 1) {
+					try {
+						ResultSet editUser = user.getUserFromID((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0));
+						if (editUser.next()) {
+							tempUser = new EditUser(Integer.toString(
+								editUser.getInt(1)),
+								editUser.getString(2),
+								editUser.getString(4),
+								editUser.getString(6),
+								editUser.getString(5)
+							);
+							editID.setText(tempUser.getID());
+							editName.setText(tempUser.getName());
+							for (int i = 0; i < editJob.getItemCount(); i++) {
+								Object item = editJob.getItemAt(i);
+								if (item.toString().equals(tempUser.getJob())) {
+									editJob.setSelectedItem(item);
+								}
 							}
-						}
-						for (int i = 0; i < editGender.getItemCount(); i++) {
-							Object item = editGender.getItemAt(i);
-							if (item.toString().equals(tempUser.getGender())) {
-								editGender.setSelectedItem(item);
+							for (int i = 0; i < editGender.getItemCount(); i++) {
+								Object item = editGender.getItemAt(i);
+								if (item.toString().equals(tempUser.getGender())) {
+									editGender.setSelectedItem(item);
+								}
 							}
+							editNotes.setText(tempUser.getNotes());
 						}
-						editNotes.setText(tempUser.getNotes());
+					} catch (SQLException e) {
+						window.displayError("Database Error!", e.toString());
+						editID.setText(Integer.toString((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0)));
+						editName.setText(userTable.getModel().getValueAt(userTable.getSelectedRow(), 1).toString());
+						editJob.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 3).toString());
+						editGender.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 4).toString());
+					} catch (NullPointerException e) {
+						window.displayError("Database Error!", e.toString());
+						editID.setText(Integer.toString((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0)));
+						editName.setText(userTable.getModel().getValueAt(userTable.getSelectedRow(), 1).toString());
+						editJob.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 3).toString());
+						editGender.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 4).toString());
 					}
-				} catch (SQLException e) {
-					window.displayError("Database Error!", e.toString());
-					editID.setText(Integer.toString((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0)));
-					editName.setText(userTable.getModel().getValueAt(userTable.getSelectedRow(), 1).toString());
-					editJob.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 3).toString());
-					editGender.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 4).toString());
-				} catch (NullPointerException e) {
-					window.displayError("Database Error!", e.toString());
-					editID.setText(Integer.toString((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0)));
-					editName.setText(userTable.getModel().getValueAt(userTable.getSelectedRow(), 1).toString());
-					editJob.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 3).toString());
-					editGender.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 4).toString());
+					window.show("EditUser");
+				} else {
+					window.displayError("No Access!", "You do not have permission to access this feature.");
 				}
-				window.show("EditUser");
 			}
 		});
 		btnEditUserButton.setEnabled(false);
