@@ -99,6 +99,9 @@ public class UserManagement {
     public ResultSet getUsers() throws SQLException {
         return userDB.getAllUsers();
     }
+    public ResultSet getUserFromID(int ID) {
+        return userDB.getUserFromID(ID);
+    }
 
     //edit password
     public String editPassword(char[] password) throws SQLException {
