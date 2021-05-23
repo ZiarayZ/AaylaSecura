@@ -72,7 +72,7 @@ public class ManageUsersUI extends JPanel {
 						for (String i: permsLevel) {
 							permLevel = i.split(":");
 							if (permLevel[0].equals("Rank")) {
-								if (user.accessLevel("Rank") > Integer.parseInt(permLevel[1])) {
+								if (user.accessLevel("Rank") < Integer.parseInt(permLevel[1])) {
 									JPanel panel = new JPanel();
 									panel.add(new JLabel("Delete User Permenantly: " + ((String) userTable.getModel().getValueAt(userTable.getSelectedRow(), 2))));
 									//Dialog output
@@ -233,7 +233,7 @@ public class ManageUsersUI extends JPanel {
 							for (String i: permsLevel) {
 								permLevel = i.split(":");
 								if (permLevel[0].equals("Rank")) {
-									if (user.accessLevel("Rank") > Integer.parseInt(permLevel[1])) {
+									if (user.accessLevel("Rank") < Integer.parseInt(permLevel[1])) {
 										editID.setText(tempUser.getID());
 										editName.setText(tempUser.getName());
 										for (int j = 0; j < editJob.getItemCount(); j++) {
@@ -396,7 +396,7 @@ public class ManageUsersUI extends JPanel {
 				for (String i: permsLevel) {
 					permLevel = i.split(":");
 					if (permLevel[0].equals("Rank")) {
-						if (user.accessLevel("Rank") > Integer.parseInt(permLevel[1])) {
+						if (user.accessLevel("Rank") < Integer.parseInt(permLevel[1])) {
 							jobCombo.addItem(new Job(jobs.getInt(1), jobs.getString(2)));
 						}
 					}
