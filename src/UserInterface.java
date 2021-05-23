@@ -220,7 +220,7 @@ public class UserInterface extends JFrame {
         setTitle("Allocate Tasks");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         if (user.getLogin()) {
-		    cardLayout.show(mainPane, "AllocateTasks");//Dummy button "AssignTasks"
+		    cardLayout.show(mainPane, "AllocateTasks");
         } else {
             cardLayout.show(mainPane, "Access");
         }

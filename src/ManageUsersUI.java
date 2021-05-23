@@ -92,7 +92,7 @@ public class ManageUsersUI extends JPanel {
 		btnEditUserButton.setBounds(561, 400, 124, 44);
 		fixedPane.add(btnEditUserButton);
 		
-		String[] colHeaders = {"ID", "Name", "Username", "Role", "Gender"};
+		String[] colHeaders = {"User ID", "Name", "Username", "Role ID", "Role", "Gender"};
 		Object[][] data = populateTable();
 		TableModel tableModel = new DefaultTableModel(colHeaders, 0);
 		userTable = new JTable(tableModel);
@@ -148,7 +148,8 @@ public class ManageUsersUI extends JPanel {
 
 		//this removes the id column, but you should be able to call 'userTable.getModel().getValueAt(row, 0)' to get the id
 		TableColumnModel tcm = userTable.getColumnModel();
-		tcm.removeColumn(tcm.getColumn(0));
+		tcm.removeColumn(tcm.getColumn(0));//user ID, index 0
+		tcm.removeColumn(tcm.getColumn(2));//role ID, index 3
 		//import table into a scroll pane so that the table headers are visible and other things
 		JScrollPane scrollPane = new JScrollPane(userTable);
 		scrollPane.setBackground(new Color(192, 192, 192));
@@ -174,16 +175,16 @@ public class ManageUsersUI extends JPanel {
 		String gender;
 		try {
 			while (sql.next()) {
-				gender = sql.getString(5);
+				gender = sql.getString(6);
 				if (gender.equals("M")) {
 					gender = "Male";
 				} else {
 					gender = "Female";
 				}
-				Object[] dataPoint = {sql.getInt(1), sql.getString(2), sql.getString(3), sql.getString(4), gender};
+				Object[] dataPoint = {sql.getInt(1), sql.getString(2), sql.getString(3), sql.getInt(4), sql.getString(5), gender};
 				tempData.add(dataPoint);
 			}
-			Object[][] data = new Object[tempData.size()][5];
+			Object[][] data = new Object[tempData.size()][6];
 			return tempData.toArray(data);
 		} catch (SQLException e) {
 			window.displayError("Table Error!", e.toString());
