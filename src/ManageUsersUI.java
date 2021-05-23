@@ -32,6 +32,7 @@ public class ManageUsersUI extends JPanel {
 	private JTable userTable;
 	private UserManagement user;
 	private UserInterface window;
+	private EditUser tempUser;
 
 	/**
 	 * Create the frame.
@@ -159,8 +160,19 @@ public class ManageUsersUI extends JPanel {
 			public void actionPerformed(ActionEvent event) {
 				try {
 					ResultSet editUser = user.getUserFromID((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0));
-					while (editUser.next()) {
-						//to code
+					if (editUser.next()) {
+						tempUser = new EditUser(Integer.toString(
+							editUser.getInt(1)),
+							editUser.getString(2),
+							editUser.getString(4),
+							editUser.getString(6),
+							editUser.getString(5)
+						);
+						editID.setText(tempUser.getID());
+						editName.setText(tempUser.getName());
+						editJob.setSelectedItem(tempUser.getJob());
+						editGender.setSelectedItem(tempUser.getGender());
+						editNotes.setText(tempUser.getNotes());
 					}
 				} catch (SQLException e) {
 					window.displayError("Database Error!", e.toString());
@@ -367,5 +379,34 @@ class Job {
 	}
 	public String toString() {
 		return name;
+	}
+}
+class EditUser {
+	private String ID;
+	private String name;
+	private String job;
+	private String gender;
+	private String notes;
+	public EditUser(String newID, String newName, String newJob, String newGender, String newNotes) {
+		ID = newID;
+		name = newName;
+		job = newJob;
+		gender = newGender;
+		notes = newNotes;
+	}
+	public String getID() {
+		return ID;
+	}
+	public String getName() {
+		return name;
+	}
+	public String getJob() {
+		return job;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public String getNotes() {
+		return notes;
 	}
 }
