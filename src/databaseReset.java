@@ -33,6 +33,8 @@ public class databaseReset {
 			try {
 				db.addNewUser("Jeremy Strong", "Strong123", 3, UserManagement.genPassHash("temp123".toCharArray()), "", "M");
 				db.addNewUser("Ed" , "Ed123", 2, UserManagement.genPassHash("hash password".toCharArray()), "", "M");
+				db.addNewUser("John Gable" , "Gable123", 1, UserManagement.genPassHash("hash password".toCharArray()), "", "M");
+				db.addNewUser("Kristen Parks" , "Parks123", 1, UserManagement.genPassHash("hash password".toCharArray()), "", "F");
 			} catch (NoSuchAlgorithmException e) {
 				System.out.println(e);
 			} catch (InvalidKeySpecException e) {

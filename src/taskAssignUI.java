@@ -31,7 +31,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import javax.swing.event.CaretEvent;
 
 public class taskAssignUI extends JPanel {
@@ -46,15 +48,11 @@ public class taskAssignUI extends JPanel {
 	private int filter;
 	private JPanel addTaskPanel;
 	private JPanel editTaskPanel;
+	private JPanel feedbackPanel;
 	private JButton addButton1;
 	private JButton editButton1;
-	private JTextField nameInput;
-	private JCheckBox typeInput;
-	private JTextField durationInput;
-	private JComboBox priorityInput;
-	private JTextField frequencyInput;
-	private JCheckBox needLoggingInput;
-	private JTextField extraSignoffInput;//not right yet
+	private JButton editButton2;
+	private JComboBox caretakerInput;
 
 	/**
 	 * Create the panel.
@@ -73,7 +71,7 @@ public class taskAssignUI extends JPanel {
 		fixedPane.setLayout(null);
 		fixedPane.setBackground(new Color(255, 255, 255));
 
-		JLabel lblHeadingLabel = new JLabel("Task Allocation");
+		JLabel lblHeadingLabel = new JLabel("Task Assign");
 		lblHeadingLabel.setForeground(new Color(105, 105, 105));
 		lblHeadingLabel.setOpaque(true);
 		lblHeadingLabel.setFont(new Font("Verdana", Font.PLAIN, 28));
@@ -82,40 +80,34 @@ public class taskAssignUI extends JPanel {
 		lblHeadingLabel.setBounds(256, 55, 444, 67);
 		fixedPane.add(lblHeadingLabel);
 
-		JScrollPane scrollPane = updateTable(sort, filter);
+		JScrollPane scrollPane = createTable(sort, filter);
 		fixedPane.add(scrollPane);
-
+		
 		JButton sortByDateButton = new JButton("<html><center>Sort By<br>Date created</center></html>");
 		sortByDateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort = 0;
-				fixedPane.remove(scrollPane);
-				JScrollPane scrollPane = updateTable(sort, filter);
-				fixedPane.add(scrollPane);
+				refreshTable(sort, filter);
 			}
 		});
 		sortByDateButton.setBounds(78, 553, 125, 54);
 		fixedPane.add(sortByDateButton);
 
-		JButton sortByPriorityButton = new JButton("<html><center>Sort By<br>Priority</center></html>");
-		sortByPriorityButton.addActionListener(new ActionListener() {
+		JButton sortByUnassignedButton = new JButton("<html><center>Sort By<br>Unassigned</center></html>");
+		sortByUnassignedButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort = 1;
-				fixedPane.remove(scrollPane);
-				JScrollPane scrollPane = updateTable(sort, filter);
-				fixedPane.add(scrollPane);
+				refreshTable(sort, filter);
 			}
 		});
-		sortByPriorityButton.setBounds(213, 553, 132, 54);
-		fixedPane.add(sortByPriorityButton);
+		sortByUnassignedButton.setBounds(213, 553, 132, 54);
+		fixedPane.add(sortByUnassignedButton);
 
 		JButton filterOneOffButton = new JButton("<html><center>One Off<br>Tasks</center></html>");
 		filterOneOffButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filter = 1;
-				fixedPane.remove(scrollPane);
-				JScrollPane scrollPane = updateTable(sort, filter);
-				fixedPane.add(scrollPane);
+				refreshTable(sort, filter);
 			}
 		});
 		filterOneOffButton.setBounds(355, 553, 133, 54);
@@ -125,9 +117,7 @@ public class taskAssignUI extends JPanel {
 		filterRepeatButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filter = 0;
-				fixedPane.remove(scrollPane);
-				JScrollPane scrollPane = updateTable(sort, filter);
-				fixedPane.add(scrollPane);
+				refreshTable(sort, filter);
 			}
 		});
 		filterRepeatButton.setBounds(498, 553, 118, 54);
@@ -137,31 +127,28 @@ public class taskAssignUI extends JPanel {
 		filterBothButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filter = 2;
-				fixedPane.remove(scrollPane);
-				JScrollPane scrollPane = updateTable(sort, filter);
-				fixedPane.add(scrollPane);
+				refreshTable(sort, filter);
 			}
 		});
 		filterBothButton.setBounds(626, 553, 124, 54);
 		fixedPane.add(filterBothButton);
 
-		JButton createReportButton = new JButton("<html><center>Refresh<br>Table</center></html>");
-		createReportButton.addActionListener(new ActionListener() {
+		JButton RefreshTableButton = new JButton("<html><center>Refresh<br>Table</center></html>");
+		RefreshTableButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				fixedPane.remove(scrollPane);
-				JScrollPane scrollPane = updateTable(sort, filter);
-				fixedPane.add(scrollPane);
+				refreshTable(sort, filter);
 			}
 		});
-		createReportButton.setBounds(760, 553, 128, 54);
-		fixedPane.add(createReportButton);
+		RefreshTableButton.setBounds(760, 553, 128, 54);
+		fixedPane.add(RefreshTableButton);
 		
 		
 		
-		setAddTaskPanel();
+		
 		JButton addTaskButton = new JButton("<html><center>Add New<br>Task</center></html>");
 		addTaskButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//setAddTaskPanel(sort,filter);
 				addButton1.setEnabled(true);
 				JOptionPane.showConfirmDialog(null, addTaskPanel, "Create Report", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			}
@@ -172,18 +159,149 @@ public class taskAssignUI extends JPanel {
 		editTaskButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = taskListTable.getSelectedRow();
-				int task_id = (int)taskListTable.getModel().getValueAt(row, 0);
-				setEditTaskPanel(task_id);
-				editButton1.setEnabled(true);
-				JOptionPane.showConfirmDialog(null, editTaskPanel, "Create Report", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				if(row==-1) {
+					setFeedbackPanel("Please select a task to edit");
+					JOptionPane.showConfirmDialog(null, feedbackPanel, "Message", JOptionPane.PLAIN_MESSAGE);}
+				else{
+					int task_id = (int)taskListTable.getModel().getValueAt(row, 0);
+					setEditTaskPanel(task_id,sort,filter);
+					editButton1.setEnabled(true);
+					JOptionPane.showConfirmDialog(null, editTaskPanel, "Create Report", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				}
 			}
 		});
 		editTaskButton.setBounds(498, 607, 118, 54);
 		fixedPane.add(editTaskButton);
+		
+		
+
+		
+		
 		fixedPane.setPreferredSize(new Dimension(956, 717));
 		add(fixedPane);
+		
+	
 	}
-
+	
+	
+	private void setEditTaskPanel(int task_id,int sort,int filter) {
+		task currentTask = myTA.getTask(task_id);
+		
+		editTaskPanel = new JPanel();
+		JLabel message = new JLabel("<html><br>Enter Details:<br><br></html>");
+		message.setHorizontalAlignment(SwingConstants.CENTER);
+		editTaskPanel.add(message);
+		
+		//Input creation
+		
+		JLabel nameLabel = new JLabel("Name:");
+		editTaskPanel.add(nameLabel);
+		
+		JLabel typeLabel = new JLabel("Type:");
+		editTaskPanel.add(typeLabel);
+		
+		JLabel durationLabel = new JLabel("Duration:");
+		editTaskPanel.add(durationLabel);
+		
+		JLabel priorityLabel = new JLabel("Prioirty:");
+		editTaskPanel.add(priorityLabel);
+		
+		JLabel frequencyLabel = new JLabel("Frequency:");
+		editTaskPanel.add(frequencyLabel);
+		
+		JLabel needLoggingLabel = new JLabel("Need Logging:");
+		editTaskPanel.add(needLoggingLabel);
+		
+		JLabel extraSignOffLabel = new JLabel("Extra Sign Off By:");
+		editTaskPanel.add(extraSignOffLabel);
+		
+		
+		String[] caretakerNames = genCNames();
+		caretakerInput = new JComboBox();
+		caretakerInput.setModel(new DefaultComboBoxModel(caretakerNames));
+		editTaskPanel.add(caretakerInput);
+		String currentCaretakerName = myTA.getcaretakerNameFromID(currentTask.getAssignedCaretaker());
+		caretakerInput.setSelectedItem(currentCaretakerName);
+		JLabel caretakerLabel = new JLabel("-Assigned Caretaker");
+		editTaskPanel.add(caretakerLabel);
+		
+		
+		//button creation
+		editButton1 = new JButton("Confirm");
+		editButton1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				String errorMessages = "";
+				int caretaker_id;
+				int[] caretakerIDs = genCIDs();
+				int chosenC = caretakerInput.getSelectedIndex();
+				if(chosenC==0) {
+					caretaker_id=0;
+				}
+				else {caretaker_id=caretakerIDs[chosenC-1];}
+				boolean result = myTA.allocateCaretaker(task_id, caretaker_id);
+				if(!result) {
+					setFeedbackPanel(errorMessages);
+					JOptionPane.showConfirmDialog(null, feedbackPanel, "Feedback", JOptionPane.PLAIN_MESSAGE);
+				}
+				else {
+					setFeedbackPanel("Allocation successful");
+					JOptionPane.showConfirmDialog(null, feedbackPanel, "Feedback", JOptionPane.PLAIN_MESSAGE);
+				}
+				refreshTable(sort,filter);
+			}
+		});
+		
+		editTaskPanel.add(editButton1);
+		
+		editButton2 = new JButton("Delete");
+		editButton2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				refreshTable(sort,filter);
+			}
+		});
+		
+		editTaskPanel.add(editButton2);
+	}
+	
+	
+	public void refreshTable(int sort, int filter) {
+		DefaultTableModel DTM = (DefaultTableModel) taskListTable.getModel();
+		DTM.setRowCount(0);
+		Object[][] data = populateTable(sort,filter);
+		for (int i = 0; i < data.length; i++) {
+			DTM.addRow(data[i]);
+		}
+	}
+	
+	private void setFeedbackPanel(String feedback) {
+		feedbackPanel = new JPanel();
+		
+		JLabel feedbackLabel = new JLabel(feedback);
+		feedbackPanel.add(feedbackLabel);
+		
+	}
+	
+	private JScrollPane createTable(int sort, int filter) {
+		String[] colHeaders = { "Task ID", "Task Name", "Task Type", "Task Duration", "Task Priority", "Task Frequency",
+				"need logging", "Date Created", "extra sign off", "Caretaker"};
+		Object[][] data = populateTable(sort, filter);
+		TableModel tableModel = new DefaultTableModel(data, colHeaders);
+		taskListTable = new JTable(tableModel);
+		// this removes the id column, but you should be able to call
+		// 'userTable.getModel().getValueAt(row, 0)' to get the id
+		TableColumnModel tcm = taskListTable.getColumnModel();
+		tcm.removeColumn(tcm.getColumn(0));// Task ID
+		tcm.removeColumn(tcm.getColumn(4));// Frequency
+		tcm.removeColumn(tcm.getColumn(4));// Need Logging
+		tcm.removeColumn(tcm.getColumn(4));// Completed
+		tcm.removeColumn(tcm.getColumn(4));// Extra Sign off
+		// import table into a scroll pane so that the table headers are visible and
+		// other things
+		JScrollPane scrollPane = new JScrollPane(taskListTable);
+		scrollPane.setBackground(new Color(238, 238, 238));
+		scrollPane.setBounds(68, 150, 820, 232);
+		return scrollPane;
+	}
 	public Object[][] populateTable(int sort, int filter) {
 		ArrayList<Object[]> tempData = new ArrayList<Object[]>();
 
@@ -191,10 +309,10 @@ public class taskAssignUI extends JPanel {
 		ArrayList<task> tasks = new ArrayList<task>();
 		switch (sort) {
 		case 0:
-			//tasks = myTA.sortUndoneTasksByDate();
+			tasks = myTA.sortUndoneTasksByDate();
 			break;
 		case 1:
-			tasks = myTA.sortUndoneTasksByPriority();
+			tasks = myTA.sortUndoneTasksByUnassigned();
 			break;
 		}
 		switch (filter) {
@@ -218,10 +336,10 @@ public class taskAssignUI extends JPanel {
 				else {type="Recurring";}
 				Object[] dataPoint = { tempTask.getID(), tempTask.getName(), type, tempTask.getDuration(),
 						tempTask.getPriority(), tempTask.getFrequency(), tempTask.getNeedLogging(),
-						tempTask.getDateCreated(), tempTask.getExtraSignOff() };
+						tempTask.getDateCreated(), tempTask.getExtraSignOff(), myTA.getcaretakerNameFromID(tempTask.getAssignedCaretaker())};
 				tempData.add(dataPoint);
 			}
-			Object[][] data = new Object[tempData.size()][8];
+			Object[][] data = new Object[tempData.size()][10];
 			return tempData.toArray(data);
 		} catch (NullPointerException e) {
 			window.displayError("Table Error!", e.toString());
@@ -230,189 +348,23 @@ public class taskAssignUI extends JPanel {
 		Object[][] data = { {} };
 		return data;
 	}
-
-	private JScrollPane updateTable(int sort, int filter) {
-		String[] colHeaders = { "Task ID", "Task Name", "Task Type", "Task Duration", "Task Priority", "Task Frequency",
-				"need logging", "Date Created", "completed", "extra sign off" };
-		Object[][] data = populateTable(sort, filter);
-		taskListTable = new JTable(data, colHeaders);
-		// this removes the id column, but you should be able to call
-		// 'userTable.getModel().getValueAt(row, 0)' to get the id
-		TableColumnModel tcm = taskListTable.getColumnModel();
-		tcm.removeColumn(tcm.getColumn(0));// Task ID
-		tcm.removeColumn(tcm.getColumn(4));// Frequency
-		tcm.removeColumn(tcm.getColumn(4));// Need Logging
-		tcm.removeColumn(tcm.getColumn(5));// Completed
-		tcm.removeColumn(tcm.getColumn(5));// Extra Sign off
-		// import table into a scroll pane so that the table headers are visible and
-		// other things
-		JScrollPane scrollPane = new JScrollPane(taskListTable);
-		scrollPane.setBackground(new Color(238, 238, 238));
-		scrollPane.setBounds(68, 150, 820, 232);
-		return scrollPane;
+	
+	public String[] genCNames() {
+		ArrayList<String> caretakerNamesArrayList = myTA.getAllCaretakersNames();
+		String[] caretakerNames = new String[caretakerNamesArrayList.size()+1];
+		caretakerNames[0]="None";
+		for(int a=0;a<caretakerNamesArrayList.size();a++) {
+			caretakerNames[a+1]=caretakerNamesArrayList.get(a);
+		}
+		return caretakerNames;
 	}
 	
-	private void setAddTaskPanel() {
-		addTaskPanel = new JPanel();
-		JLabel message = new JLabel("<html><br>Enter Details:<br><br></html>");
-		message.setHorizontalAlignment(SwingConstants.CENTER);
-		addTaskPanel.add(message);
-		
-		//Inputcreation
-		
-		nameInput = new JTextField();
-		addTaskPanel.add(nameInput);
-		nameInput.setColumns(20);
-		JLabel nameLabel = new JLabel("-Name");
-		addTaskPanel.add(nameLabel);
-		
-		typeInput = new JCheckBox("-Reccurring");
-		addTaskPanel.add(typeInput);
-		
-		durationInput = new JTextField();
-		addTaskPanel.add(durationInput);
-		durationInput.setColumns(5);
-		JLabel durationLabel = new JLabel("-Duration(Mins)");
-		addTaskPanel.add(durationLabel);
-		
-		priorityInput = new JComboBox();
-		priorityInput.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3"}));
-		addTaskPanel.add(priorityInput);
-		JLabel priorityLabel = new JLabel("-Priority");
-		addTaskPanel.add(priorityLabel);
-		
-		
-		frequencyInput = new JTextField();
-		addTaskPanel.add(frequencyInput);
-		frequencyInput.setColumns(5);
-		JLabel freqLabel = new JLabel("-Frequency (Days)");
-		addTaskPanel.add(freqLabel);
-		
-		needLoggingInput = new JCheckBox("-Need Logging");
-		addTaskPanel.add(needLoggingInput);
-		
-		extraSignoffInput = new JTextField();
-		addTaskPanel.add(extraSignoffInput);
-		extraSignoffInput.setColumns(5);
-		JLabel eSLabel = new JLabel("-Extra Signoff?");
-		addTaskPanel.add(eSLabel);
-		
-		
-		//button creation
-		addButton1 = new JButton("Confirm");
-		addButton1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				String name = nameInput.getText();
-				int type;
-				if(typeInput.isSelected()) {type=1;}
-				else {type=0;}
-				int duration = Integer.parseInt(durationInput.getText());
-				int priority = Integer.parseInt((String)priorityInput.getSelectedItem());
-				int frequency = Integer.parseInt(frequencyInput.getText());
-				int need_logging;
-				if(needLoggingInput.isSelected()) {need_logging=1;}
-				else {need_logging=0;}
-				String date_created = "1999-03-27 15:07:43";//get date
-				int completed = 0;
-				int extra_sign_off = Integer.parseInt(extraSignoffInput.getText());
-				//try {
-					//System.out.println(myTA.addTask(name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off));
-				//} catch (SQLException e) {
-				//	e.printStackTrace();
-				//}
-			}
-		});
-		
-		addTaskPanel.add(addButton1);
-	}
-	
-	private void setEditTaskPanel(int task_id) {
-		task currentTask = myTA.getTask(task_id);
-		
-		editTaskPanel = new JPanel();
-		JLabel message = new JLabel("<html><br>Enter Details:<br><br></html>");
-		message.setHorizontalAlignment(SwingConstants.CENTER);
-		editTaskPanel.add(message);
-		
-		//Input creation
-		
-		nameInput = new JTextField();
-		editTaskPanel.add(nameInput);
-		nameInput.setColumns(20);
-		nameInput.setText(currentTask.getName());
-		JLabel nameLabel = new JLabel("-Name");
-		editTaskPanel.add(nameLabel);
-		
-		typeInput = new JCheckBox("-Reccurring");
-		editTaskPanel.add(typeInput);
-		if(currentTask.getType()==0) {
-			typeInput.setSelected(true);
+	public int[] genCIDs() {
+		ArrayList<Integer> caretakerIDsArrayList = myTA.getAllCaretakersIDs();
+		int[] caretakerIDs = new int[caretakerIDsArrayList.size()];
+		for(int a=0;a<caretakerIDsArrayList.size();a++) {
+			caretakerIDs[a]=caretakerIDsArrayList.get(a);
 		}
-		else{typeInput.setSelected(false);}
-		
-		durationInput = new JTextField();
-		editTaskPanel.add(durationInput);
-		durationInput.setColumns(5);
-		durationInput.setText(String.valueOf(currentTask.getDuration()));
-		JLabel durationLabel = new JLabel("-Duration(Mins)");
-		editTaskPanel.add(durationLabel);
-		
-		priorityInput = new JComboBox();
-		priorityInput.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3"}));
-		editTaskPanel.add(priorityInput);
-		priorityInput.setSelectedItem(String.valueOf(currentTask.getPriority()));
-		JLabel priorityLabel = new JLabel("-Priority");
-		editTaskPanel.add(priorityLabel);
-		
-		
-		frequencyInput = new JTextField();
-		editTaskPanel.add(frequencyInput);
-		frequencyInput.setColumns(5);
-		frequencyInput.setText(String.valueOf(currentTask.getFrequency()));
-		JLabel freqLabel = new JLabel("-Frequency (Days)");
-		editTaskPanel.add(freqLabel);
-		
-		needLoggingInput = new JCheckBox("-Need Logging");
-		editTaskPanel.add(needLoggingInput);
-		if(currentTask.getNeedLogging()==1) {
-			needLoggingInput.setSelected(true);
-		}
-		else{needLoggingInput.setSelected(false);}
-		
-		
-		extraSignoffInput = new JTextField();
-		editTaskPanel.add(extraSignoffInput);
-		extraSignoffInput.setColumns(5);
-		extraSignoffInput.setText(String.valueOf(currentTask.getExtraSignOff()));
-		JLabel eSLabel = new JLabel("-Extra Signoff?");
-		editTaskPanel.add(eSLabel);
-		
-		
-		//button creation
-		editButton1 = new JButton("Confirm");
-		editButton1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				String name = nameInput.getText();
-				int type;
-				if(typeInput.isSelected()) {type=1;}
-				else {type=0;}
-				int duration = Integer.parseInt(durationInput.getText());
-				int priority = Integer.parseInt((String)priorityInput.getSelectedItem());
-				int frequency = Integer.parseInt(frequencyInput.getText());
-				int need_logging;
-				if(needLoggingInput.isSelected()) {need_logging=1;}
-				else {need_logging=0;}
-				String date_created = currentTask.getDateCreated();//get date
-				int completed = 0;
-				int extra_sign_off = Integer.parseInt(extraSignoffInput.getText());
-				//try {
-				//	System.out.println(myTA.editTask(task_id, name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off));
-				//} catch (SQLException e) {
-				//	e.printStackTrace();
-				//}
-			}
-		});
-		
-		editTaskPanel.add(editButton1);
+		return caretakerIDs;
 	}
 }

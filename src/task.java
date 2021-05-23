@@ -24,6 +24,7 @@ public class task {
 		this.date_created = date_created;
 		this.completed = completed;
 		this.extra_sign_off = extra_sign_off;
+		assigned_caretaker=0;
 		genDate();
 	}
 	

@@ -117,7 +117,7 @@ public class database {
 	}//end getTaskFromID()
 	
 	public ResultSet getAllTasks() {
-		String getSQL="SELECT task_id, task_name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off FROM tasks";
+		String getSQL="SELECT task_id, task_name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off, assigned_caretaker FROM tasks";
 		ResultSet result = myDB.RunSQLQuery(getSQL);
 		return result;
 	}

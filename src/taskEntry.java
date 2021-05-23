@@ -136,7 +136,7 @@ public class taskEntry {
 		while(sortedPoint<taskList.size()-1) {
 			task1=taskList.get(sortedPoint);
 			task2=taskList.get(sortedPoint+1);
-			if(task1.getConcDateTime()<task2.getConcDateTime()) {
+			if(task1.getConcDateTime()>task2.getConcDateTime()) {
 				taskList.set(sortedPoint,task2);
 				taskList.set(sortedPoint+1,task1);
 				sortedPoint = 0;

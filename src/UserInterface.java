@@ -105,7 +105,7 @@ public class UserInterface extends JFrame {
         taskBtn.setBounds(0, 50, 125, 50);
         taskBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                displayAllocateTasks();
+                displayAssignTasks();
             }
         });
         contentPane.add(taskBtn);
@@ -147,7 +147,7 @@ public class UserInterface extends JFrame {
 		mainPane.add(usersWindow, "Users");
 		mainPane.add(logTasksWindow, "LogTasks");
 		mainPane.add(enterTasksWindow, "EditTasks");
-        mainPane.add(assignTasksWindow, "AllocateTasks");
+        mainPane.add(assignTasksWindow, "AssignTasks");
 
         //set constraints of GridBagLayout
         gbc.fill = GridBagConstraints.BOTH;
@@ -219,11 +219,11 @@ public class UserInterface extends JFrame {
             cardLayout.show(mainPane, "Access");
         }
     }
-    public void displayAllocateTasks() {
+    public void displayAssignTasks() {
         setTitle("Allocate Tasks");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         if (user.getLogin()) {
-		    cardLayout.show(mainPane, "AllocateTasks");
+		    cardLayout.show(mainPane, "AssignTasks");
         } else {
             cardLayout.show(mainPane, "Access");
         }

@@ -34,6 +34,7 @@ public class taskAssign {
 		catch(SQLException e) {
 			return null;
 		}
+		
 		return myTasks;
 	}
 		
@@ -66,6 +67,23 @@ public class taskAssign {
 		return sorted;
 	}
 	
+	public ArrayList<task> sortUndoneTasksByUnassigned() {
+		ArrayList<task> unsorted = getUndoneTasks();
+		ArrayList<task> sorted = new ArrayList<task>();
+		
+		for(int a=0;a<unsorted.size();a++) {
+			if(unsorted.get(a).getAssignedCaretaker()==0) {
+				sorted.add(unsorted.get(a));
+			}
+		}
+		for(int a=0;a<unsorted.size();a++) {
+			if(unsorted.get(a).getAssignedCaretaker()!=0) {
+				sorted.add(unsorted.get(a));
+			}
+		}
+		return sorted;
+	}
+	
 	
 	public task getTask(int id) {
 		task result = null;
@@ -86,11 +104,10 @@ public class taskAssign {
 		while(sortedPoint<taskList.size()-1) {
 			task1=taskList.get(sortedPoint);
 			task2=taskList.get(sortedPoint+1);
-			if(task1.getConcDateTime()<task2.getConcDateTime()) {
+			if(task1.getConcDateTime()>task2.getConcDateTime()) {
 				taskList.set(sortedPoint,task2);
 				taskList.set(sortedPoint+1,task1);
 				sortedPoint = 0;
-				//System.out.println("switched");
 			}
 			else {sortedPoint++;}
 		}
@@ -117,6 +134,54 @@ public class taskAssign {
 		return output;
 	}
 	
+	
+	public String getcaretakerNameFromID(int id) {
+		String result = null;
+		ResultSet rs = db.getUserFromID(id);
+		try {
+			while(rs.next()) {
+				result = rs.getString(2);
+			}
+		}
+		catch(SQLException e) {
+			return null;
+		}
+		return result;
+	}
+	
+	public ArrayList<String> getAllCaretakersNames() {
+		ArrayList<String> result = new ArrayList<String>();
+		ResultSet rs = db.getAllUsers();
+		String tempName;
+		try {
+			while(rs.next()) {
+				tempName = rs.getString(2);
+				result.add(tempName);
+			}
+		}
+		catch(SQLException e) {
+			return null;
+		}
+		
+		return result;
+	}
+	
+	public ArrayList<Integer> getAllCaretakersIDs() {
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		ResultSet rs = db.getAllUsers();
+		int tempID;
+		try {
+			while(rs.next()) {
+				tempID = rs.getInt(1);
+				result.add(tempID);
+			}
+		}
+		catch(SQLException e) {
+			return null;
+		}
+		
+		return result;
+	}
 	
 	
 }
