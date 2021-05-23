@@ -63,7 +63,7 @@ public class ManageUsersUI extends JPanel {
 		JButton btnRemoveUserButton = new JButton("Delete User");
 		btnRemoveUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (user.accessLevel("MU") >= 3) {
+				if (user.accessLevel("MU") >= 3 || user.accessLevel("AP") == 1) {
 					JPanel panel = new JPanel();
 					int userID = (int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0);
 					panel.add(new JLabel("Delete User Permenantly: " + ((String) userTable.getModel().getValueAt(userTable.getSelectedRow(), 2))));
