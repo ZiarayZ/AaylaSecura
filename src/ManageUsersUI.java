@@ -81,6 +81,7 @@ public class ManageUsersUI extends JPanel {
 									if (result == JOptionPane.OK_OPTION) {
 										boolean sqlResult = user.deleteUser(userID);
 										window.displayError("Delete User", "User Deleted: " + sqlResult);
+										refreshTable();
 									}
 								} else {
 									window.displayError("No Access!", "You do not have permission to delete this user.");
@@ -181,6 +182,8 @@ public class ManageUsersUI extends JPanel {
 								editNotes.getText(),
 								Character.toString((char) ((Job) editGender.getSelectedItem()).getID())
 							);
+							window.displayError("User Edit Success.", "Edited User: " + editName.getText());
+							refreshTable();
 						} catch (SQLException e) {
 							window.displayError("Database Error!", e.toString());
 						}
