@@ -209,8 +209,10 @@ public class TaskLogUI extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		reportPanel = new JPanel(gbl);
 		//label spanning whole panel width
-		JLabel message = new JLabel("");
+		JLabel message = new JLabel("<html><br>Choose a Report to Create.<br><br></html>");
+		message.setHorizontalAlignment(SwingConstants.CENTER);
 		gbc.fill = GridBagConstraints.BOTH;
+		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.gridheight = 1;
 		gbc.gridwidth = 3;
 		gbc.weighty = 1;
