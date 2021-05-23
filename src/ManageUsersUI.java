@@ -2,6 +2,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -83,7 +85,12 @@ public class ManageUsersUI extends JPanel {
 		
 		String[] colHeaders = {"ID", "Name", "Username", "Role", "Gender"};
 		Object[][] data = populateTable();
-		userTable = new JTable(data,colHeaders);
+		TableModel tableModel = new DefaultTableModel(colHeaders, 0);
+		userTable = new JTable(tableModel);
+		DefaultTableModel DTM = (DefaultTableModel) userTable.getModel();
+		for (int i = 0; i < data.length; i++) {
+			DTM.addRow(data[i]);
+		}
 		userTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		ListSelectionModel selectionModel = userTable.getSelectionModel();
@@ -112,7 +119,7 @@ public class ManageUsersUI extends JPanel {
 		add(fixedPane);
 	}
 
-	public Object[][] populateTable() {
+	private Object[][] populateTable() {
 		ArrayList<Object[]> tempData = new ArrayList<Object[]>();
 
 		//call for all users info
@@ -139,6 +146,14 @@ public class ManageUsersUI extends JPanel {
 
 		Object[][] data = {{}};
 		return data;
+	}
+	private void refreshTable() {
+		DefaultTableModel DTM = (DefaultTableModel) userTable.getModel();
+		DTM.setRowCount(0);
+		Object[][] data = populateTable();
+		for (int i = 0; i < data.length; i++) {
+			DTM.addRow(data[i]);
+		}
 	}
 
 	//add new user form
@@ -186,6 +201,7 @@ public class ManageUsersUI extends JPanel {
 						if (!newResult.equals("")) {
 							window.displayError("Add New User Failed", "Error: " + newResult);
 						} else {
+							refreshTable();
 							window.displayError("Add New User Success", "Successfully added new user: " + username.getText());
 						}
 					} catch (NoSuchAlgorithmException e) {
