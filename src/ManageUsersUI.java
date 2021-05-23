@@ -60,10 +60,18 @@ public class ManageUsersUI extends JPanel {
 		btnAddUserButton.setBounds(99, 400, 134, 44);
 		fixedPane.add(btnAddUserButton);
 		
-		JButton btnRemoveUserButton = new JButton("Remove User");
+		JButton btnRemoveUserButton = new JButton("Delete User");
 		btnRemoveUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//create or show JDialog box to confirm
+				JPanel panel = new JPanel();
+				int userID = (int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0);
+				panel.add(new JLabel("Delete User Permenantly: " + ((String) userTable.getModel().getValueAt(userTable.getSelectedRow(), 2))));
+				//Dialog output
+				int result = JOptionPane.showConfirmDialog(null, panel, "Delete User",
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				if (result == JOptionPane.OK_OPTION) {
+					window.displayError("Delete User", "User Deleted: " + userDB.deleteUser(userID));
+				}
 			}
 		});
 		btnRemoveUserButton.setEnabled(false);
