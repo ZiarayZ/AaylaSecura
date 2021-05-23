@@ -62,17 +62,35 @@ public class ManageUsersUI extends JPanel {
 		
 		JButton btnRemoveUserButton = new JButton("Delete User");
 		btnRemoveUserButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent event) {
 				if (user.accessLevel("MU") >= 3 || user.accessLevel("AP") == 1) {
-					JPanel panel = new JPanel();
 					int userID = (int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0);
-					panel.add(new JLabel("Delete User Permenantly: " + ((String) userTable.getModel().getValueAt(userTable.getSelectedRow(), 2))));
-					//Dialog output
-					int result = JOptionPane.showConfirmDialog(null, panel, "Delete User",
-					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-					if (result == JOptionPane.OK_OPTION) {
-						boolean sqlResult = user.deleteUser(userID);
-						window.displayError("Delete User", "User Deleted: " + sqlResult);
+					try {
+						String newUserPerms = user.getPermsFromUserID(userID);
+						String[] permsLevel = newUserPerms.replaceAll("[{}]", "").split(",");
+						String[] permLevel;
+						for (String i: permsLevel) {
+							permLevel = i.split(":");
+							if (permLevel[0].equals("Rank")) {
+								if (user.accessLevel("Rank") > Integer.parseInt(permLevel[1])) {
+									JPanel panel = new JPanel();
+									panel.add(new JLabel("Delete User Permenantly: " + ((String) userTable.getModel().getValueAt(userTable.getSelectedRow(), 2))));
+									//Dialog output
+									int result = JOptionPane.showConfirmDialog(null, panel, "Delete User",
+									JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+									if (result == JOptionPane.OK_OPTION) {
+										boolean sqlResult = user.deleteUser(userID);
+										window.displayError("Delete User", "User Deleted: " + sqlResult);
+									}
+								} else {
+									window.displayError("No Access!", "You do not have permission to delete this user.");
+								}
+							}
+						}
+					} catch (SQLException e) {
+						window.displayError("Database Error!", e.toString());
+					} catch (NullPointerException e) {
+						window.displayError("Database Error!", e.toString());
 					}
 				} else {
 					window.displayError("Delete User", "You do not have access to this feature.");

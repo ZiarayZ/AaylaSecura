@@ -105,6 +105,17 @@ public class UserManagement {
     public String getPermsFromJob(String JOB) throws SQLException {
         return userDB.getPermsFromJob(JOB);
     }
+    public String getPermsFromUserID(int ID) throws SQLException {
+        ResultSet result = userDB.getUserFromID(ID);
+        int jobID;
+        if (result.next()) {
+            jobID = result.getInt("job_id");
+        } else {
+            return "";
+        }
+        String JOB = userDB.getJobFromID(jobID);
+        return userDB.getPermsFromJob(JOB);
+    }
 
     //edit password
     public String editPassword(char[] password) throws SQLException {
