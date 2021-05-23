@@ -204,6 +204,7 @@ public class ManageUsersUI extends JPanel {
 								editUser.getString(6),
 								editUser.getString(5)
 							);
+							//seeing if user to edit is below logged in user
 							String newUserPerms = user.getPermsFromJob(editUser.getString(4));
 							String[] permsLevel = newUserPerms.replaceAll("[{}]", "").split(",");
 							String[] permLevel;
@@ -233,14 +234,17 @@ public class ManageUsersUI extends JPanel {
 								}
 							}
 						}
+					//errors to handle
 					} catch (SQLException e) {
 						window.displayError("Database Error!", e.toString());
+						//fallback
 						editID.setText(Integer.toString((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0)));
 						editName.setText(userTable.getModel().getValueAt(userTable.getSelectedRow(), 1).toString());
 						editJob.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 3).toString());
 						editGender.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 4).toString());
 					} catch (NullPointerException e) {
 						window.displayError("Database Error!", e.toString());
+						//fallback
 						editID.setText(Integer.toString((int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0)));
 						editName.setText(userTable.getModel().getValueAt(userTable.getSelectedRow(), 1).toString());
 						editJob.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 3).toString());
