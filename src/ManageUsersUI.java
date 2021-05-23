@@ -82,6 +82,7 @@ public class ManageUsersUI extends JPanel {
 		btnRemoveUserButton.setBounds(561, 400, 134, 44);
 		fixedPane.add(btnRemoveUserButton);
 
+		//define new panel
 		JPanel editPanel = new JPanel();
 		JPanel fixedEditPanel = new JPanel();
 		editPanel.setBackground(new Color(255, 255, 255));
@@ -90,6 +91,10 @@ public class ManageUsersUI extends JPanel {
 		GridLayout editPanelLayout = new GridLayout();
 		fixedEditPanel.setLayout(editPanelLayout);
 		fixedEditPanel.setBackground(new Color(255, 255, 255));
+
+		//add content to panel
+
+		//finish panel creation
 		fixedEditPanel.setPreferredSize(new Dimension(755,512));
 		editPanel.add(fixedEditPanel);
 		window.addCard(editPanel, "EditUser");
