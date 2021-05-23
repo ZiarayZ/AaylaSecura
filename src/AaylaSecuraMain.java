@@ -1,4 +1,3 @@
-import java.sql.ResultSet;
 public class AaylaSecuraMain {
 	
 	static database db = new database();
