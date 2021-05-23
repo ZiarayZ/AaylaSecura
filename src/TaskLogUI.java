@@ -166,7 +166,7 @@ public class TaskLogUI extends JPanel {
 		JButton createReportButton = new JButton("<html><center>Create<br>Report</center></html>");
 		createReportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//restrict report buttons to report access level
+				//restrict report buttons to Create Report access level
 				if (user.accessLevel("CR") >= 2 || user.accessLevel("AP") == 1) {
 					reportButt1.setEnabled(true);
 					reportButt1.setEnabled(true);
