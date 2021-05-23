@@ -63,14 +63,18 @@ public class ManageUsersUI extends JPanel {
 		JButton btnRemoveUserButton = new JButton("Delete User");
 		btnRemoveUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JPanel panel = new JPanel();
-				int userID = (int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0);
-				panel.add(new JLabel("Delete User Permenantly: " + ((String) userTable.getModel().getValueAt(userTable.getSelectedRow(), 2))));
-				//Dialog output
-				int result = JOptionPane.showConfirmDialog(null, panel, "Delete User",
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-				if (result == JOptionPane.OK_OPTION) {
-					window.displayError("Delete User", "User Deleted: " + userDB.deleteUser(userID));
+				if (user.accessLevel("MU") >= 3) {
+					JPanel panel = new JPanel();
+					int userID = (int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0);
+					panel.add(new JLabel("Delete User Permenantly: " + ((String) userTable.getModel().getValueAt(userTable.getSelectedRow(), 2))));
+					//Dialog output
+					int result = JOptionPane.showConfirmDialog(null, panel, "Delete User",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+					if (result == JOptionPane.OK_OPTION) {
+						window.displayError("Delete User", "User Deleted: " + userDB.deleteUser(userID));
+					}
+				} else {
+					window.displayError("Delete User", "You do not have access to this feature.");
 				}
 			}
 		});
@@ -101,11 +105,41 @@ public class ManageUsersUI extends JPanel {
 		ListSelectionModel selectionModel = userTable.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				//grabbing selected row index in JTable
+				//when selecting a row in the manage users table, restrict button access the user can access
 				if (userTable.getSelectedRow() != -1) {
-					btnEditUserButton.setEnabled(true);
-					btnRemoveUserButton.setEnabled(true);
+
+					//admin permission
+					if (user.accessLevel("AP") == 1) {
+						btnAddUserButton.setEnabled(true);
+						btnEditUserButton.setEnabled(true);
+						btnRemoveUserButton.setEnabled(true);
+					} else {
+						btnAddUserButton.setEnabled(false);
+						btnEditUserButton.setEnabled(false);
+						btnRemoveUserButton.setEnabled(false);
+					}
+
+					//manage users
+					int accessLevel = user.accessLevel("MU");
+					if (accessLevel >= 1) {
+						btnAddUserButton.setEnabled(true);
+					} else {
+						btnAddUserButton.setEnabled(false);
+					}
+					if (accessLevel >= 2) {
+						btnEditUserButton.setEnabled(true);
+					} else {
+						btnEditUserButton.setEnabled(false);
+					}
+					if (accessLevel >= 3) {
+						btnRemoveUserButton.setEnabled(true);
+					} else {
+						btnRemoveUserButton.setEnabled(false);
+					}
 				} else {
+					if (user.accessLevel("MU") == 0) {
+						btnAddUserButton.setEnabled(false);
+					}
 					btnEditUserButton.setEnabled(false);
 					btnRemoveUserButton.setEnabled(false);
 				}
