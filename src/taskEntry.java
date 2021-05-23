@@ -168,4 +168,52 @@ public class taskEntry {
 		return output;
 	}
 	
+	public String getcaretakerNameFromID(int id) {
+		String result = null;
+		ResultSet rs = db.getUserFromID(id);
+		try {
+			while(rs.next()) {
+				result = rs.getString(1);
+			}
+		}
+		catch(SQLException e) {
+			return null;
+		}
+		return result;
+	}
+	
+	public ArrayList<String> getAllCaretakersNames() {
+		ArrayList<String> result = new ArrayList<String>();
+		ResultSet rs = db.getAllUsers();
+		String tempName;
+		try {
+			while(rs.next()) {
+				tempName = rs.getString(2);
+				result.add(tempName);
+			}
+		}
+		catch(SQLException e) {
+			return null;
+		}
+		
+		return result;
+	}
+	
+	public ArrayList<Integer> getAllCaretakersIDs() {
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		ResultSet rs = db.getAllUsers();
+		int tempID;
+		try {
+			while(rs.next()) {
+				tempID = rs.getInt(1);
+				result.add(tempID);
+			}
+		}
+		catch(SQLException e) {
+			return null;
+		}
+		
+		return result;
+	}
+	
 }

@@ -365,11 +365,15 @@ public class database {
 	}//end getPassFromUsername()
 
 	public ResultSet getAllUsers() {
-		String getSQL = "SELECT user_id, user_name, username, users.job_id, job.job_desc, M_F FROM users INNER JOIN job ON users.job_id=job.job_id ORDER BY user_name";
+		String getSQL = "SELECT user_id, user_name, username, job.job_desc, M_F FROM users INNER JOIN job ON users.job_id=job.job_id ORDER BY user_name";
 		ResultSet result = myDB.RunSQLQuery(getSQL);
 		return result;
 	}
-
+	public ResultSet getUserFromID(int id) {
+		String getSQL = "SELECT user_id, user_name, username, job.job_desc, M_F FROM users INNER JOIN job ON users.job_id=job.job_id WHERE user_id = "+id;
+		ResultSet result = myDB.RunSQLQuery(getSQL);
+		return result;
+	}
 	public boolean deleteUser(int ID) {
 		String sqlString = "DELETE FROM users WHERE user_id="+ID;
 		boolean result = myDB.RunSQL(sqlString);

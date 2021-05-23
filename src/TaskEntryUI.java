@@ -54,7 +54,7 @@ public class TaskEntryUI extends JPanel {
 	private JComboBox priorityInput;
 	private JTextField frequencyInput;
 	private JCheckBox needLoggingInput;
-	private JTextField extraSignoffInput;//not right yet
+	private JComboBox extraSignoffInput;//not right yet
 
 	/**
 	 * Create the panel.
@@ -291,11 +291,11 @@ public class TaskEntryUI extends JPanel {
 		needLoggingInput = new JCheckBox("-Need Logging");
 		addTaskPanel.add(needLoggingInput);
 		
-		extraSignoffInput = new JTextField();
-		addTaskPanel.add(extraSignoffInput);
-		extraSignoffInput.setColumns(5);
-		JLabel eSLabel = new JLabel("-Extra Signoff?");
-		addTaskPanel.add(eSLabel);
+		//extraSignoffInput = new JTextField();
+		//addTaskPanel.add(extraSignoffInput);
+		//extraSignoffInput.setColumns(5);
+		//JLabel eSLabel = new JLabel("-Extra Signoff?");
+		//addTaskPanel.add(eSLabel);
 		
 		
 		//button creation
@@ -314,7 +314,8 @@ public class TaskEntryUI extends JPanel {
 				else {need_logging=0;}
 				String date_created = "1999-03-27 15:07:43";//get date
 				int completed = 0;
-				int extra_sign_off = Integer.parseInt(extraSignoffInput.getText());
+				//int extra_sign_off = Integer.parseInt(extraSignoffInput.getText());
+				int extra_sign_off = 0;
 				try {
 					System.out.println(myTE.addTask(name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off));
 				} catch (SQLException e) {
@@ -379,11 +380,14 @@ public class TaskEntryUI extends JPanel {
 		}
 		else{needLoggingInput.setSelected(false);}
 		
-		
-		extraSignoffInput = new JTextField();
+		String[] caretakerNames = genCNames();
+		extraSignoffInput = new JComboBox();
+		extraSignoffInput.setModel(new DefaultComboBoxModel(caretakerNames));
 		editTaskPanel.add(extraSignoffInput);
-		extraSignoffInput.setColumns(5);
-		extraSignoffInput.setText(String.valueOf(currentTask.getExtraSignOff()));
+		String es;
+		if(currentTask.getExtraSignOff()==0) {es="0";}
+		else {es = myTE.getcaretakerNameFromID(currentTask.getExtraSignOff());}
+		//extraSignoffInput.setText(es);
 		JLabel eSLabel = new JLabel("-Extra Signoff?");
 		editTaskPanel.add(eSLabel);
 		
@@ -404,7 +408,13 @@ public class TaskEntryUI extends JPanel {
 				else {need_logging=0;}
 				String date_created = currentTask.getDateCreated();//get date
 				int completed = 0;
-				int extra_sign_off = Integer.parseInt(extraSignoffInput.getText());
+				int[] caretakerIDs = genCIDs();
+				int extra_sign_off;
+				int chosenES = extraSignoffInput.getSelectedIndex();
+				if(chosenES==1) {
+					extra_sign_off=0;
+				}
+				else {extra_sign_off=caretakerIDs[chosenES-1];}
 				try {
 					System.out.println(myTE.editTask(task_id, name, type, duration, priority, frequency, need_logging, date_created, completed, extra_sign_off));
 				} catch (SQLException e) {
@@ -414,5 +424,24 @@ public class TaskEntryUI extends JPanel {
 		});
 		
 		editTaskPanel.add(editButton1);
+	}
+	
+	
+	public String[] genCNames() {
+		ArrayList<String> caretakerNamesArrayList = myTE.getAllCaretakersNames();
+		String[] caretakerNames = new String[caretakerNamesArrayList.size()];
+		for(int a=0;a<caretakerNamesArrayList.size();a++) {
+			caretakerNames[a]=caretakerNamesArrayList.get(a);
+		}
+		return caretakerNames;
+	}
+	
+	public int[] genCIDs() {
+		ArrayList<Integer> caretakerIDsArrayList = myTE.getAllCaretakersIDs();
+		int[] caretakerIDs = new int[caretakerIDsArrayList.size()];
+		for(int a=0;a<caretakerIDsArrayList.size();a++) {
+			caretakerIDs[a]=caretakerIDsArrayList.get(a);
+		}
+		return caretakerIDs;
 	}
 }
