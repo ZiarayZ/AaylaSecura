@@ -159,7 +159,7 @@ public class TaskEntryUI extends JPanel {
 				JOptionPane.showConfirmDialog(null, addTaskPanel, "Create Report", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			}
 		});
-		addTaskButton.setBounds(355, 607, 133, 54);
+		addTaskButton.setBounds(355, 488, 133, 54);
 		fixedPane.add(addTaskButton);
 		JButton editTaskButton = new JButton("<html><center>Edit<br>Task</center></html>");
 		editTaskButton.addActionListener(new ActionListener() {
@@ -176,7 +176,7 @@ public class TaskEntryUI extends JPanel {
 				}
 			}
 		});
-		editTaskButton.setBounds(498, 607, 118, 54);
+		editTaskButton.setBounds(498, 488, 118, 54);
 		fixedPane.add(editTaskButton);
 		fixedPane.setPreferredSize(new Dimension(956, 717));
 		add(fixedPane);

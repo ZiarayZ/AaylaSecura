@@ -122,6 +122,7 @@ public class database {
 		return result;
 	}
 	
+	
 	public boolean deleteTask(int ID) {
 		String sqlString ="DELETE FROM tasks WHERE task_id="+ID;
 		boolean result = myDB.RunSQL(sqlString);

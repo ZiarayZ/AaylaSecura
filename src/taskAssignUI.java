@@ -71,7 +71,7 @@ public class taskAssignUI extends JPanel {
 		fixedPane.setLayout(null);
 		fixedPane.setBackground(new Color(255, 255, 255));
 
-		JLabel lblHeadingLabel = new JLabel("Task Assign");
+		JLabel lblHeadingLabel = new JLabel("Task Allocation");
 		lblHeadingLabel.setForeground(new Color(105, 105, 105));
 		lblHeadingLabel.setOpaque(true);
 		lblHeadingLabel.setFont(new Font("Verdana", Font.PLAIN, 28));
@@ -93,16 +93,37 @@ public class taskAssignUI extends JPanel {
 		sortByDateButton.setBounds(78, 553, 125, 54);
 		fixedPane.add(sortByDateButton);
 
-		JButton sortByUnassignedButton = new JButton("<html><center>Sort By<br>Unassigned</center></html>");
-		sortByUnassignedButton.addActionListener(new ActionListener() {
+		JButton sortByPriorityButton = new JButton("<html><center>Sort By<br>Priority</center></html>");
+		sortByPriorityButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort = 1;
 				refreshTable(sort, filter);
 			}
 		});
-		sortByUnassignedButton.setBounds(213, 553, 132, 54);
+		sortByPriorityButton.setBounds(213, 553, 132, 54);
+		fixedPane.add(sortByPriorityButton);
+		
+		JButton sortByUnassignedButton = new JButton("<html><center>Sort by<br>Unassigned</center></html>");
+		sortByUnassignedButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort = 2;
+				refreshTable(sort, filter);
+			}
+		});
+		sortByUnassignedButton.setBounds(78, 618, 125, 54);
 		fixedPane.add(sortByUnassignedButton);
-
+		
+		JButton sortByAssignedButton = new JButton("<html><center>Sort by<br>Assigned</center></html>");
+		sortByAssignedButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort = 3;
+				refreshTable(sort, filter);
+			}
+		});
+		sortByAssignedButton.setBounds(213, 618, 132, 54);
+		fixedPane.add(sortByAssignedButton);
+		
+		
 		JButton filterOneOffButton = new JButton("<html><center>One Off<br>Tasks</center></html>");
 		filterOneOffButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -142,19 +163,17 @@ public class taskAssignUI extends JPanel {
 		RefreshTableButton.setBounds(760, 553, 128, 54);
 		fixedPane.add(RefreshTableButton);
 		
-		
-		
-		
-		JButton addTaskButton = new JButton("<html><center>Add New<br>Task</center></html>");
+		JButton addTaskButton = new JButton("<html><center>Sort by<br></center></html>");
 		addTaskButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//setAddTaskPanel(sort,filter);
-				addButton1.setEnabled(true);
-				JOptionPane.showConfirmDialog(null, addTaskPanel, "Create Report", JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				;
 			}
 		});
-		addTaskButton.setBounds(355, 607, 133, 54);
+		addTaskButton.setBounds(355, 618, 133, 54);
 		fixedPane.add(addTaskButton);
+			
+		
+		
 		JButton editTaskButton = new JButton("<html><center>Edit<br>Task</center></html>");
 		editTaskButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -170,7 +189,7 @@ public class taskAssignUI extends JPanel {
 				}
 			}
 		});
-		editTaskButton.setBounds(498, 607, 118, 54);
+		editTaskButton.setBounds(498, 488, 118, 54);
 		fixedPane.add(editTaskButton);
 		
 		
@@ -313,6 +332,12 @@ public class taskAssignUI extends JPanel {
 			break;
 		case 1:
 			tasks = myTA.sortUndoneTasksByUnassigned();
+			break;
+		case 2:
+			tasks = myTA.sortUndoneTasksByUnassigned();
+			break;
+		case 3:
+			tasks = myTA.sortUndoneTasksByAssigned();
 			break;
 		}
 		switch (filter) {

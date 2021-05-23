@@ -84,6 +84,23 @@ public class taskAssign {
 		return sorted;
 	}
 	
+	public ArrayList<task> sortUndoneTasksByAssigned() {
+		ArrayList<task> unsorted = getUndoneTasks();
+		ArrayList<task> sorted = new ArrayList<task>();
+		
+		for(int a=0;a<unsorted.size();a++) {
+			if(unsorted.get(a).getAssignedCaretaker()!=0) {
+				sorted.add(unsorted.get(a));
+			}
+		}
+		for(int a=0;a<unsorted.size();a++) {
+			if(unsorted.get(a).getAssignedCaretaker()==0) {
+				sorted.add(unsorted.get(a));
+			}
+		}
+		return sorted;
+	}
+	
 	
 	public task getTask(int id) {
 		task result = null;
