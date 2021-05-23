@@ -169,6 +169,7 @@ public class ManageUsersUI extends JPanel {
 				window.show("Users");
 			}
 		});
+		fixedEditPanel.add(rejectEdit);
 
 		//finish panel creation
 		fixedEditPanel.setPreferredSize(new Dimension(555, 329));
