@@ -197,8 +197,16 @@ public class TaskLogUI extends JPanel {
 		fixedPane.setPreferredSize(new Dimension(956,717));
 		add(fixedPane);
 	}
-	
-	public Object[][] populateTable() {
+
+	public void refreshTable() {
+		DefaultTableModel DTM = (DefaultTableModel) taskListTable.getModel();
+		DTM.setRowCount(0);
+		Object[][] data = populateTable();
+		for (int i = 0; i < data.length; i++) {
+			DTM.addRow(data[i]);
+		}
+	}
+	private Object[][] populateTable() {
 		ArrayList<Object[]> tempData = new ArrayList<Object[]>();
 
 		//call for all logged tasks info

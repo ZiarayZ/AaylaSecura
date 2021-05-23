@@ -124,6 +124,7 @@ public class UserInterface extends JFrame {
         logTaskBtn.setBounds(0, 150, 125, 50);
         logTaskBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                logTasksWindow.refreshTable();
                 displayLogTasks();
             }
         });
