@@ -132,8 +132,18 @@ public class ManageUsersUI extends JPanel {
 			public void actionPerformed(ActionEvent event) {
 				editID.setText(tempUser.getID());
 				editName.setText(tempUser.getName());
-				editJob.setSelectedItem(tempUser.getJob());
-				editGender.setSelectedItem(tempUser.getGender());
+				for (int i = 0; i < editJob.getItemCount(); i++) {
+					Object item = editJob.getItemAt(i);
+					if (item.toString().equals(tempUser.getJob())) {
+						editJob.setSelectedItem(item);
+					}
+				}
+				for (int i = 0; i < editGender.getItemCount(); i++) {
+					Object item = editGender.getItemAt(i);
+					if (item.toString().equals(tempUser.getGender())) {
+						editGender.setSelectedItem(item);
+					}
+				}
 				editNotes.setText(tempUser.getNotes());
 			}
 		});
@@ -191,8 +201,18 @@ public class ManageUsersUI extends JPanel {
 						);
 						editID.setText(tempUser.getID());
 						editName.setText(tempUser.getName());
-						editJob.setSelectedItem(tempUser.getJob());
-						editGender.setSelectedItem(tempUser.getGender());
+						for (int i = 0; i < editJob.getItemCount(); i++) {
+							Object item = editJob.getItemAt(i);
+							if (item.toString().equals(tempUser.getJob())) {
+								editJob.setSelectedItem(item);
+							}
+						}
+						for (int i = 0; i < editGender.getItemCount(); i++) {
+							Object item = editGender.getItemAt(i);
+							if (item.toString().equals(tempUser.getGender())) {
+								editGender.setSelectedItem(item);
+							}
+						}
 						editNotes.setText(tempUser.getNotes());
 					}
 				} catch (SQLException e) {
