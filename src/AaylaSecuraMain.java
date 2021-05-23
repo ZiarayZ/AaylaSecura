@@ -7,7 +7,6 @@ public class AaylaSecuraMain {
 	private static taskEntry myTE;
 	private static LogTasks logged_tasks;
 	private static UserInterface window;
-	private static CreateReports reportCreation;
 
 	public static void main(String[] args) {
 		
@@ -17,7 +16,6 @@ public class AaylaSecuraMain {
 		myTE = new taskEntry(db);
 		logged_tasks = new LogTasks(db);
 		user = new UserManagement(db);
-		reportCreation = new CreateReports(db);
 		//initialises window and sets the frame visible
 		window = new UserInterface(db, user, logged_tasks, myTE);
         window.displayLogin();
@@ -25,10 +23,7 @@ public class AaylaSecuraMain {
 		
 		//testing
 		try {
-			//reportCreation.createTaskStatusReport();
-			//reportCreation.createCaretakerReport();
-			//reportCreation.createCompletedTaskReport();
-		//catching exceptions to test other stuff
+			
 		} catch (Exception e) {
 			System.out.println(e);
 		}

@@ -1,5 +1,6 @@
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -12,7 +13,9 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +29,8 @@ public class TaskLogUI extends JPanel {
 	private JTextField caretakerNameField;
 	private JTextField timeCompletedField;
 	private LogTasks taskLog;
+	private JPanel reportPanel;
+	private CreateReports reportCreation;
 
 	/**
 	 * Create the panel.
@@ -33,6 +38,7 @@ public class TaskLogUI extends JPanel {
 	public TaskLogUI(UserInterface UI, LogTasks loggingTask, database DB) {//, UserManagement User) {
 		taskLog = loggingTask;
 		taskDB = DB;
+		reportCreation = new CreateReports(DB);
 		//sets window to have this contentPane
 		window = UI;
 		setBackground(new Color(255, 255, 255));
@@ -151,10 +157,12 @@ public class TaskLogUI extends JPanel {
 		undoLoggedTaskButton.setBounds(626, 553, 124, 54);
 		fixedPane.add(undoLoggedTaskButton);
 		
+		setReportPanel();
 		JButton createReportButton = new JButton("<html><center>Create<br>Report</center></html>");
 		createReportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//generates the report
+				JOptionPane.showConfirmDialog(null, reportPanel, "Create Report",
+				JOptionPane.CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		createReportButton.setBounds(760, 553, 128, 54);
@@ -194,5 +202,68 @@ public class TaskLogUI extends JPanel {
 
 		Object[][] data = {{}};
 		return data;
+	}
+
+	private void setReportPanel() {
+		GridBagLayout gbl = new GridBagLayout();
+		GridBagConstraints gbc = new GridBagConstraints();
+		reportPanel = new JPanel(gbl);
+		//label spanning whole panel width
+		JLabel message = new JLabel("");
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.gridheight = 1;
+		gbc.gridwidth = 3;
+		gbc.weighty = 1;
+		gbc.weightx = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbl.setConstraints(message, gbc);
+		reportPanel.add(message);
+		//button creation
+		JButton butt1 = new JButton("Create Task Status Report");
+		butt1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				try {
+					reportCreation.createTaskStatusReport();
+				} catch (IOException e) {
+					window.displayError("Report Error!", e.toString());
+				}
+			}
+		});
+		JButton butt2 = new JButton("Create Caretaker Report");
+		butt2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				try {
+					reportCreation.createCaretakerReport();
+				} catch (IOException e) {
+					window.displayError("Report Error!", e.toString());
+				}
+			}
+		});
+		JButton butt3 = new JButton("Create Completed Task Report");
+		butt3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				try {
+					reportCreation.createCompletedTaskReport();
+				} catch (IOException e) {
+					window.displayError("Report Error!", e.toString());
+				}
+			}
+		});
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.gridheight = 1;
+		gbc.gridwidth = 1;
+		gbc.weighty = 1;
+		gbc.weightx = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbl.setConstraints(butt1, gbc);
+		reportPanel.add(butt1);
+		gbc.gridx = 1;
+		gbl.setConstraints(butt2, gbc);
+		reportPanel.add(butt2);
+		gbc.gridx = 2;
+		gbl.setConstraints(butt3, gbc);
+		reportPanel.add(butt3);
 	}
 }
