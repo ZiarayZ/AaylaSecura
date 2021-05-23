@@ -11,22 +11,20 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class TaskLogUI extends JPanel {
+public class TaskLogUI extends JPanel {//datetime check: uuuu-MM-dd HH:mm:ss
 
 	private UserInterface window;
-	private database taskDB;
 	private UserManagement user;
 	private JTable taskListTable;
 	private JTextField caretakerNameField;
@@ -41,9 +39,8 @@ public class TaskLogUI extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public TaskLogUI(UserInterface UI, LogTasks loggingTask, database DB, UserManagement User) {
+	public TaskLogUI(UserInterface UI, LogTasks loggingTask, UserManagement User, database DB) {
 		taskLog = loggingTask;
-		taskDB = DB;
 		reportCreation = new CreateReports(DB);
 		user = User;
 		//sets window to have this contentPane
@@ -85,11 +82,6 @@ public class TaskLogUI extends JPanel {
 		fixedPane.add(scrollPane);
 		
 		caretakerNameField = new JTextField();
-		caretakerNameField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//record caretaker name here
-			}
-		});
 		caretakerNameField.setBackground(new Color(238, 238, 238));
 		caretakerNameField.setBounds(261, 427, 118, 20);
 		fixedPane.add(caretakerNameField);
@@ -102,7 +94,7 @@ public class TaskLogUI extends JPanel {
 		timeCompletedField = new JTextField();
 		timeCompletedField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//record when the task was completed
+				//check date time format
 			}
 		});
 		timeCompletedField.setBackground(new Color(238, 238, 238));
@@ -210,7 +202,7 @@ public class TaskLogUI extends JPanel {
 
 		//call for all logged tasks info
 		try {
-			taskLog.reloadLoggedTasks(taskDB.getAllLoggedTasks(" ORDER BY tasks.task_name"));
+			taskLog.reloadLoggedTasks(" ORDER BY tasks.task_name");
 			LoggedTask task;
 			for(int i = 0; i < taskLog.getLogged_Tasks().size(); i++) {
 				task = taskLog.getTask(i);

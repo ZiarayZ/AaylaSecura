@@ -9,7 +9,7 @@ public class LogTasks {
     public LogTasks(database DB) {
         taskLogDB = DB;
         try {
-            reloadLoggedTasks(taskLogDB.getAllLoggedTasks(" ORDER BY logged_tasks.logged_id DESC"));
+            reloadLoggedTasks(" ORDER BY logged_tasks.logged_id DESC");
         } catch (SQLException e) {
             System.out.println(e);//change to give error code window
         } catch (NullPointerException e) {
@@ -34,7 +34,7 @@ public class LogTasks {
     //sorting methods
     public void sortByCaretaker(boolean descending) throws SQLException {
         String desc = orderBy(descending);
-        reloadLoggedTasks(taskLogDB.getAllLoggedTasks(" ORDER BY users1.user_name "+desc));
+        reloadLoggedTasks(" ORDER BY users1.user_name "+desc);
     }
     public void sortByDeadline(boolean descending) throws SQLException {
         //there is no deadline field to sort by, unless we use the tasks table and calculate it using duration and date_created
@@ -43,9 +43,10 @@ public class LogTasks {
     }
     public void sortByCompleted(boolean descending) throws SQLException {
         String desc = orderBy(descending);
-        reloadLoggedTasks(taskLogDB.getAllLoggedTasks(" ORDER BY logged_tasks.date_completed "+desc));
+        reloadLoggedTasks(" ORDER BY logged_tasks.date_completed "+desc);
     }
-    public void reloadLoggedTasks(ResultSet taskLogQuery) throws SQLException {
+    public void reloadLoggedTasks(String condition) throws SQLException {
+        ResultSet taskLogQuery = taskLogDB.getAllLoggedTasks(condition);
         logged_tasks = new ArrayList<LoggedTask>();
         while (taskLogQuery.next()) {
             logged_tasks.add(new LoggedTask(taskLogQuery.getInt(1),//logged_id

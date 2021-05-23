@@ -37,7 +37,7 @@ public class ManageUsersUI extends JPanel {
 	/**
 	 * Create the frame.
 	 */
-	public ManageUsersUI(UserInterface UI, UserManagement modifyUser, database db) {
+	public ManageUsersUI(UserInterface UI, UserManagement modifyUser) {
 		user = modifyUser;
 		window = UI;
 		setBackground(new Color(255, 255, 255));
