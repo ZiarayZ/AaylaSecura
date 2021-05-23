@@ -79,7 +79,7 @@ public class ManageUsersUI extends JPanel {
 			}
 		});
 		btnRemoveUserButton.setEnabled(false);
-		btnRemoveUserButton.setBounds(327, 400, 134, 44);
+		btnRemoveUserButton.setBounds(561, 400, 134, 44);
 		fixedPane.add(btnRemoveUserButton);
 		
 		JButton btnEditUserButton = new JButton("Edit User");
@@ -89,7 +89,7 @@ public class ManageUsersUI extends JPanel {
 			}
 		});
 		btnEditUserButton.setEnabled(false);
-		btnEditUserButton.setBounds(561, 400, 124, 44);
+		btnEditUserButton.setBounds(327, 400, 124, 44);
 		fixedPane.add(btnEditUserButton);
 		
 		String[] colHeaders = {"User ID", "Name", "Username", "Role ID", "Role", "Gender"};
