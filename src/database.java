@@ -183,6 +183,19 @@ public class database {
 		
 		return jobName;
 	}
+
+	public String getPermsFromJob(String job) throws SQLException {
+		String jobPerms = "";
+
+		String getPermsSQL = "SELECT job_perms FROM job WHERE job_desc="+job;
+		ResultSet result = myDB.RunSQLQuery(getPermsSQL);
+
+		if (result.next()) {
+			jobPerms = result.getString(1);
+		}
+		
+		return jobPerms;
+	}
 	
 	public boolean deleteJob(int ID) throws SQLException {
 		

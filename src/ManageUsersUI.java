@@ -204,21 +204,34 @@ public class ManageUsersUI extends JPanel {
 								editUser.getString(6),
 								editUser.getString(5)
 							);
-							editID.setText(tempUser.getID());
-							editName.setText(tempUser.getName());
-							for (int i = 0; i < editJob.getItemCount(); i++) {
-								Object item = editJob.getItemAt(i);
-								if (item.toString().equals(tempUser.getJob())) {
-									editJob.setSelectedItem(item);
+							String newUserPerms = user.getPermsFromJob(editUser.getString(4));
+							String[] permsLevel = newUserPerms.replaceAll("[{}]", "").split(",");
+							String[] permLevel;
+							for (String i: permsLevel) {
+								permLevel = i.split(":");
+								if (permLevel[0].equals("Rank")) {
+									if (user.accessLevel("Rank") > Integer.parseInt(permLevel[1])) {
+										editID.setText(tempUser.getID());
+										editName.setText(tempUser.getName());
+										for (int i = 0; i < editJob.getItemCount(); i++) {
+											Object item = editJob.getItemAt(i);
+											if (item.toString().equals(tempUser.getJob())) {
+												editJob.setSelectedItem(item);
+											}
+										}
+										for (int i = 0; i < editGender.getItemCount(); i++) {
+											Object item = editGender.getItemAt(i);
+											if (item.toString().equals(tempUser.getGender())) {
+												editGender.setSelectedItem(item);
+											}
+										}
+										editNotes.setText(tempUser.getNotes());
+										window.show("EditUser");
+									} else {
+										window.displayError("No Access!", "You do not have permission to edit this user.");
+									}
 								}
 							}
-							for (int i = 0; i < editGender.getItemCount(); i++) {
-								Object item = editGender.getItemAt(i);
-								if (item.toString().equals(tempUser.getGender())) {
-									editGender.setSelectedItem(item);
-								}
-							}
-							editNotes.setText(tempUser.getNotes());
 						}
 					} catch (SQLException e) {
 						window.displayError("Database Error!", e.toString());
@@ -233,7 +246,6 @@ public class ManageUsersUI extends JPanel {
 						editJob.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 3).toString());
 						editGender.setSelectedItem(userTable.getModel().getValueAt(userTable.getSelectedRow(), 4).toString());
 					}
-					window.show("EditUser");
 				} else {
 					window.displayError("No Access!", "You do not have permission to access this feature.");
 				}

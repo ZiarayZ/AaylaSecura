@@ -102,6 +102,9 @@ public class UserManagement {
     public ResultSet getUserFromID(int ID) {
         return userDB.getUserFromID(ID);
     }
+    public String getPermsFromJob(String JOB) throws SQLException {
+        return userDB.getPermsFromJob(JOB);
+    }
 
     //edit password
     public String editPassword(char[] password) throws SQLException {
