@@ -100,7 +100,7 @@ public class TaskLogUI extends JPanel {
 		lblNameLabel.setBounds(159, 430, 92, 14);
 		fixedPane.add(lblNameLabel);
 		JLabel lblExample = new JLabel("Example Format: YYYY-MM-dd HH:mm:ss");
-		lblExample.setBounds(159, 453, 220, 20);
+		lblExample.setBounds(150, 453, 250, 20);
 		fixedPane.add(lblExample);
 		timeCompletedField = new JTextField();
 		timeCompletedField.addKeyListener(new KeyListener() {
