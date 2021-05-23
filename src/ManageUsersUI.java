@@ -119,6 +119,14 @@ public class ManageUsersUI extends JPanel {
 		add(fixedPane);
 	}
 
+	public void refreshTable() {
+		DefaultTableModel DTM = (DefaultTableModel) userTable.getModel();
+		DTM.setRowCount(0);
+		Object[][] data = populateTable();
+		for (int i = 0; i < data.length; i++) {
+			DTM.addRow(data[i]);
+		}
+	}
 	private Object[][] populateTable() {
 		ArrayList<Object[]> tempData = new ArrayList<Object[]>();
 
@@ -146,14 +154,6 @@ public class ManageUsersUI extends JPanel {
 
 		Object[][] data = {{}};
 		return data;
-	}
-	private void refreshTable() {
-		DefaultTableModel DTM = (DefaultTableModel) userTable.getModel();
-		DTM.setRowCount(0);
-		Object[][] data = populateTable();
-		for (int i = 0; i < data.length; i++) {
-			DTM.addRow(data[i]);
-		}
 	}
 
 	//add new user form
