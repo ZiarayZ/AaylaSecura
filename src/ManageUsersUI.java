@@ -63,20 +63,41 @@ public class ManageUsersUI extends JPanel {
 		JButton btnRemoveUserButton = new JButton("Delete User");
 		btnRemoveUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JPanel panel = new JPanel();
-				int userID = (int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0);
-				panel.add(new JLabel("Delete User Permenantly: " + ((String) userTable.getModel().getValueAt(userTable.getSelectedRow(), 2))));
-				//Dialog output
-				int result = JOptionPane.showConfirmDialog(null, panel, "Delete User",
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-				if (result == JOptionPane.OK_OPTION) {
-					window.displayError("Delete User", "User Deleted: " + userDB.deleteUser(userID));
+				if (user.accessLevel("MU") >= 3 || user.accessLevel("AP") == 1) {
+					JPanel panel = new JPanel();
+					int userID = (int) userTable.getModel().getValueAt(userTable.getSelectedRow(), 0);
+					panel.add(new JLabel("Delete User Permenantly: " + ((String) userTable.getModel().getValueAt(userTable.getSelectedRow(), 2))));
+					//Dialog output
+					int result = JOptionPane.showConfirmDialog(null, panel, "Delete User",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+					if (result == JOptionPane.OK_OPTION) {
+						window.displayError("Delete User", "User Deleted: " + userDB.deleteUser(userID));
+					}
+				} else {
+					window.displayError("Delete User", "You do not have access to this feature.");
 				}
 			}
 		});
 		btnRemoveUserButton.setEnabled(false);
-		btnRemoveUserButton.setBounds(327, 400, 134, 44);
+		btnRemoveUserButton.setBounds(561, 400, 134, 44);
 		fixedPane.add(btnRemoveUserButton);
+
+		//define new panel
+		JPanel editPanel = new JPanel();
+		JPanel fixedEditPanel = new JPanel();
+		editPanel.setBackground(new Color(255, 255, 255));
+		editPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(119, 136, 153), new Color(192, 192, 192)));
+		editPanel.setLayout(new GridBagLayout());
+		GridLayout editPanelLayout = new GridLayout();
+		fixedEditPanel.setLayout(editPanelLayout);
+		fixedEditPanel.setBackground(new Color(255, 255, 255));
+
+		//add content to panel
+
+		//finish panel creation
+		fixedEditPanel.setPreferredSize(new Dimension(755,512));
+		editPanel.add(fixedEditPanel);
+		window.addCard(editPanel, "EditUser");
 		
 		JButton btnEditUserButton = new JButton("Edit User");
 		btnEditUserButton.addActionListener(new ActionListener() {
@@ -85,10 +106,10 @@ public class ManageUsersUI extends JPanel {
 			}
 		});
 		btnEditUserButton.setEnabled(false);
-		btnEditUserButton.setBounds(561, 400, 124, 44);
+		btnEditUserButton.setBounds(327, 400, 124, 44);
 		fixedPane.add(btnEditUserButton);
 		
-		String[] colHeaders = {"ID", "Name", "Username", "Role", "Gender"};
+		String[] colHeaders = {"User ID", "Name", "Username", "Role ID", "Role", "Gender"};
 		Object[][] data = populateTable();
 		TableModel tableModel = new DefaultTableModel(colHeaders, 0);
 		userTable = new JTable(tableModel);
@@ -101,11 +122,41 @@ public class ManageUsersUI extends JPanel {
 		ListSelectionModel selectionModel = userTable.getSelectionModel();
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				//grabbing selected row index in JTable
+				//when selecting a row in the manage users table, restrict button access the user can access
 				if (userTable.getSelectedRow() != -1) {
-					btnEditUserButton.setEnabled(true);
-					btnRemoveUserButton.setEnabled(true);
+
+					//admin permission
+					if (user.accessLevel("AP") == 1) {
+						btnAddUserButton.setEnabled(true);
+						btnEditUserButton.setEnabled(true);
+						btnRemoveUserButton.setEnabled(true);
+					} else {
+						btnAddUserButton.setEnabled(false);
+						btnEditUserButton.setEnabled(false);
+						btnRemoveUserButton.setEnabled(false);
+					}
+
+					//manage users
+					int accessLevel = user.accessLevel("MU");
+					if (accessLevel >= 1) {
+						btnAddUserButton.setEnabled(true);
+					} else {
+						btnAddUserButton.setEnabled(false);
+					}
+					if (accessLevel >= 2) {
+						btnEditUserButton.setEnabled(true);
+					} else {
+						btnEditUserButton.setEnabled(false);
+					}
+					if (accessLevel >= 3) {
+						btnRemoveUserButton.setEnabled(true);
+					} else {
+						btnRemoveUserButton.setEnabled(false);
+					}
 				} else {
+					if (user.accessLevel("MU") == 0) {
+						btnAddUserButton.setEnabled(false);
+					}
 					btnEditUserButton.setEnabled(false);
 					btnRemoveUserButton.setEnabled(false);
 				}
@@ -114,7 +165,8 @@ public class ManageUsersUI extends JPanel {
 
 		//this removes the id column, but you should be able to call 'userTable.getModel().getValueAt(row, 0)' to get the id
 		TableColumnModel tcm = userTable.getColumnModel();
-		tcm.removeColumn(tcm.getColumn(0));
+		tcm.removeColumn(tcm.getColumn(0));//user ID, index 0
+		tcm.removeColumn(tcm.getColumn(2));//role ID, index 3
 		//import table into a scroll pane so that the table headers are visible and other things
 		JScrollPane scrollPane = new JScrollPane(userTable);
 		scrollPane.setBackground(new Color(192, 192, 192));
@@ -140,16 +192,16 @@ public class ManageUsersUI extends JPanel {
 		String gender;
 		try {
 			while (sql.next()) {
-				gender = sql.getString(5);
+				gender = sql.getString(6);
 				if (gender.equals("M")) {
 					gender = "Male";
 				} else {
 					gender = "Female";
 				}
-				Object[] dataPoint = {sql.getInt(1), sql.getString(2), sql.getString(3), sql.getString(4), gender};
+				Object[] dataPoint = {sql.getInt(1), sql.getString(2), sql.getString(3), sql.getInt(4), sql.getString(5), gender};
 				tempData.add(dataPoint);
 			}
-			Object[][] data = new Object[tempData.size()][5];
+			Object[][] data = new Object[tempData.size()][6];
 			return tempData.toArray(data);
 		} catch (SQLException e) {
 			window.displayError("Table Error!", e.toString());

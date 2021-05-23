@@ -184,6 +184,9 @@ public class UserInterface extends JFrame {
     public void show(String name) {
         cardLayout.show(mainPane, name);
     }
+    public void addCard(JPanel pane, String name) {
+        mainPane.add(pane, name);
+    }
 
     public void displayLogin() {
         if (user.getLogin()) {
@@ -220,7 +223,7 @@ public class UserInterface extends JFrame {
         setTitle("Allocate Tasks");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         if (user.getLogin()) {
-		    cardLayout.show(mainPane, "AllocateTasks");//Dummy button "AssignTasks"
+		    cardLayout.show(mainPane, "AllocateTasks");
         } else {
             cardLayout.show(mainPane, "Access");
         }

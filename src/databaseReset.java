@@ -15,7 +15,7 @@ public class databaseReset {
 			db.clearAllDatabase();
 			//job
 			database.addNewJob("Caretaker");//code for caretaker 1
-			db.editJobPerms(1, "{Rank:3,MU:1,CR:1}");
+			db.editJobPerms(1, "{Rank:3,CR:1}");
 			database.addNewJob("Manager");//code for manager 2
 			db.editJobPerms(2, "{Rank:2,MU:2,CR:2}");
 			database.addNewJob("Admin");//code for admin 3
