@@ -117,11 +117,11 @@ public class taskEntry {
 		ArrayList<task> unsorted = getUndoneTasks();
 		ArrayList<task> sorted = new ArrayList<task>();
 		
+		
 		for(int maxPriority=3;maxPriority>0;maxPriority--) {//this orders it with a priority range of 1-3 with 3 being the highest priority
 			for(int a=0;a<unsorted.size();a++) {
 				if(unsorted.get(a).getPriority()==maxPriority) {
 					sorted.add(unsorted.get(a));
-					unsorted.remove(a);
 				}
 			}
 		}

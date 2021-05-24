@@ -1,45 +1,30 @@
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-import javax.swing.event.CaretEvent;
 
 public class TaskEntryUI extends JPanel {
 
@@ -501,6 +486,7 @@ public class TaskEntryUI extends JPanel {
 		editButton2 = new JButton("Delete");
 		editButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				myTE.deleteTask(task_id);
 				refreshTable(sort,filter);
 			}
 		});
@@ -526,7 +512,7 @@ public class TaskEntryUI extends JPanel {
 			DTM.addRow(data[i]);
 		}
 	}
-	
+		
 	public String[] genCNames() {
 		ArrayList<String> caretakerNamesArrayList = myTE.getAllCaretakersNames();
 		String[] caretakerNames = new String[caretakerNamesArrayList.size()+1];
@@ -536,7 +522,7 @@ public class TaskEntryUI extends JPanel {
 		}
 		return caretakerNames;
 	}
-	
+		
 	public int[] genCIDs() {
 		ArrayList<Integer> caretakerIDsArrayList = myTE.getAllCaretakersIDs();
 		int[] caretakerIDs = new int[caretakerIDsArrayList.size()];
