@@ -50,6 +50,9 @@ public class TaskLogUI extends JPanel {
 	private JButton reportButt1;
 	private JButton reportButt2;
 	private JButton reportButt3;
+	//define colors
+	private final Color red = new Color(236, 28, 36);
+	private final Color green = new Color(94, 186, 125);
 
 	/**
 	 * Create the panel.
@@ -58,9 +61,6 @@ public class TaskLogUI extends JPanel {
 		taskLog = loggingTask;
 		reportCreation = Report;
 		user = User;
-		//define colors
-		final Color red = new Color(236, 28, 36);
-		final Color green = new Color(94, 186, 125);
 		//sets window to have this contentPane
 		window = UI;
 		setBackground(new Color(255, 255, 255));
@@ -403,6 +403,31 @@ public class TaskLogUI extends JPanel {
 		JLabel exDatelbl = new JLabel("yyyy-MM-dd HH:mm:ss");
 		exDatelbl.setBounds(385, 520, 118, 20);
 		date.setBounds(261, 517, 118, 20);
+		date.addKeyListener(new KeyListener() {
+			public void keyTyped(KeyEvent event) {
+				//Required method
+			}
+			public void keyPressed(KeyEvent event) {
+				//Required method
+			}
+			//once a key is pressed then released will test the password's strength
+			public void keyReleased(KeyEvent event) {
+				//validate date time from DB method
+				boolean valid = false;
+				try {
+					//dummy date for checking correct time
+					LocalDate.parse(date.getText(), DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT));
+					valid = true;
+				} catch (DateTimeParseException e) {
+					valid = false;
+				}
+				if (valid) {
+					date.setForeground(green);
+				} else {
+					date.setForeground(red);
+				}
+			}
+		});
 		fixedLogTasks.add(date);
 		fixedLogTasks.add(datelbl);
 		fixedLogTasks.add(exDatelbl);
