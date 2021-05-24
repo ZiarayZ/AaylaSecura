@@ -402,7 +402,7 @@ public class TaskLogUI extends JPanel {
 		JLabel datelbl = new JLabel("Date Completed:");
 		datelbl.setBounds(159, 520, 92, 14);
 		JTextField date = new JTextField();
-		JLabel exDatelbl = new JLabel("HH:mm:ss");
+		JLabel exDatelbl = new JLabel("yyyy-MM-dd HH:mm:ss");
 		exDatelbl.setBounds(385, 520, 118, 20);
 		date.setBounds(261, 517, 118, 20);
 		fixedLogTasks.add(date);
@@ -416,17 +416,15 @@ public class TaskLogUI extends JPanel {
 					boolean valid = false;
 					try {
 						//dummy date for checking correct time
-						LocalDate.parse("2000-06-10 " + date.getText(), DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT));
+						LocalDate.parse(date.getText(), DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT));
 						valid = true;
 					} catch (DateTimeParseException e) {
 						valid = false;
 					}
 					if (valid) {
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-						String fullDate = sdf.format(new Date())+" "+date.getText();
 						int loggedID = (int) logTaskListTable.getModel().getValueAt(logTaskListTable.getSelectedRow(), 0);
 						try {
-							if (taskLog.editLoggedtask(loggedID, ((EditUser)firstUser.getSelectedItem()).getIntID(), ((EditUser)secondUser.getSelectedItem()).getIntID(), fullDate)) {
+							if (taskLog.editLoggedtask(loggedID, ((EditUser)firstUser.getSelectedItem()).getIntID(), ((EditUser)secondUser.getSelectedItem()).getIntID(), date.getText())) {
 								window.displayError("Logged Task Edit.", "Successful.");
 								refreshLogTaskTable();
 							} else {
