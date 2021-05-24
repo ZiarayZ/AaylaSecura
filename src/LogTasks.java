@@ -70,8 +70,8 @@ public class LogTasks {
         }
     }
 
-    public boolean addLoggedTask(int ID, int taskID, String DATE) throws SQLException {
-        String result = taskLogDB.addNewLoggedTask(taskID, ID, 0, DATE);
+    public boolean addLoggedTask(int ID, int ID2, int taskID, String DATE) throws SQLException {
+        String result = taskLogDB.addNewLoggedTask(taskID, ID, ID2, DATE);
         if (result.equals("")) {
             return true;
         } else {

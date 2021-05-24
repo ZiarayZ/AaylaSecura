@@ -165,16 +165,6 @@ public class TaskLogUI extends JPanel {
 		lblTimeLabel.setBounds(159, 476, 105, 14);
 		fixedPane.add(lblTimeLabel);
 		
-		JTextArea addCommentsField = new JTextArea();
-		//need to find out how to handle input in a text area
-		addCommentsField.setBackground(new Color(238, 238, 238));
-		addCommentsField.setBounds(641, 425, 213, 68);
-		fixedPane.add(addCommentsField);
-		
-		JLabel lblNewLabel = new JLabel("Additional Comments");
-		lblNewLabel.setBounds(493, 430, 138, 14);
-		fixedPane.add(lblNewLabel);
-		
 		JButton sortByCaretakerButton = new JButton("<html><center>Sort By<br>Caretaker</center></html>");
 		sortByCaretakerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -218,14 +208,18 @@ public class TaskLogUI extends JPanel {
 				if (taskListTable.getSelectedRow() != -1) {
 					int taskID = (int) taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 0);
 					int userID = 0;
+					int secondID = 0;
 					//no extra sign off
-					if ((caretakerNameField.getSelectedItem().toString().equals("") || caretakerNameField.getSelectedItem().toString().equals(null)) && (taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 6).toString().equals(null) || taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 6).toString().equals(""))) {
+					if ((caretakerNameField.getSelectedItem().toString().equals("")) && (taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 6).toString().equals(null) || taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 6).toString().equals(""))) {
 						if ((int) taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 7) != 0 && (int) taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 7) == user.getID()) {
 							userID = user.getID();
 						}
 					//extra sign off no assigned caretaker
-					} else if (!(caretakerNameField.getSelectedItem().toString().equals("") || caretakerNameField.getSelectedItem().toString().equals(null)) && (taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 8).toString().equals(null) || taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 8).toString().equals(""))) {
+					} else if (!(caretakerNameField.getSelectedItem().toString().equals("")) && (taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 8).toString().equals(null) || taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 8).toString().equals(""))) {
 						userID = user.getID();
+					} else if (!(caretakerNameField.getSelectedItem().toString().equals("")) && (taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 6).toString().equals(null) || taskListTable.getModel().getValueAt(taskListTable.getSelectedRow(), 6).toString().equals(""))) {
+						userID = ((EditUser) caretakerNameField.getSelectedItem()).getIntID();
+						secondID = user.getID();
 					}
 					boolean valid = false;
 					try {
@@ -241,9 +235,11 @@ public class TaskLogUI extends JPanel {
 							String date = sdf.format(new Date())+" "+timeCompletedField.getText();
 							boolean result = false;
 							try {
-								result = loggingTask.addLoggedTask(userID, taskID, date);
+								result = loggingTask.addLoggedTask(userID, secondID, taskID, date);
 							} catch (SQLException e) {
-								window.displayError("Log Task Attempt.", "Logging Task: " + result);
+								window.displayError("Database Error!", e.toString());
+							} catch (NullPointerException e) {
+								window.displayError("Database Error!", e.toString());
 							}
 							window.displayError("Log Task Attempt.", "Logging Task: " + result);
 						} else {
