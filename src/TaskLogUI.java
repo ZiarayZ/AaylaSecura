@@ -256,15 +256,6 @@ public class TaskLogUI extends JPanel {
 		logTaskButton.setBounds(498, 553, 118, 54);
 		fixedPane.add(logTaskButton);
 		
-		JButton undoLoggedTaskButton = new JButton("<html><center>Undo<br>Changes</center></html>");
-		undoLoggedTaskButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//undo functionality (optional)
-			}
-		});
-		undoLoggedTaskButton.setBounds(626, 553, 124, 54);
-		fixedPane.add(undoLoggedTaskButton);
-		
 		setReportPanel();
 		JButton createReportButton = new JButton("<html><center>Create<br>Report</center></html>");
 		createReportButton.addActionListener(new ActionListener() {
