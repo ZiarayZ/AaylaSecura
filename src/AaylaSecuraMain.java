@@ -20,12 +20,5 @@ public class AaylaSecuraMain {
 		window = new UserInterface(db, user, logged_tasks, myTE, myTA);
         window.displayLogin();
         window.setVisible(true);
-		
-		//testing
-		try {
-			
-		} catch (Exception e) {
-			System.out.println(e);
-		}
 	}
 }
