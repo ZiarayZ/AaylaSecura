@@ -9,7 +9,6 @@ public class AaylaSecuraMain {
 	private static UserInterface window;
 
 	public static void main(String[] args) {
-		
 		//clear and repopulate database
 		dbReset.reset();
 		//initialise classes		
