@@ -548,7 +548,7 @@ public class database {
 				result = "Insert failed.";
 			}
 		}
-		
+	
 		return result;
 	}//end addNewLoggedTask()
 

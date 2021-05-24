@@ -11,7 +11,7 @@ public class AaylaSecuraMain {
 	public static void main(String[] args) {
 		//clear and repopulate database
 		dbReset.reset();
-		//initialise classes		
+		//initialise classes
 		myTE = new taskEntry(db);
 		myTA = new taskAssign(db);
 		logged_tasks = new LogTasks(db);
