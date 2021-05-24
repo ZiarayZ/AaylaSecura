@@ -14,7 +14,7 @@ public class database {
 		myDB.Connect("src\\groupDatabase.db");
 	}
 	
-	private boolean checkValidDateTime(final String dateTime) { //returns true if given date time is valid
+	private boolean checkValidDateTime(final String dateTime) {//returns true if given date time is valid
         boolean valid = false;
         try {
             LocalDate.parse(dateTime, DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT));
@@ -522,7 +522,6 @@ public class database {
 		if (task<0) {result += "Non-valid Task\n";}
 		if (user<0) {result += "Non-valid User\n";}
 		if (user2<0) {result += "Non-valid Second User\n";}
-		if (checkValidDateTime(dateCompleted)) {result += "Non-valid date completed";}
 
 		return result;
 	}//end loggedTaskValidate()

@@ -245,7 +245,6 @@ public class TaskLogUI extends JPanel {
 							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 							String date = sdf.format(new Date())+" "+timeCompletedField.getText();
 							boolean result = false;
-							System.out.println(userID + " " + secondID + " " + taskID + " | " + date);
 							try {
 								result = loggingTask.addLoggedTask(userID, secondID, taskID, date);
 							} catch (SQLException e) {
@@ -303,16 +302,16 @@ public class TaskLogUI extends JPanel {
 						logTaskButton.setEnabled(true);
 						editCompletedButton.setEnabled(true);
 					} else {
-						editCompletedButton.setEnabled(false);
+						editCompletedButton.setEnabled(true);
 						logTaskButton.setEnabled(false);
 					}
 				} else {
 					if (user.accessLevel("LT") >= 1 || user.accessLevel("AP") == 1) {
-						logTaskButton.setEnabled(true);
+						editCompletedButton.setEnabled(true);
 					} else {
-						logTaskButton.setEnabled(false);
+						editCompletedButton.setEnabled(false);
 					}
-					editCompletedButton.setEnabled(false);
+					logTaskButton.setEnabled(false);
 				}
 			}
 		});
