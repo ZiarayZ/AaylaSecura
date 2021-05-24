@@ -573,7 +573,7 @@ public class database {
 
 	public String updateLoggedTask(int logged_ID, int user, int user2, String dateCompleted) throws SQLException {
 		//check user_ID exists
-		String checkIDsql = "SELECT task FROM logged_tasks WHERE logged_ID="+logged_ID;
+		String checkIDsql = "SELECT task_id FROM logged_tasks WHERE logged_ID="+logged_ID;
 		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
 		boolean validID = false;
 		if (checkIDResult.next()) {validID=true;}
