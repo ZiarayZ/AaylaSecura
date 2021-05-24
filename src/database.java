@@ -121,6 +121,11 @@ public class database {
 		ResultSet result = myDB.RunSQLQuery(getSQL);
 		return result;
 	}
+	public ResultSet getAllCompletedTasks() {
+		String getSQL="SELECT task_id, task_name, priority, date_created, completed, extra_sign_off, user1.user_name, assigned_caretaker, user2.user_name FROM tasks LEFT JOIN users AS user1 ON extra_sign_off=user1.user_id LEFT JOIN users AS user2 ON assigned_caretaker=user2.user_id WHERE need_logging=1";
+		ResultSet result = myDB.RunSQLQuery(getSQL);
+		return result;
+	}
 	
 	
 	public boolean deleteTask(int ID) {

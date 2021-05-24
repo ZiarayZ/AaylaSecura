@@ -496,13 +496,14 @@ class Job {
 	}
 }
 class EditUser {
-	private String ID;
+	private String stringID;
+	private int intID;
 	private String name;
 	private String job;
 	private String gender;
 	private String notes;
 	public EditUser(String newID, String newName, String newJob, String newGender, String newNotes) {
-		ID = newID;
+		stringID = newID;
 		name = newName;
 		job = newJob;
 		if (newGender.equals("M")) {
@@ -512,8 +513,15 @@ class EditUser {
 		}
 		notes = newNotes;
 	}
+	public EditUser(int newID, String newName) {
+		intID = newID;
+		name = newName;
+	}
 	public String getID() {
-		return ID;
+		return stringID;
+	}
+	public int getIntID() {
+		return intID;
 	}
 	public String getName() {
 		return name;
@@ -526,5 +534,8 @@ class EditUser {
 	}
 	public String getNotes() {
 		return notes;
+	}
+	public String toString() {
+		return name;
 	}
 }

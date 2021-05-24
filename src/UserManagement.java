@@ -47,6 +47,9 @@ public class UserManagement {
         }
     }
     //getters
+    public int getID() {
+        return user_id;
+    }
     public String getUsername() {
         return username;
     }

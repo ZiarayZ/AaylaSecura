@@ -59,6 +59,9 @@ public class LogTasks {
                                             taskLogQuery.getString(8)));//date_completed = maybe null or ""
         }
     }
+    public ResultSet reloadTasks() throws SQLException {
+        return taskLogDB.getAllCompletedTasks();
+    }
     private String orderBy(boolean result) {
         if (result) {
             return "DESC";
@@ -67,8 +70,13 @@ public class LogTasks {
         }
     }
 
-    public boolean addLoggedTask() {
-        return false;
+    public boolean addLoggedTask(int ID, int taskID, String DATE) throws SQLException {
+        String result = taskLogDB.addNewLoggedTask(taskID, ID, 0, DATE);
+        if (result.equals("")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean editLoggedtask() {
