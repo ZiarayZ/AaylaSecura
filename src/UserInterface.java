@@ -86,8 +86,8 @@ public class UserInterface extends JFrame {
         loginWindow = new LoginUI(this, user);
         usersWindow = new ManageUsersUI(this, user);
         logTasksWindow = new TaskLogUI(this, loggingTask, user, new CreateReports(db));
-        enterTasksWindow = new TaskEntryUI(this, myTE, db);
-        assignTasksWindow = new taskAssignUI(this, myTA, db);
+        enterTasksWindow = new TaskEntryUI(this, myTE);
+        assignTasksWindow = new taskAssignUI(this, myTA);
 
         //add buttons to access cards
         //Login

@@ -44,10 +44,7 @@ import javax.swing.event.CaretEvent;
 public class TaskEntryUI extends JPanel {
 
 	private UserInterface window;
-	private database db;
 	private JTable taskListTable;
-	private JTextField taskNameField;
-	private JTextField timeCompletedField;
 	private taskEntry myTE;
 	private int sort;
 	private int filter;
@@ -69,9 +66,8 @@ public class TaskEntryUI extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public TaskEntryUI(UserInterface UI, taskEntry myTE, database db) {// , UserManagement User, database db) {
+	public TaskEntryUI(UserInterface UI, taskEntry myTE) {// , UserManagement User, database db) {
 		this.myTE = myTE;
-		this.db = db;
 		sort = 0;
 		filter = 2;
 		// sets window to have this contentPane

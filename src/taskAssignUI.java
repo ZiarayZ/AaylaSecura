@@ -40,28 +40,22 @@ import javax.swing.event.CaretEvent;
 public class taskAssignUI extends JPanel {
 
 	private UserInterface window;
-	private database db;
 	private JTable taskListTable;
-	private JTextField taskNameField;
-	private JTextField timeCompletedField;
 	private taskAssign myTA;
 	private int sort;
 	private int filter;
 	private int filter_caretaker_id;
 	private JComboBox ctFilter;
-	private JPanel addTaskPanel;
 	private JPanel editTaskPanel;
 	private JPanel feedbackPanel;
-	private JButton addButton1;
 	private JButton editButton1;
 	private JComboBox caretakerInput;
 
 	/**
 	 * Create the panel.
 	 */
-	public taskAssignUI(UserInterface UI, taskAssign myTA, database db) {// , UserManagement User, database db) {
+	public taskAssignUI(UserInterface UI, taskAssign myTA) {// , UserManagement User, database db) {
 		this.myTA = myTA;
-		this.db = db;
 		sort = 0;
 		filter = 2;
 		filter_caretaker_id=0;
