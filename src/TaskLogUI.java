@@ -393,6 +393,8 @@ public class TaskLogUI extends JPanel {
 		} catch (NullPointerException e) {
 			window.displayError("Database Error!", e.toString());
 		}
+		firstUser.addItem(new EditUser(0, ""));
+		secondUser.addItem(new EditUser(0, ""));
 		secondUser.setBounds(261, 487, 118, 20);
 		fixedLogTasks.add(secondUser);
 		fixedLogTasks.add(secondUserlbl);
@@ -453,8 +455,26 @@ public class TaskLogUI extends JPanel {
 				//when selecting a row in the logging task table
 				if (logTaskListTable.getSelectedRow() != -1) {
 					taskName.setText(logTaskListTable.getModel().getValueAt(logTaskListTable.getSelectedRow(), 2).toString());
-					firstUser.setSelectedItem(logTaskListTable.getModel().getValueAt(logTaskListTable.getSelectedRow(), 4).toString());
-					secondUser.setSelectedItem(logTaskListTable.getModel().getValueAt(logTaskListTable.getSelectedRow(), 6).toString());
+					int USER1 = (int) logTaskListTable.getModel().getValueAt(logTaskListTable.getSelectedRow(), 3);
+					int USER2 = (int) logTaskListTable.getModel().getValueAt(logTaskListTable.getSelectedRow(), 5);
+					if (USER1 != 0) {
+						for (int i = 0; i < firstUser.getItemCount(); i++) {
+							if (firstUser.getItemAt(i).getIntID() == USER1) {
+								firstUser.setSelectedIndex(i);
+							}
+						}
+					} else {
+						firstUser.setSelectedIndex(firstUser.getItemCount() - 1);
+					}
+					if (USER2 != 0) {
+						for (int i = 0; i < secondUser.getItemCount(); i++) {
+							if (secondUser.getItemAt(i).getIntID() == USER2) {
+								secondUser.setSelectedIndex(i);
+							}
+						}
+					} else {
+						secondUser.setSelectedIndex(secondUser.getItemCount() - 1);
+					}
 					date.setText(logTaskListTable.getModel().getValueAt(logTaskListTable.getSelectedRow(), 7).toString());
 				}
 			}

@@ -53,7 +53,6 @@ public class LogTasks {
                                             taskLogQuery.getString(7),//user2_name = maybe null or ""
                                             taskLogQuery.getString(8)));//date_completed = maybe null or ""
         }
-        System.out.println(logged_tasks.size());
     }
     public ResultSet reloadTasks() throws SQLException {
         return taskLogDB.getAllCompletedTasks();
