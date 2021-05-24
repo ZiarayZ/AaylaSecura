@@ -77,7 +77,7 @@ public class TaskEntryUI extends JPanel {
 		fixedPane.setLayout(null);
 		fixedPane.setBackground(new Color(255, 255, 255));
 
-		JLabel lblHeadingLabel = new JLabel("Task Entry");
+		JLabel lblHeadingLabel = new JLabel("Task List");
 		lblHeadingLabel.setForeground(new Color(105, 105, 105));
 		lblHeadingLabel.setOpaque(true);
 		lblHeadingLabel.setFont(new Font("Verdana", Font.PLAIN, 28));

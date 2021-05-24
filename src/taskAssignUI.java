@@ -229,25 +229,33 @@ public class taskAssignUI extends JPanel {
 		
 		//Input creation
 		
-		JLabel nameLabel = new JLabel("Name:");
+		JLabel nameLabel = new JLabel("Name: "+currentTask.getName());
 		editTaskPanel.add(nameLabel);
-		
-		JLabel typeLabel = new JLabel("Type:");
+		String type;
+		if(currentTask.getType()==1) {type="One-Off";}
+		else {type="Recurring";}
+		JLabel typeLabel = new JLabel("Type:"+type);
 		editTaskPanel.add(typeLabel);
 		
-		JLabel durationLabel = new JLabel("Duration:");
+		JLabel durationLabel = new JLabel("Duration:"+currentTask.getDuration()+" minutes");
 		editTaskPanel.add(durationLabel);
 		
-		JLabel priorityLabel = new JLabel("Prioirty:");
+		JLabel priorityLabel = new JLabel("Prioirty:"+currentTask.getPriority());
 		editTaskPanel.add(priorityLabel);
 		
-		JLabel frequencyLabel = new JLabel("Frequency:");
+		JLabel frequencyLabel = new JLabel("Frequency:"+currentTask.getFrequency()+" Days");
 		editTaskPanel.add(frequencyLabel);
 		
-		JLabel needLoggingLabel = new JLabel("Need Logging:");
+		String nl;
+		if(currentTask.getNeedLogging()==1) {nl="Yes";}
+		else {nl="No";}
+		JLabel needLoggingLabel = new JLabel("Need Logging:"+nl);
 		editTaskPanel.add(needLoggingLabel);
 		
-		JLabel extraSignOffLabel = new JLabel("Extra Sign Off By:");
+		String eso;
+		if(currentTask.getExtraSignOff()==0) {eso = "N/A";}
+		else {eso = myTA.getcaretakerNameFromID(currentTask.getExtraSignOff());}
+		JLabel extraSignOffLabel = new JLabel("Extra Sign Off By:"+eso);
 		editTaskPanel.add(extraSignOffLabel);
 		
 		
