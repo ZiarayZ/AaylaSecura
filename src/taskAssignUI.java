@@ -352,7 +352,7 @@ public class taskAssignUI extends JPanel {
 			tasks = myTA.sortUndoneTasksByDate();
 			break;
 		case 1:
-			tasks = myTA.sortUndoneTasksByUnassigned();
+			tasks = myTA.sortUndoneTasksByPriority();
 			break;
 		case 2:
 			tasks = myTA.sortUndoneTasksByUnassigned();
