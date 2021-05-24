@@ -46,6 +46,8 @@ public class taskAssignUI extends JPanel {
 	private taskAssign myTA;
 	private int sort;
 	private int filter;
+	private int filter_caretaker_id;
+	private JComboBox ctFilter;
 	private JPanel addTaskPanel;
 	private JPanel editTaskPanel;
 	private JPanel feedbackPanel;
@@ -62,6 +64,7 @@ public class taskAssignUI extends JPanel {
 		this.db = db;
 		sort = 0;
 		filter = 2;
+		filter_caretaker_id=0;
 		// sets window to have this contentPane
 		window = UI;
 		setBackground(new Color(255, 255, 255));
@@ -87,7 +90,7 @@ public class taskAssignUI extends JPanel {
 		sortByDateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort = 0;
-				refreshTable(sort, filter);
+				refreshTable(sort, filter,filter_caretaker_id);
 			}
 		});
 		sortByDateButton.setBounds(78, 553, 125, 54);
@@ -97,7 +100,7 @@ public class taskAssignUI extends JPanel {
 		sortByPriorityButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort = 1;
-				refreshTable(sort, filter);
+				refreshTable(sort, filter,filter_caretaker_id);
 			}
 		});
 		sortByPriorityButton.setBounds(213, 553, 132, 54);
@@ -107,7 +110,7 @@ public class taskAssignUI extends JPanel {
 		sortByUnassignedButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort = 2;
-				refreshTable(sort, filter);
+				refreshTable(sort, filter,filter_caretaker_id);
 			}
 		});
 		sortByUnassignedButton.setBounds(78, 618, 125, 54);
@@ -117,7 +120,7 @@ public class taskAssignUI extends JPanel {
 		sortByAssignedButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort = 3;
-				refreshTable(sort, filter);
+				refreshTable(sort, filter,filter_caretaker_id);
 			}
 		});
 		sortByAssignedButton.setBounds(213, 618, 132, 54);
@@ -128,7 +131,7 @@ public class taskAssignUI extends JPanel {
 		filterOneOffButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filter = 1;
-				refreshTable(sort, filter);
+				refreshTable(sort, filter,filter_caretaker_id);
 			}
 		});
 		filterOneOffButton.setBounds(355, 553, 133, 54);
@@ -138,7 +141,7 @@ public class taskAssignUI extends JPanel {
 		filterRepeatButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filter = 0;
-				refreshTable(sort, filter);
+				refreshTable(sort, filter,filter_caretaker_id);
 			}
 		});
 		filterRepeatButton.setBounds(498, 553, 118, 54);
@@ -148,7 +151,7 @@ public class taskAssignUI extends JPanel {
 		filterBothButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				filter = 2;
-				refreshTable(sort, filter);
+				refreshTable(sort, filter,filter_caretaker_id);
 			}
 		});
 		filterBothButton.setBounds(626, 553, 124, 54);
@@ -157,21 +160,34 @@ public class taskAssignUI extends JPanel {
 		JButton RefreshTableButton = new JButton("<html><center>Refresh<br>Table</center></html>");
 		RefreshTableButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				refreshTable(sort, filter);
+				refreshTable(sort, filter,filter_caretaker_id);
 			}
 		});
 		RefreshTableButton.setBounds(760, 553, 128, 54);
 		fixedPane.add(RefreshTableButton);
 		
-		JButton addTaskButton = new JButton("<html><center>Sort by<br></center></html>");
-		addTaskButton.addActionListener(new ActionListener() {
+		JButton filterByCaretakerButton = new JButton("<html><center>Sort by<br>Caretaker</center></html>");
+		filterByCaretakerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				;
+				int[] caretakerIDs = genCIDs();
+				filter = 3;
+				int chosenC = ctFilter.getSelectedIndex();
+				if(chosenC<=0) {
+					filter_caretaker_id=0;
+				}
+				else {filter_caretaker_id=caretakerIDs[chosenC-1];}
+				refreshTable(sort, filter,filter_caretaker_id);
 			}
 		});
-		addTaskButton.setBounds(355, 618, 133, 54);
-		fixedPane.add(addTaskButton);
-			
+		filterByCaretakerButton.setBounds(626, 618, 124, 54);
+		fixedPane.add(filterByCaretakerButton);
+		
+		String[] caretakerNames = genCNames();
+		ctFilter = new JComboBox();
+		ctFilter.setModel(new DefaultComboBoxModel(caretakerNames));
+		ctFilter.setSelectedItem("None");
+		ctFilter.setBounds(760, 618, 128, 54);
+		fixedPane.add(ctFilter);
 		
 		
 		JButton editTaskButton = new JButton("<html><center>Edit<br>Task</center></html>");
@@ -253,7 +269,7 @@ public class taskAssignUI extends JPanel {
 				int caretaker_id;
 				int[] caretakerIDs = genCIDs();
 				int chosenC = caretakerInput.getSelectedIndex();
-				if(chosenC==0) {
+				if(chosenC<=0) {
 					caretaker_id=0;
 				}
 				else {caretaker_id=caretakerIDs[chosenC-1];}
@@ -266,7 +282,7 @@ public class taskAssignUI extends JPanel {
 					setFeedbackPanel("Allocation successful");
 					JOptionPane.showConfirmDialog(null, feedbackPanel, "Feedback", JOptionPane.PLAIN_MESSAGE);
 				}
-				refreshTable(sort,filter);
+				refreshTable(sort,filter,filter_caretaker_id);
 			}
 		});
 		
@@ -275,7 +291,7 @@ public class taskAssignUI extends JPanel {
 		editButton2 = new JButton("Delete");
 		editButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				refreshTable(sort,filter);
+				refreshTable(sort,filter,filter_caretaker_id);
 			}
 		});
 		
@@ -283,10 +299,10 @@ public class taskAssignUI extends JPanel {
 	}
 	
 	
-	public void refreshTable(int sort, int filter) {
+	public void refreshTable(int sort, int filter,int c_id) {
 		DefaultTableModel DTM = (DefaultTableModel) taskListTable.getModel();
 		DTM.setRowCount(0);
-		Object[][] data = populateTable(sort,filter);
+		Object[][] data = populateTable(sort,filter,c_id);
 		for (int i = 0; i < data.length; i++) {
 			DTM.addRow(data[i]);
 		}
@@ -303,7 +319,7 @@ public class taskAssignUI extends JPanel {
 	private JScrollPane createTable(int sort, int filter) {
 		String[] colHeaders = { "Task ID", "Task Name", "Task Type", "Task Duration", "Task Priority", "Task Frequency",
 				"need logging", "Date Created", "extra sign off", "Caretaker"};
-		Object[][] data = populateTable(sort, filter);
+		Object[][] data = populateTable(sort, filter,filter_caretaker_id);
 		TableModel tableModel = new DefaultTableModel(data, colHeaders);
 		taskListTable = new JTable(tableModel);
 		// this removes the id column, but you should be able to call
@@ -321,7 +337,7 @@ public class taskAssignUI extends JPanel {
 		scrollPane.setBounds(68, 150, 820, 232);
 		return scrollPane;
 	}
-	public Object[][] populateTable(int sort, int filter) {
+	public Object[][] populateTable(int sort, int filter, int caretaker_id) {
 		ArrayList<Object[]> tempData = new ArrayList<Object[]>();
 
 		// call for all tasks info
@@ -350,6 +366,8 @@ public class taskAssignUI extends JPanel {
 		case 2:
 			;
 			break;
+		case 3:
+			tasks = myTA.filterToCaretaker(tasks,caretaker_id);
 		}
 
 		task tempTask;

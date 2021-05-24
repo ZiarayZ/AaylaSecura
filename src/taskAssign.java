@@ -152,6 +152,16 @@ public class taskAssign {
 	}
 	
 	
+	public ArrayList<task> filterToCaretaker (ArrayList<task> input, int caretaker_id){
+		ArrayList<task> output = new ArrayList<task>();
+		for(int a=0;a<input.size();a++) {
+			if(input.get(a).getAssignedCaretaker()==caretaker_id) {
+				output.add(input.get(a));
+			}
+		}
+		return output;
+	}
+	
 	public String getcaretakerNameFromID(int id) {
 		String result = null;
 		ResultSet rs = db.getUserFromID(id);
@@ -170,10 +180,14 @@ public class taskAssign {
 		ArrayList<String> result = new ArrayList<String>();
 		ResultSet rs = db.getAllUsers();
 		String tempName;
+		int tempJobId;
 		try {
 			while(rs.next()) {
 				tempName = rs.getString(2);
-				result.add(tempName);
+				tempJobId = rs.getInt(4);
+				if(tempJobId==1) {
+					result.add(tempName);
+				}
 			}
 		}
 		catch(SQLException e) {
@@ -187,10 +201,14 @@ public class taskAssign {
 		ArrayList<Integer> result = new ArrayList<Integer>();
 		ResultSet rs = db.getAllUsers();
 		int tempID;
+		int tempJobId;
 		try {
 			while(rs.next()) {
 				tempID = rs.getInt(1);
-				result.add(tempID);
+				tempJobId = rs.getInt(4);
+				if(tempJobId==1) {
+					result.add(tempID);
+				}
 			}
 		}
 		catch(SQLException e) {
