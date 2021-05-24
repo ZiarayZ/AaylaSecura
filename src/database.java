@@ -571,7 +571,7 @@ public class database {
 		return result;
 	}//end deleteLoggedTask()
 
-	public String updateLoggedTask(int logged_ID, int task, int user, int user2, String dateCompleted) throws SQLException {
+	public String updateLoggedTask(int logged_ID, int user, int user2, String dateCompleted) throws SQLException {
 		//check user_ID exists
 		String checkIDsql = "SELECT task FROM logged_tasks WHERE logged_ID="+logged_ID;
 		ResultSet checkIDResult = myDB.RunSQLQuery(checkIDsql);
@@ -580,9 +580,9 @@ public class database {
 		
 		String result = "";
 		if (validID) {
-			result = loggedTaskValidate(task, user, user2, dateCompleted);
+			result = loggedTaskValidate(1, user, user2, dateCompleted);
 			if (result.equals("")){
-				String updateLoggedTaskSQL = "UPDATE logged_tasks SET task_id='"+task+"',user_id='"+user+"',second_user_id='"+user2+"',date_completed='"+dateCompleted+"' WHERE logged_ID='"+logged_ID+"'";
+				String updateLoggedTaskSQL = "UPDATE logged_tasks SET user_id='"+user+"',second_user_id='"+user2+"',date_completed='"+dateCompleted+"' WHERE logged_ID='"+logged_ID+"'";
 				boolean updateResult = myDB.RunSQL(updateLoggedTaskSQL);
 				if (!updateResult) {
 					result = "Update failed.";

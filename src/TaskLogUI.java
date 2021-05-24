@@ -128,7 +128,7 @@ public class TaskLogUI extends JPanel {
 		JLabel lblExample = new JLabel("Example Format:");
 		lblExample.setBounds(159, 453, 250, 20);
 		fixedPane.add(lblExample);
-		JLabel lblformat = new JLabel("HH:mm:ss");
+		JLabel lblformat = new JLabel("yyyy-MM-dd HH:mm:ss");
 		lblformat.setBounds(261, 453, 250, 20);
 		fixedPane.add(lblformat);
 		timeCompletedField = new JTextField();
@@ -145,7 +145,7 @@ public class TaskLogUI extends JPanel {
 				boolean valid = false;
 				try {
 					//dummy date for checking correct time
-					LocalDate.parse("2000-06-10 " + timeCompletedField.getText(), DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT));
+					LocalDate.parse(timeCompletedField.getText(), DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT));
 					valid = true;
 				} catch (DateTimeParseException e) {
 					valid = false;
@@ -196,6 +196,7 @@ public class TaskLogUI extends JPanel {
 		JButton editCompletedButton = new JButton("<html><center>Edit<br>Completed Task</center></html>");
 		editCompletedButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				refreshLogTaskTable();
 				window.show("LoggedTask");
 			}
 		});
@@ -235,26 +236,25 @@ public class TaskLogUI extends JPanel {
 					boolean valid = false;
 					try {
 						//dummy date for checking correct time
-						LocalDate.parse("2000-06-10 " + timeCompletedField.getText(), DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT));
+						LocalDate.parse(timeCompletedField.getText(), DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT));
 						valid = true;
 					} catch (DateTimeParseException e) {
 						valid = false;
 					}
 					if (valid) {
 						if (userID != 0) {
-							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-							String date = sdf.format(new Date())+" "+timeCompletedField.getText();
 							boolean result = false;
 							try {
-								result = loggingTask.addLoggedTask(userID, secondID, taskID, date);
+								result = loggingTask.addLoggedTask(userID, secondID, taskID, timeCompletedField.getText());
 							} catch (SQLException e) {
 								window.displayError("Database Error!", e.toString());
 							} catch (NullPointerException e) {
 								window.displayError("Database Error!", e.toString());
 							}
 							window.displayError("Log Task Attempt.", "Logging Task: " + result);
+							refreshLogTaskTable();
 						} else {
-							
+							window.displayError("Log Task Attempt.", "Logging Task: Failed, User selected is invalid with this specific Task.");
 						}
 					} else {
 						window.displayError("Log Task Failed.", "Time Format is Incorrect.");
@@ -410,9 +410,41 @@ public class TaskLogUI extends JPanel {
 		JButton applyEdit = new JButton("Apply");
 		applyEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				window.displayError("Edit Logged Task.", "Fail");
+				if (!date.getText().equals("") && !taskName.getText().equals("")) {
+					boolean valid = false;
+					try {
+						//dummy date for checking correct time
+						LocalDate.parse("2000-06-10 " + date.getText(), DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss").withResolverStyle(ResolverStyle.STRICT));
+						valid = true;
+					} catch (DateTimeParseException e) {
+						valid = false;
+					}
+					if (valid) {
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						String fullDate = sdf.format(new Date())+" "+date.getText();
+						int loggedID = (int) logTaskListTable.getModel().getValueAt(logTaskListTable.getSelectedRow(), 0);
+						try {
+							if (taskLog.editLoggedtask(loggedID, ((EditUser)firstUser.getSelectedItem()).getIntID(), ((EditUser)secondUser.getSelectedItem()).getIntID(), fullDate)) {
+								window.displayError("Logged Task Edit.", "Successful.");
+								refreshLogTaskTable();
+							} else {
+								window.displayError("Logged Task Edit.", "Failed to Validate Entered Info.");
+							}
+						} catch (SQLException e) {
+							window.displayError("Database Error!", e.toString());
+						} catch (NullPointerException e) {
+							window.displayError("Database Error!", e.toString());
+						}
+					} else {
+						window.displayError("Logged Task Edit.", "Fail, date invalid.");
+					}
+				} else {
+					window.displayError("Logged Task Edit.", "Fail, missing information.");
+				}
 			}
 		});
+		applyEdit.setBounds(261, 547, 118, 20);
+		fixedLogTasks.add(applyEdit);
 
 		//set table listener
 		ListSelectionModel selectionModel = logTaskListTable.getSelectionModel();
@@ -420,7 +452,10 @@ public class TaskLogUI extends JPanel {
 			public void valueChanged(ListSelectionEvent e) {
 				//when selecting a row in the logging task table
 				if (logTaskListTable.getSelectedRow() != -1) {
-					
+					taskName.setText(logTaskListTable.getModel().getValueAt(logTaskListTable.getSelectedRow(), 2).toString());
+					firstUser.setSelectedItem(logTaskListTable.getModel().getValueAt(logTaskListTable.getSelectedRow(), 4).toString());
+					secondUser.setSelectedItem(logTaskListTable.getModel().getValueAt(logTaskListTable.getSelectedRow(), 6).toString());
+					date.setText(logTaskListTable.getModel().getValueAt(logTaskListTable.getSelectedRow(), 7).toString());
 				}
 			}
 		});

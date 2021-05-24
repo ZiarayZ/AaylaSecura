@@ -36,11 +36,6 @@ public class LogTasks {
         String desc = orderBy(descending);
         reloadLoggedTasks(" ORDER BY users1.user_name "+desc);
     }
-    public void sortByDeadline(boolean descending) throws SQLException {
-        //there is no deadline field to sort by, unless we use the tasks table and calculate it using duration and date_created
-        /*String desc = orderBy(descending);
-        reloadLoggedTasks(taskLogDB.getAllLoggedTasks(" ORDER BY deadline? "+desc));*/
-    }
     public void sortByCompleted(boolean descending) throws SQLException {
         String desc = orderBy(descending);
         reloadLoggedTasks(" ORDER BY logged_tasks.date_completed "+desc);
@@ -58,6 +53,7 @@ public class LogTasks {
                                             taskLogQuery.getString(7),//user2_name = maybe null or ""
                                             taskLogQuery.getString(8)));//date_completed = maybe null or ""
         }
+        System.out.println(logged_tasks.size());
     }
     public ResultSet reloadTasks() throws SQLException {
         return taskLogDB.getAllCompletedTasks();
@@ -79,7 +75,12 @@ public class LogTasks {
         }
     }
 
-    public boolean editLoggedtask() {
-        return false;
+    public boolean editLoggedtask(int ID, int firstOne, int secondOne, String DATE) throws SQLException {
+        String result = taskLogDB.updateLoggedTask(ID, firstOne, secondOne, DATE);
+        if (result.equals("")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
