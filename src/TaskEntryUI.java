@@ -526,7 +526,7 @@ public class TaskEntryUI extends JPanel {
 			DTM.addRow(data[i]);
 		}
 	}
-	
+		
 	public String[] genCNames() {
 		ArrayList<String> caretakerNamesArrayList = myTE.getAllCaretakersNames();
 		String[] caretakerNames = new String[caretakerNamesArrayList.size()+1];
@@ -536,7 +536,7 @@ public class TaskEntryUI extends JPanel {
 		}
 		return caretakerNames;
 	}
-	
+		
 	public int[] genCIDs() {
 		ArrayList<Integer> caretakerIDsArrayList = myTE.getAllCaretakersIDs();
 		int[] caretakerIDs = new int[caretakerIDsArrayList.size()];
