@@ -1,7 +1,6 @@
 public class AaylaSecuraMain {
 	
 	static database db = new database();
-	private static databaseReset dbReset = new databaseReset(db);//for testing
 	private static UserManagement user;
 	private static taskEntry myTE;
 	private static taskAssign myTA;
@@ -9,8 +8,6 @@ public class AaylaSecuraMain {
 	private static UserInterface window;
 
 	public static void main(String[] args) {
-		//clear and repopulate database
-		//dbReset.reset();//resetting database to factory settings for testing
 		//initialise classes
 		myTE = new taskEntry(db);
 		myTA = new taskAssign(db);
