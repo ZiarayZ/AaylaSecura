@@ -486,6 +486,7 @@ public class TaskEntryUI extends JPanel {
 		editButton2 = new JButton("Delete");
 		editButton2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				myTE.deleteTask(task_id);
 				refreshTable(sort,filter);
 			}
 		});
