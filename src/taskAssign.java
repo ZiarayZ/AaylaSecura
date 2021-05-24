@@ -59,7 +59,6 @@ public class taskAssign {
 			for(int a=0;a<unsorted.size();a++) {
 				if(unsorted.get(a).getPriority()==maxPriority) {
 					sorted.add(unsorted.get(a));
-					unsorted.remove(a);
 				}
 			}
 		}
