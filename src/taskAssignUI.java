@@ -17,6 +17,7 @@ import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -53,7 +54,6 @@ public class taskAssignUI extends JPanel {
 	private JPanel feedbackPanel;
 	private JButton addButton1;
 	private JButton editButton1;
-	private JButton editButton2;
 	private JComboBox caretakerInput;
 
 	/**
@@ -223,41 +223,54 @@ public class taskAssignUI extends JPanel {
 		task currentTask = myTA.getTask(task_id);
 		
 		editTaskPanel = new JPanel();
+		editTaskPanel.setLayout(new BoxLayout(editTaskPanel, BoxLayout.Y_AXIS));
 		JLabel message = new JLabel("<html><br>Enter Details:<br><br></html>");
 		message.setHorizontalAlignment(SwingConstants.CENTER);
 		editTaskPanel.add(message);
-		
+		message.setAlignmentX(CENTER_ALIGNMENT);
 		//Input creation
 		
 		JLabel nameLabel = new JLabel("Name: "+currentTask.getName());
 		editTaskPanel.add(nameLabel);
+		nameLabel.setAlignmentX(CENTER_ALIGNMENT);
+		
 		String type;
 		if(currentTask.getType()==1) {type="One-Off";}
 		else {type="Recurring";}
 		JLabel typeLabel = new JLabel("Type:"+type);
 		editTaskPanel.add(typeLabel);
+		typeLabel.setAlignmentX(CENTER_ALIGNMENT);
 		
 		JLabel durationLabel = new JLabel("Duration:"+currentTask.getDuration()+" minutes");
 		editTaskPanel.add(durationLabel);
+		durationLabel.setAlignmentX(CENTER_ALIGNMENT);
 		
 		JLabel priorityLabel = new JLabel("Prioirty:"+currentTask.getPriority());
 		editTaskPanel.add(priorityLabel);
+		priorityLabel.setAlignmentX(CENTER_ALIGNMENT);
 		
 		JLabel frequencyLabel = new JLabel("Frequency:"+currentTask.getFrequency()+" Days");
 		editTaskPanel.add(frequencyLabel);
+		frequencyLabel.setAlignmentX(CENTER_ALIGNMENT);
+		
 		
 		String nl;
 		if(currentTask.getNeedLogging()==1) {nl="Yes";}
 		else {nl="No";}
 		JLabel needLoggingLabel = new JLabel("Need Logging:"+nl);
 		editTaskPanel.add(needLoggingLabel);
+		needLoggingLabel.setAlignmentX(CENTER_ALIGNMENT);
 		
 		String eso;
 		if(currentTask.getExtraSignOff()==0) {eso = "N/A";}
 		else {eso = myTA.getcaretakerNameFromID(currentTask.getExtraSignOff());}
 		JLabel extraSignOffLabel = new JLabel("Extra Sign Off By:"+eso);
 		editTaskPanel.add(extraSignOffLabel);
+		extraSignOffLabel.setAlignmentX(CENTER_ALIGNMENT);
 		
+		JLabel caretakerLabel = new JLabel("Assigned Caretaker:");
+		editTaskPanel.add(caretakerLabel);
+		caretakerLabel.setAlignmentX(CENTER_ALIGNMENT);
 		
 		String[] caretakerNames = genCNames();
 		caretakerInput = new JComboBox();
@@ -265,9 +278,7 @@ public class taskAssignUI extends JPanel {
 		editTaskPanel.add(caretakerInput);
 		String currentCaretakerName = myTA.getcaretakerNameFromID(currentTask.getAssignedCaretaker());
 		caretakerInput.setSelectedItem(currentCaretakerName);
-		JLabel caretakerLabel = new JLabel("-Assigned Caretaker");
-		editTaskPanel.add(caretakerLabel);
-		
+		caretakerInput.setAlignmentX(CENTER_ALIGNMENT);
 		
 		//button creation
 		editButton1 = new JButton("Confirm");
@@ -295,15 +306,7 @@ public class taskAssignUI extends JPanel {
 		});
 		
 		editTaskPanel.add(editButton1);
-		
-		editButton2 = new JButton("Delete");
-		editButton2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				refreshTable(sort,filter,filter_caretaker_id);
-			}
-		});
-		
-		editTaskPanel.add(editButton2);
+		editButton1.setAlignmentX(CENTER_ALIGNMENT);
 	}
 	
 	
