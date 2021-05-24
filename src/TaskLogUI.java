@@ -248,6 +248,8 @@ public class TaskLogUI extends JPanel {
 					} else {
 						window.displayError("Log Task Failed.", "Time Format is Incorrect.");
 					}
+				} else {
+					window.displayError("Log Task Failed.", "Select a Task.");
 				}
 			}
 		});
